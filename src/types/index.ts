@@ -15,11 +15,34 @@ export interface Topic {
   challenge?: string;
 }
 
+export type SectionType =
+  | 'concept'
+  | 'why'
+  | 'framework'
+  | 'example'
+  | 'takeaways'
+  | 'challenge'
+  | 'deepdive'
+  | 'casestudy'
+  | 'mistakes'
+  | 'protips';
+
+export interface ContentSection {
+  type: SectionType;
+  title: string;
+  content: string;
+}
+
+export interface StructuredContent {
+  sections: ContentSection[];
+}
+
 export interface Content {
   id: string;
   topic_id: string;
   level: 'basic' | 'advanced';
-  content: string;
+  content: string; // Raw content (fallback)
+  structured?: StructuredContent; // Parsed JSON sections
   generated_at: string;
 }
 

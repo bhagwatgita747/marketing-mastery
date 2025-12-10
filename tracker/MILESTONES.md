@@ -10,37 +10,27 @@
 | # | Milestone | Completed | Notes |
 |---|-----------|-----------|-------|
 | 0 | Basic Working Website v1 | 2025-12-10 | Login, modules, Grok content generation, Supabase, Vercel deployment |
+| 1 | Performance & UI Foundation | 2025-12-10 | Model: grok-2-latest (~8-9s), wider modal, better typography, removed Supabase caching |
 
 ---
 
 ## Current Milestone
 
-### Milestone 1: Performance & UI Foundation
+### Milestone 2: Structured Content with Sections
 **Status**: IN PROGRESS
 **Started**: 2025-12-10
 
 | Task | Status | Notes |
 |------|--------|-------|
-| Switch to Grok 4.1 Fast model | Pending | Change from `grok-3` to `grok-4.1-fast` |
-| Wider content modal | Pending | Expand from ~50% to ~85% screen width |
-| Better typography | Pending | Increase font size, line height, spacing |
+| JSON-structured responses | Pending | Get Grok to return structured JSON with sections |
+| Section cards | Pending | Render each section as visually distinct card |
+| Section types | Pending | The Concept, Why It Matters, The Framework, Nivea Example, Key Takeaways |
+| Icons per section | Pending | Add visual icons to each section type |
+| Progress within content | Pending | Show reading progress bar as user scrolls |
 
 ---
 
 ## Upcoming Milestones
-
-### Milestone 2: Structured Content with Sections
-**Status**: Pending
-
-| Task | Description |
-|------|-------------|
-| JSON-structured responses | Get Grok to return structured JSON with sections |
-| Section cards | Render each section as visually distinct card |
-| Section types | The Concept, Why It Matters, The Framework, Nivea Example, Key Takeaways |
-| Icons per section | Add visual icons to each section type |
-| Progress within content | Show reading progress bar as user scrolls |
-
----
 
 ### Milestone 3: Quiz Feature
 **Status**: Pending
@@ -113,4 +103,4 @@
 4. You say "okay" when satisfied
 5. I move to next milestone
 
-**Current**: Milestone 1 - Performance & UI Foundation
+**Current**: Milestone 2 - Structured Content with Sections

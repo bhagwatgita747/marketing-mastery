@@ -80,17 +80,17 @@ async function testWebsite() {
       console.log("⚠️ Modules may not be visible yet");
     }
 
-    // Test 5: Click on Module 4 (Social & Distribution) for fresh content
-    console.log("\n📍 Test 5: Expanding Module 4 (Social & Distribution)...");
+    // Test 5: Click on Module 5 (Paid Acquisition) for fresh content
+    console.log("\n📍 Test 5: Expanding Module 5 (Paid Acquisition)...");
 
-    // Find and click Module 4 accordion button for fresh content
+    // Find and click Module 5 accordion button for fresh content
     const buttons = await page.$$('button');
     for (const button of buttons) {
       const text = await button.evaluate(el => el.textContent);
-      if (text && text.includes('Social & Distribution')) {
+      if (text && text.includes('Paid Acquisition')) {
         await button.click();
         await new Promise(resolve => setTimeout(resolve, 1500));
-        console.log("✅ Clicked on 'Social & Distribution' module");
+        console.log("✅ Clicked on 'Paid Acquisition' module");
         break;
       }
     }

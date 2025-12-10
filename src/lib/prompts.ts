@@ -4,25 +4,49 @@ export function getBasicPrompt(topicTitle: string, topicSubtitle: string, challe
 Topic: ${topicTitle}
 Context: ${topicSubtitle}
 
-Create BASIC level content that covers:
+Return a JSON object with the following structure. Each section's content should be in markdown format:
 
-1. **What This Is** - Clear, jargon-free definition
-2. **Why It Matters** - Real impact on business outcomes, with FMCG/beauty industry examples (preferably Nivea-relevant scenarios)
-3. **The Pareto 20%** - The core 20% knowledge that delivers 80% of results
-4. **Practical Example** - One specific example Isha could apply at Nivea
-5. **Key Takeaways** - 3-5 actionable bullet points
-
-${challenge ? `\n6. **Mini-Challenge**: ${challenge}` : ''}
+{
+  "sections": [
+    {
+      "type": "concept",
+      "title": "The Concept",
+      "content": "Clear, jargon-free definition of the concept in 2-3 paragraphs"
+    },
+    {
+      "type": "why",
+      "title": "Why It Matters",
+      "content": "Real impact on business outcomes with FMCG/beauty examples"
+    },
+    {
+      "type": "framework",
+      "title": "The Framework",
+      "content": "The core 20% knowledge that delivers 80% of results - include specific steps or a framework"
+    },
+    {
+      "type": "example",
+      "title": "Nivea Example",
+      "content": "One specific example Isha could apply at Nivea"
+    },
+    {
+      "type": "takeaways",
+      "title": "Key Takeaways",
+      "content": "3-5 actionable bullet points in markdown list format"
+    }${challenge ? `,
+    {
+      "type": "challenge",
+      "title": "Mini-Challenge",
+      "content": "${challenge}"
+    }` : ''}
+  ]
+}
 
 Guidelines:
-- Keep it concise and actionable
-- Use markdown formatting (headers, bullets, bold for emphasis)
-- Write in a professional but approachable tone
-- Include specific numbers, frameworks, or templates where relevant
-- Reading time should be approximately 5 minutes
-- Focus on practical application, not theory
-
-Start directly with the content (no "Here's the content" preamble).`;
+- Return ONLY valid JSON, no text before or after
+- Each content field should use markdown (bold, bullets, etc.)
+- Keep total reading time ~5 minutes
+- Be practical and actionable, not theoretical
+- Use Nivea/FMCG examples where relevant`;
 }
 
 export function getAdvancedPrompt(topicTitle: string, topicSubtitle: string, challenge?: string): string {
@@ -31,25 +55,54 @@ export function getAdvancedPrompt(topicTitle: string, topicSubtitle: string, cha
 Topic: ${topicTitle}
 Context: ${topicSubtitle}
 
-Create ADVANCED content that covers:
+Return a JSON object with the following structure. Each section's content should be in markdown format:
 
-1. **Deep Dive** - Nuances, edge cases, and advanced considerations
-2. **Advanced Frameworks** - Mental models and frameworks used by top marketers
-3. **Case Study** - Real-world example from FMCG/beauty industry (brands like Nivea, L'Oreal, Dove, etc.)
-4. **Common Mistakes** - What experienced marketers get wrong and how to avoid it
-5. **Pro Tips** - Insider knowledge and advanced tactics
-6. **Key Takeaways** - 3-5 expert-level insights
-
-${challenge ? `\n7. **Mini-Challenge**: ${challenge}` : ''}
+{
+  "sections": [
+    {
+      "type": "deepdive",
+      "title": "Deep Dive",
+      "content": "Nuances, edge cases, and advanced considerations"
+    },
+    {
+      "type": "framework",
+      "title": "Advanced Framework",
+      "content": "Mental models and frameworks used by top marketers - include specific steps"
+    },
+    {
+      "type": "casestudy",
+      "title": "Case Study",
+      "content": "Real-world example from FMCG/beauty industry (Nivea, L'Oreal, Dove, etc.)"
+    },
+    {
+      "type": "mistakes",
+      "title": "Common Mistakes",
+      "content": "What experienced marketers get wrong and how to avoid it"
+    },
+    {
+      "type": "protips",
+      "title": "Pro Tips",
+      "content": "Insider knowledge and advanced tactics"
+    },
+    {
+      "type": "takeaways",
+      "title": "Key Takeaways",
+      "content": "3-5 expert-level insights in markdown list format"
+    }${challenge ? `,
+    {
+      "type": "challenge",
+      "title": "Mini-Challenge",
+      "content": "${challenge}"
+    }` : ''}
+  ]
+}
 
 Guidelines:
-- Assume foundational knowledge (this is advanced level)
-- Include specific metrics, benchmarks, or industry standards
-- Reference real tools, platforms, or techniques
-- Use markdown formatting (headers, bullets, code blocks if relevant)
-- Write in a professional, peer-to-peer tone
-- Reading time should be approximately 8-10 minutes
-- Focus on mastery-level insights that create competitive advantage
-
-Start directly with the content (no "Here's the content" preamble).`;
+- Return ONLY valid JSON, no text before or after
+- Assume foundational knowledge (advanced level)
+- Include specific metrics, benchmarks, industry standards
+- Reference real tools, platforms, techniques
+- Each content field should use markdown
+- Reading time ~8-10 minutes
+- Focus on mastery-level insights`;
 }
