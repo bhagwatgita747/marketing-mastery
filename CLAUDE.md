@@ -76,6 +76,24 @@ Test checklist is in `tracker/TESTING.md`.
 - Broken
 - Untested
 
+## BrowserBase Testing (IMPORTANT - Use After Every Change)
+
+**After making any change to the website, run BrowserBase tests:**
+```bash
+node test-browser.js
+```
+
+This will:
+- Load the production site (https://marketing-mastery.vercel.app/)
+- Test login functionality
+- Verify modules display correctly
+- Take a screenshot
+- Provide a session replay link
+
+**BrowserBase Credentials:**
+- Project ID: `ec860b83-22ca-4178-ad1d-c92db14f01b2`
+- API Key: `bb_live_Zhua5CEpTPxKL4m3yJatp1q30YE`
+
 ## Milestones
 
 Feature backlog is in `tracker/MILESTONES.md`.
