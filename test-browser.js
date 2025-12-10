@@ -80,17 +80,17 @@ async function testWebsite() {
       console.log("⚠️ Modules may not be visible yet");
     }
 
-    // Test 5: Click on first module to expand
-    console.log("\n📍 Test 5: Expanding first module...");
+    // Test 5: Click on Module 1 to test fresh content generation
+    console.log("\n📍 Test 5: Expanding Module 1 (Customer, Problem, Positioning)...");
 
-    // Find and click the first module accordion button
+    // Find and click Module 1 accordion button for fresh content
     const buttons = await page.$$('button');
     for (const button of buttons) {
       const text = await button.evaluate(el => el.textContent);
-      if (text && text.includes('Grounding')) {
+      if (text && text.includes('Customer, Problem')) {
         await button.click();
         await new Promise(resolve => setTimeout(resolve, 1500));
-        console.log("✅ Clicked on 'Grounding & First Principles' module");
+        console.log("✅ Clicked on 'Customer, Problem, Positioning' module");
         break;
       }
     }
@@ -102,6 +102,56 @@ async function testWebsite() {
       console.log("✅ Topics are visible after expansion");
     } else {
       console.log("⚠️ Topics may not be visible");
+    }
+
+    // Test 7: Click on Basic button and measure content generation time
+    console.log("\n📍 Test 7: Testing content generation speed...");
+    const basicButtons = await page.$$('button');
+    let clicked = false;
+    for (const button of basicButtons) {
+      const text = await button.evaluate(el => el.textContent);
+      if (text && text.includes('Basic') && !text.includes('Completed')) {
+        const startTime = Date.now();
+        await button.click();
+        console.log(`   [${new Date().toISOString()}] Clicked Basic button, waiting for content...`);
+
+        // Wait for modal to appear first
+        await page.waitForSelector('.fixed.inset-0', { timeout: 60000 });
+        const modalTime = Date.now();
+        console.log(`   [${new Date().toISOString()}] Modal appeared in ${((modalTime - startTime) / 1000).toFixed(2)}s`);
+
+        // Check for loading spinner
+        const hasSpinner = await page.$('.animate-spin');
+        if (hasSpinner) {
+          console.log(`   [${new Date().toISOString()}] Loading spinner visible - API call in progress`);
+        }
+
+        // Wait for actual content to load (markdown-content appears when content is ready)
+        await page.waitForSelector('.markdown-content', { timeout: 120000 });
+        const contentTime = Date.now();
+        const totalLoadTime = ((contentTime - startTime) / 1000).toFixed(2);
+        const apiTime = ((contentTime - modalTime) / 1000).toFixed(2);
+
+        console.log(`   [${new Date().toISOString()}] ✅ Content fully loaded!`);
+        console.log(`   ⏱️  TOTAL TIME: ${totalLoadTime} seconds`);
+        console.log(`   ⏱️  API response time: ${apiTime} seconds`);
+        clicked = true;
+
+        // Take screenshot of content
+        await page.screenshot({ path: 'test-content-screenshot.png', fullPage: false });
+        console.log("   Screenshot saved as test-content-screenshot.png");
+
+        // Also grab a snippet of the content for verification
+        const contentSnippet = await page.evaluate(() => {
+          const el = document.querySelector('.markdown-content');
+          return el ? el.textContent?.substring(0, 200) : 'No content found';
+        });
+        console.log(`   Content preview: ${contentSnippet}...`);
+        break;
+      }
+    }
+    if (!clicked) {
+      console.log("⚠️ No Basic button found to click");
     }
 
     // Take a screenshot

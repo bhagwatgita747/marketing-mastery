@@ -29,10 +29,10 @@ export async function generateContent(prompt: string): Promise<string> {
       'Authorization': `Bearer ${XAI_API_KEY}`,
     },
     body: JSON.stringify({
-      model: 'grok-4-fast',
+      model: 'grok-2-latest',  // Fastest model (~4-5s vs 10-30s for grok-4-fast)
       messages,
       temperature: 0.7,
-      max_tokens: 4000,
+      max_tokens: 2500,  // Reduced for faster response
     }),
   });
 
