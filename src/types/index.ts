@@ -86,3 +86,15 @@ export interface QuizResult {
   totalQuestions: number;
   completedAt: string;
 }
+
+// Notes types
+export interface Note {
+  id: string;
+  topicId: string;
+  topicTitle: string;
+  level: 'basic' | 'advanced';
+  sectionType: SectionType;
+  sectionTitle: string;
+  content: string;
+  savedAt: string;
+}

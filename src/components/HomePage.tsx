@@ -3,12 +3,14 @@ import { useModules } from '../hooks/useModules';
 import { useProgress } from '../hooks/useProgress';
 import { useContent } from '../hooks/useContent';
 import { useQuiz } from '../hooks/useQuiz';
+import { useNotes } from '../hooks/useNotes';
 import { ModuleAccordion } from './ModuleAccordion';
 import { ContentModal } from './ContentModal';
 import { QuizModal } from './QuizModal';
+import { NotesModal } from './NotesModal';
 import { LoadingSpinner } from './LoadingSpinner';
 import { Confetti } from './Confetti';
-import { Topic, Content, Quiz } from '../types';
+import { Topic, Content, Quiz, SectionType } from '../types';
 
 interface HomePageProps {
   username: string;
@@ -26,6 +28,7 @@ export function HomePage({ username, onLogout }: HomePageProps) {
   } = useProgress();
   const { fetchOrGenerateContent, isGenerating, error: contentError } = useContent();
   const { generateQuiz, isGenerating: isQuizGenerating, error: quizError } = useQuiz();
+  const { notes, isNoteSaved, toggleNote, removeNote, clearAllNotes, totalNotes } = useNotes();
 
   // Modal state
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
@@ -41,6 +44,9 @@ export function HomePage({ username, onLogout }: HomePageProps) {
   // Confetti celebration state
   const [showConfetti, setShowConfetti] = useState(false);
   const [previousCompleted, setPreviousCompleted] = useState(0);
+
+  // Notes modal state
+  const [showNotesModal, setShowNotesModal] = useState(false);
 
   // Calculate overall progress
   const totalTopics = modules.reduce((sum, m) => sum + m.topics.length, 0);
@@ -107,6 +113,25 @@ export function HomePage({ username, onLogout }: HomePageProps) {
     setQuizData(null);
   }, []);
 
+  // Notes handlers
+  const handleIsNoteSaved = useCallback((sectionType: SectionType) => {
+    if (!selectedTopic) return false;
+    return isNoteSaved(selectedTopic.id, selectedLevel, sectionType);
+  }, [selectedTopic, selectedLevel, isNoteSaved]);
+
+  const handleToggleNote = useCallback((sectionType: SectionType, sectionTitle: string, content: string) => {
+    if (!selectedTopic) return;
+    toggleNote(selectedTopic.id, selectedTopic.title, selectedLevel, sectionType, sectionTitle, content);
+  }, [selectedTopic, selectedLevel, toggleNote]);
+
+  const handleViewNotes = useCallback(() => {
+    setShowNotesModal(true);
+  }, []);
+
+  const handleCloseNotesModal = useCallback(() => {
+    setShowNotesModal(false);
+  }, []);
+
   if (modulesLoading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -136,12 +161,30 @@ export function HomePage({ username, onLogout }: HomePageProps) {
               </div>
             </div>
 
-            <button
-              onClick={onLogout}
-              className="px-4 py-2 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200"
-            >
-              Logout
-            </button>
+            <div className="flex items-center gap-2">
+              {/* Notes button */}
+              <button
+                onClick={handleViewNotes}
+                className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200"
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+                </svg>
+                Notes
+                {totalNotes > 0 && (
+                  <span className="ml-1 px-1.5 py-0.5 text-xs bg-white/20 rounded-full">
+                    {totalNotes}
+                  </span>
+                )}
+              </button>
+
+              <button
+                onClick={onLogout}
+                className="px-4 py-2 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200"
+              >
+                Logout
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -251,6 +294,10 @@ export function HomePage({ username, onLogout }: HomePageProps) {
           onClose={handleCloseModal}
           onMarkComplete={handleMarkComplete}
           onTakeQuiz={handleTakeQuiz}
+          isNoteSaved={handleIsNoteSaved}
+          onToggleNote={handleToggleNote}
+          totalSavedNotes={totalNotes}
+          onViewNotes={handleViewNotes}
         />
       )}
 
@@ -263,6 +310,16 @@ export function HomePage({ username, onLogout }: HomePageProps) {
           isLoading={isQuizLoading || isQuizGenerating}
           error={quizError}
           onClose={handleCloseQuiz}
+        />
+      )}
+
+      {/* Notes Modal */}
+      {showNotesModal && (
+        <NotesModal
+          notes={notes}
+          onClose={handleCloseNotesModal}
+          onRemoveNote={removeNote}
+          onClearAll={clearAllNotes}
         />
       )}
     </div>

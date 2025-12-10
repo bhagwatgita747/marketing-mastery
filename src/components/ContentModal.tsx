@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Topic, Content } from '../types';
+import { Topic, Content, SectionType } from '../types';
 import { LoadingSpinner } from './LoadingSpinner';
 import { SectionCard } from './SectionCard';
 
@@ -14,6 +14,11 @@ interface ContentModalProps {
   onClose: () => void;
   onMarkComplete: () => Promise<void>;
   onTakeQuiz?: () => void;
+  // Notes functionality
+  isNoteSaved?: (sectionType: SectionType) => boolean;
+  onToggleNote?: (sectionType: SectionType, sectionTitle: string, content: string) => void;
+  totalSavedNotes?: number;
+  onViewNotes?: () => void;
 }
 
 export function ContentModal({
@@ -26,6 +31,10 @@ export function ContentModal({
   onClose,
   onMarkComplete,
   onTakeQuiz,
+  isNoteSaved,
+  onToggleNote,
+  totalSavedNotes = 0,
+  onViewNotes,
 }: ContentModalProps) {
   const [isMarkingComplete, setIsMarkingComplete] = useState(false);
   const [readProgress, setReadProgress] = useState(0);
@@ -151,7 +160,13 @@ export function ContentModal({
               // Render structured sections as cards
               <div className="max-w-3xl mx-auto">
                 {content.structured!.sections.map((section, index) => (
-                  <SectionCard key={index} section={section} index={index} />
+                  <SectionCard
+                    key={index}
+                    section={section}
+                    index={index}
+                    isSaved={isNoteSaved ? isNoteSaved(section.type) : false}
+                    onToggleNote={onToggleNote ? () => onToggleNote(section.type, section.title, section.content) : undefined}
+                  />
                 ))}
               </div>
             ) : (
@@ -166,11 +181,24 @@ export function ContentModal({
         {/* Footer */}
         {!isLoading && content && (
           <div className="flex-shrink-0 px-6 py-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
-            <div className="text-sm text-slate-500">
-              {hasStructuredContent
-                ? `${content.structured!.sections.length} sections`
-                : level === 'basic' ? '~5 min read' : '~8-10 min read'
-              }
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-slate-500">
+                {hasStructuredContent
+                  ? `${content.structured!.sections.length} sections`
+                  : level === 'basic' ? '~5 min read' : '~8-10 min read'
+                }
+              </span>
+              {totalSavedNotes > 0 && onViewNotes && (
+                <button
+                  onClick={onViewNotes}
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-colors"
+                >
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+                  </svg>
+                  {totalSavedNotes} {totalSavedNotes === 1 ? 'note' : 'notes'}
+                </button>
+              )}
             </div>
 
             <div className="flex items-center gap-3">

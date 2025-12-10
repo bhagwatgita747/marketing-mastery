@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { ContentSection, SectionType } from '../types';
 
@@ -68,23 +69,70 @@ const sectionConfig: Record<SectionType, { icon: string; bgColor: string; border
 interface SectionCardProps {
   section: ContentSection;
   index: number;
+  isSaved?: boolean;
+  onToggleNote?: () => void;
 }
 
-export function SectionCard({ section, index }: SectionCardProps) {
+export function SectionCard({ section, index, isSaved = false, onToggleNote }: SectionCardProps) {
   const config = sectionConfig[section.type] || sectionConfig.concept;
+  const [showSaveAnimation, setShowSaveAnimation] = useState(false);
+
+  const handleToggleNote = () => {
+    if (onToggleNote) {
+      setShowSaveAnimation(true);
+      onToggleNote();
+      setTimeout(() => setShowSaveAnimation(false), 500);
+    }
+  };
 
   return (
     <div
-      className={`${config.bgColor} ${config.borderColor} border rounded-xl p-6 mb-4 transition-all duration-200 hover:shadow-md`}
+      className={`${config.bgColor} ${config.borderColor} border rounded-xl p-6 mb-4 transition-all duration-200 hover:shadow-md relative group`}
       style={{ animationDelay: `${index * 100}ms` }}
     >
-      {/* Header with icon */}
-      <div className="flex items-center gap-3 mb-4">
-        <div className={`${config.iconBg} w-10 h-10 rounded-lg flex items-center justify-center text-xl`}>
-          {config.icon}
+      {/* Header with icon and save button */}
+      <div className="flex items-center justify-between gap-3 mb-4">
+        <div className="flex items-center gap-3">
+          <div className={`${config.iconBg} w-10 h-10 rounded-lg flex items-center justify-center text-xl`}>
+            {config.icon}
+          </div>
+          <h3 className="text-lg font-semibold text-slate-800">{section.title}</h3>
         </div>
-        <h3 className="text-lg font-semibold text-slate-800">{section.title}</h3>
+
+        {/* Add to Notes button */}
+        {onToggleNote && (
+          <button
+            onClick={handleToggleNote}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 transform hover:scale-105 active:scale-95 ${
+              isSaved
+                ? 'bg-primary-500 text-white shadow-sm'
+                : 'bg-white/80 text-slate-600 hover:bg-white hover:text-primary-600 border border-slate-200'
+            } ${showSaveAnimation ? 'animate-bounce-in' : ''}`}
+            title={isSaved ? 'Remove from notes' : 'Save to notes'}
+          >
+            {isSaved ? (
+              <>
+                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+                </svg>
+                Saved
+              </>
+            ) : (
+              <>
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                </svg>
+                Save
+              </>
+            )}
+          </button>
+        )}
       </div>
+
+      {/* Saved indicator badge */}
+      {isSaved && (
+        <div className="absolute top-2 right-2 w-2 h-2 bg-primary-500 rounded-full" />
+      )}
 
       {/* Content */}
       <div className="prose prose-slate prose-sm max-w-none">
