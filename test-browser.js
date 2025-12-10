@@ -80,17 +80,17 @@ async function testWebsite() {
       console.log("⚠️ Modules may not be visible yet");
     }
 
-    // Test 5: Click on Module 6 (Lifecycle, CRM) for fresh content
-    console.log("\n📍 Test 5: Expanding Module 6 (Lifecycle, CRM & Automation)...");
+    // Test 5: Click on Module 7 (CRO, Experiments) for fresh content
+    console.log("\n📍 Test 5: Expanding Module 7 (CRO, Experiments & Unit Economics)...");
 
-    // Find and click Module 6 accordion button for fresh content
+    // Find and click Module 7 accordion button for fresh content
     const buttons = await page.$$('button');
     for (const button of buttons) {
       const text = await button.evaluate(el => el.textContent);
-      if (text && text.includes('Lifecycle')) {
+      if (text && text.includes('CRO')) {
         await button.click();
         await new Promise(resolve => setTimeout(resolve, 1500));
-        console.log("✅ Clicked on 'Lifecycle, CRM & Automation' module");
+        console.log("✅ Clicked on 'CRO, Experiments & Unit Economics' module");
         break;
       }
     }
@@ -160,6 +160,54 @@ async function testWebsite() {
     }
     if (!clicked) {
       console.log("⚠️ No Basic button found to click");
+    }
+
+    // Test 8: Mark content as complete and test Take Quiz button
+    console.log("\n📍 Test 8: Testing Quiz feature...");
+
+    // Find and click "Mark as Complete" button
+    const allButtons = await page.$$('button');
+    let foundComplete = false;
+    let foundQuiz = false;
+
+    for (const btn of allButtons) {
+      const text = await btn.evaluate(el => el.textContent);
+      if (text && text.includes('Mark as Complete')) {
+        await btn.click();
+        console.log("   Clicked 'Mark as Complete'");
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        foundComplete = true;
+        break;
+      }
+    }
+
+    // Look for Take Quiz button
+    const buttonsAfterComplete = await page.$$('button');
+    for (const btn of buttonsAfterComplete) {
+      const text = await btn.evaluate(el => el.textContent);
+      if (text && text.includes('Take Quiz')) {
+        const quizStartTime = Date.now();
+        await btn.click();
+        console.log("   Clicked 'Take Quiz', generating quiz...");
+
+        // Wait for quiz modal with question options
+        await page.waitForFunction(
+          () => document.querySelector('.bg-purple-100') !== null,
+          { timeout: 60000 }
+        );
+        const quizLoadTime = Date.now();
+        console.log(`   ✅ Quiz loaded in ${((quizLoadTime - quizStartTime) / 1000).toFixed(2)}s`);
+
+        // Take screenshot of quiz
+        await page.screenshot({ path: 'test-quiz-screenshot.png', fullPage: false });
+        console.log("   Quiz screenshot saved as test-quiz-screenshot.png");
+        foundQuiz = true;
+        break;
+      }
+    }
+
+    if (!foundComplete && !foundQuiz) {
+      console.log("   ⚠️ Could not find Mark as Complete or Take Quiz buttons");
     }
 
     // Take a screenshot

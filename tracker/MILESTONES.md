@@ -12,39 +12,27 @@
 | 0 | Basic Working Website v1 | 2025-12-10 | Login, modules, Grok content generation, Supabase, Vercel deployment |
 | 1 | Performance & UI Foundation | 2025-12-10 | Model: grok-2-latest (~8-9s), wider modal, better typography, removed Supabase caching |
 | 2 | Structured Content with Sections | 2025-12-10 | JSON responses, section cards with icons, reading progress bar |
+| 3 | Quiz Feature | 2025-12-10 | 5 MCQ per topic, one question at a time, visual feedback, score tracking (~5.5s generation) |
 
 ---
 
 ## Current Milestone
 
-### Milestone 3: Quiz Feature
+### Milestone 4: UI/Theme Overhaul
 **Status**: IN PROGRESS
 **Started**: 2025-12-10
 
 | Task | Status | Notes |
 |------|--------|-------|
-| "Take Quiz" button | Pending | Appears after marking Basic as complete |
-| Quiz generation | Pending | Send prompt to Grok for 5 MCQ questions in JSON |
-| One question at a time | Pending | Show question → 4 options → immediate feedback |
-| Score tracking | Pending | Show score at end, store in Supabase |
-| Visual feedback | Pending | Green/red for correct/wrong with explanation |
+| Color scheme refresh | Pending | More vibrant, modern palette (Notion meets Duolingo) |
+| Micro-animations | Pending | Subtle transitions on hover, expand, complete |
+| Celebration moments | Pending | Confetti/animation when completing a module |
+| Better module cards | Pending | Gradient backgrounds, progress rings |
+| Dark mode (optional) | Pending | For comfortable reading |
 
 ---
 
 ## Upcoming Milestones
-
-### Milestone 4: UI/Theme Overhaul
-**Status**: Pending
-
-| Task | Description |
-|------|-------------|
-| Color scheme refresh | More vibrant, modern palette (Notion meets Duolingo) |
-| Micro-animations | Subtle transitions on hover, expand, complete |
-| Celebration moments | Confetti/animation when completing a module |
-| Better module cards | Gradient backgrounds, progress rings |
-| Dark mode (optional) | For comfortable reading |
-
----
 
 ### Milestone 5: Notes/Cheatsheet Feature
 **Status**: Pending
@@ -91,4 +79,4 @@
 4. You say "okay" when satisfied
 5. I move to next milestone
 
-**Current**: Milestone 3 - Quiz Feature
+**Current**: Milestone 4 - UI/Theme Overhaul
