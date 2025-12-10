@@ -14,28 +14,14 @@
 | 2 | Structured Content with Sections | 2025-12-10 | JSON responses, section cards with icons, reading progress bar |
 | 3 | Quiz Feature | 2025-12-10 | 5 MCQ per topic, one question at a time, visual feedback, score tracking (~5.5s generation) |
 | 4 | UI/Theme Overhaul | 2025-12-10 | Vibrant gradients, progress rings, Confetti celebrations, micro-animations. Tested with Puppeteer locally - all UI elements verified working |
+| 5 | Notes/Cheatsheet Feature | 2025-12-10 | Save sections to notes, Notes modal with grouped topics, localStorage persistence, remove/clear notes. Tested with Puppeteer |
 
 ---
 
 ## Current Milestone
 
-### Milestone 5: Notes/Cheatsheet Feature
-**Status**: IN PROGRESS
-**Started**: 2025-12-10
-
-| Task | Description |
-|------|-------------|
-| "Add to Notes" button | Flag any concept/section to save |
-| Notes page | Dedicated page showing all saved notes |
-| Cheatsheet export | Generate summary PDF/markdown of saved notes |
-| Quick toggle | Easy add/remove from notes inline |
-
----
-
-## Upcoming Milestones
-
 ### Milestone 6: Deep Dive Feature
-**Status**: Pending
+**Status**: PENDING
 
 | Task | Description |
 |------|-------------|
@@ -67,4 +53,4 @@
 4. You say "okay" when satisfied
 5. I move to next milestone
 
-**Current**: Milestone 5 - Notes/Cheatsheet Feature
+**Current**: Milestone 6 - Deep Dive Feature
