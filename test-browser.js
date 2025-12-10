@@ -80,17 +80,17 @@ async function testWebsite() {
       console.log("⚠️ Modules may not be visible yet");
     }
 
-    // Test 5: Click on Module 5 (Paid Acquisition) for fresh content
-    console.log("\n📍 Test 5: Expanding Module 5 (Paid Acquisition)...");
+    // Test 5: Click on Module 6 (Lifecycle, CRM) for fresh content
+    console.log("\n📍 Test 5: Expanding Module 6 (Lifecycle, CRM & Automation)...");
 
-    // Find and click Module 5 accordion button for fresh content
+    // Find and click Module 6 accordion button for fresh content
     const buttons = await page.$$('button');
     for (const button of buttons) {
       const text = await button.evaluate(el => el.textContent);
-      if (text && text.includes('Paid Acquisition')) {
+      if (text && text.includes('Lifecycle')) {
         await button.click();
         await new Promise(resolve => setTimeout(resolve, 1500));
-        console.log("✅ Clicked on 'Paid Acquisition' module");
+        console.log("✅ Clicked on 'Lifecycle, CRM & Automation' module");
         break;
       }
     }
@@ -128,8 +128,8 @@ async function testWebsite() {
           console.log(`   [T+${((spinnerTime - clickTime) / 1000).toFixed(2)}s] Loading spinner visible (API call in progress)`);
         }
 
-        // Wait for actual content to load (markdown-content appears when content is ready)
-        await page.waitForSelector('.markdown-content', { timeout: 120000 });
+        // Wait for actual content to load (section cards or markdown-content)
+        await page.waitForSelector('.bg-amber-50, .markdown-content', { timeout: 120000 });
         const contentTime = Date.now();
 
         console.log(`   [T+${((contentTime - clickTime) / 1000).toFixed(2)}s] Content rendered`);
@@ -146,8 +146,13 @@ async function testWebsite() {
 
         // Also grab a snippet of the content for verification
         const contentSnippet = await page.evaluate(() => {
+          // Try section cards first, then markdown content
+          const sectionCard = document.querySelector('.bg-amber-50');
+          if (sectionCard) {
+            return 'Structured content: ' + (sectionCard.textContent?.substring(0, 150) || 'Found section cards');
+          }
           const el = document.querySelector('.markdown-content');
-          return el ? el.textContent?.substring(0, 200) : 'No content found';
+          return el ? 'Markdown: ' + el.textContent?.substring(0, 150) : 'No content found';
         });
         console.log(`   Content preview: ${contentSnippet}...`);
         break;

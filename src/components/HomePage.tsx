@@ -2,11 +2,13 @@ import { useState, useCallback } from 'react';
 import { useModules } from '../hooks/useModules';
 import { useProgress } from '../hooks/useProgress';
 import { useContent } from '../hooks/useContent';
+import { useQuiz } from '../hooks/useQuiz';
 import { ModuleAccordion } from './ModuleAccordion';
 import { ContentModal } from './ContentModal';
+import { QuizModal } from './QuizModal';
 import { ProgressBar } from './ProgressBar';
 import { LoadingSpinner } from './LoadingSpinner';
-import { Topic, Content } from '../types';
+import { Topic, Content, Quiz } from '../types';
 
 interface HomePageProps {
   username: string;
@@ -23,12 +25,18 @@ export function HomePage({ username, onLogout }: HomePageProps) {
     markAdvancedComplete,
   } = useProgress();
   const { fetchOrGenerateContent, isGenerating, error: contentError } = useContent();
+  const { generateQuiz, isGenerating: isQuizGenerating, error: quizError } = useQuiz();
 
   // Modal state
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
   const [selectedLevel, setSelectedLevel] = useState<'basic' | 'advanced'>('basic');
   const [modalContent, setModalContent] = useState<Content | null>(null);
   const [isModalLoading, setIsModalLoading] = useState(false);
+
+  // Quiz state
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [quizData, setQuizData] = useState<Quiz | null>(null);
+  const [isQuizLoading, setIsQuizLoading] = useState(false);
 
   // Calculate overall progress
   const totalTopics = modules.reduce((sum, m) => sum + m.topics.length, 0);
@@ -68,6 +76,23 @@ export function HomePage({ username, onLogout }: HomePageProps) {
       await markAdvancedComplete(selectedTopic.id);
     }
   }, [selectedTopic, selectedLevel, markBasicComplete, markAdvancedComplete]);
+
+  const handleTakeQuiz = useCallback(async () => {
+    if (!selectedTopic) return;
+
+    setShowQuiz(true);
+    setQuizData(null);
+    setIsQuizLoading(true);
+
+    const quiz = await generateQuiz(selectedTopic, selectedLevel);
+    setQuizData(quiz);
+    setIsQuizLoading(false);
+  }, [selectedTopic, selectedLevel, generateQuiz]);
+
+  const handleCloseQuiz = useCallback(() => {
+    setShowQuiz(false);
+    setQuizData(null);
+  }, []);
 
   if (modulesLoading) {
     return (
@@ -150,7 +175,7 @@ export function HomePage({ username, onLogout }: HomePageProps) {
       </main>
 
       {/* Content Modal */}
-      {selectedTopic && (
+      {selectedTopic && !showQuiz && (
         <ContentModal
           topic={selectedTopic}
           level={selectedLevel}
@@ -164,6 +189,19 @@ export function HomePage({ username, onLogout }: HomePageProps) {
           }
           onClose={handleCloseModal}
           onMarkComplete={handleMarkComplete}
+          onTakeQuiz={handleTakeQuiz}
+        />
+      )}
+
+      {/* Quiz Modal */}
+      {selectedTopic && showQuiz && (
+        <QuizModal
+          topic={selectedTopic}
+          level={selectedLevel}
+          quiz={quizData}
+          isLoading={isQuizLoading || isQuizGenerating}
+          error={quizError}
+          onClose={handleCloseQuiz}
         />
       )}
     </div>

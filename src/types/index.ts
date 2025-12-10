@@ -66,3 +66,23 @@ export interface ModuleWithProgress extends Module {
   completedAdvanced: number;
   totalTopics: number;
 }
+
+// Quiz types
+export interface QuizQuestion {
+  question: string;
+  options: string[];
+  correctIndex: number;
+  explanation: string;
+}
+
+export interface Quiz {
+  questions: QuizQuestion[];
+}
+
+export interface QuizResult {
+  topicId: string;
+  level: 'basic' | 'advanced';
+  score: number;
+  totalQuestions: number;
+  completedAt: string;
+}

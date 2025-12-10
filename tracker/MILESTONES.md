@@ -11,39 +11,27 @@
 |---|-----------|-----------|-------|
 | 0 | Basic Working Website v1 | 2025-12-10 | Login, modules, Grok content generation, Supabase, Vercel deployment |
 | 1 | Performance & UI Foundation | 2025-12-10 | Model: grok-2-latest (~8-9s), wider modal, better typography, removed Supabase caching |
+| 2 | Structured Content with Sections | 2025-12-10 | JSON responses, section cards with icons, reading progress bar |
 
 ---
 
 ## Current Milestone
 
-### Milestone 2: Structured Content with Sections
+### Milestone 3: Quiz Feature
 **Status**: IN PROGRESS
 **Started**: 2025-12-10
 
 | Task | Status | Notes |
 |------|--------|-------|
-| JSON-structured responses | Pending | Get Grok to return structured JSON with sections |
-| Section cards | Pending | Render each section as visually distinct card |
-| Section types | Pending | The Concept, Why It Matters, The Framework, Nivea Example, Key Takeaways |
-| Icons per section | Pending | Add visual icons to each section type |
-| Progress within content | Pending | Show reading progress bar as user scrolls |
+| "Take Quiz" button | Pending | Appears after marking Basic as complete |
+| Quiz generation | Pending | Send prompt to Grok for 5 MCQ questions in JSON |
+| One question at a time | Pending | Show question → 4 options → immediate feedback |
+| Score tracking | Pending | Show score at end, store in Supabase |
+| Visual feedback | Pending | Green/red for correct/wrong with explanation |
 
 ---
 
 ## Upcoming Milestones
-
-### Milestone 3: Quiz Feature
-**Status**: Pending
-
-| Task | Description |
-|------|-------------|
-| "Take Quiz" button | Appears after marking Basic as complete |
-| Quiz generation | Send prompt to Grok for 5 MCQ questions in JSON |
-| One question at a time | Show question → 4 options → immediate feedback |
-| Score tracking | Show score at end, store in Supabase |
-| Visual feedback | Green/red for correct/wrong with explanation |
-
----
 
 ### Milestone 4: UI/Theme Overhaul
 **Status**: Pending
@@ -103,4 +91,4 @@
 4. You say "okay" when satisfied
 5. I move to next milestone
 
-**Current**: Milestone 2 - Structured Content with Sections
+**Current**: Milestone 3 - Quiz Feature

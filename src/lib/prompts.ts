@@ -106,3 +106,35 @@ Guidelines:
 - Reading time ~8-10 minutes
 - Focus on mastery-level insights`;
 }
+
+export function getQuizPrompt(topicTitle: string, topicSubtitle: string, level: 'basic' | 'advanced'): string {
+  return `You are a marketing educator creating a quiz for Isha, a 34-year-old marketing professional at Nivea India.
+
+Topic: ${topicTitle}
+Context: ${topicSubtitle}
+Level: ${level === 'basic' ? 'Basic (foundational concepts)' : 'Advanced (deeper understanding)'}
+
+Create exactly 5 multiple-choice questions to test understanding of this topic.
+
+Return a JSON object with the following structure:
+
+{
+  "questions": [
+    {
+      "question": "The question text here?",
+      "options": ["Option A", "Option B", "Option C", "Option D"],
+      "correctIndex": 0,
+      "explanation": "Brief explanation of why this answer is correct"
+    }
+  ]
+}
+
+Guidelines:
+- Return ONLY valid JSON, no text before or after
+- Each question should have exactly 4 options
+- correctIndex is 0-based (0 for first option, 3 for last)
+- Questions should test practical understanding, not just definitions
+- Include FMCG/beauty industry context where relevant
+- Mix difficulty: 2 easy, 2 medium, 1 challenging
+- Explanations should be 1-2 sentences`;
+}
