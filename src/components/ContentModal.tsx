@@ -62,8 +62,8 @@ export function ContentModal({
         onClick={onClose}
       />
 
-      {/* Modal */}
-      <div className="relative w-full h-full md:h-auto md:max-h-[90vh] md:max-w-3xl md:mx-4 bg-white md:rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+      {/* Modal - Wide layout for better reading */}
+      <div className="relative w-full h-full md:h-[90vh] md:max-w-5xl lg:max-w-6xl md:mx-4 bg-white md:rounded-2xl shadow-2xl flex flex-col overflow-hidden">
         {/* Header */}
         <div className="flex-shrink-0 px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-white">
           <div>
@@ -97,8 +97,8 @@ export function ContentModal({
           </button>
         </div>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto px-6 py-6">
+        {/* Content - Better padding and max-width for readability */}
+        <div className="flex-1 overflow-y-auto px-8 md:px-12 lg:px-16 py-8">
           {isLoading ? (
             <div className="flex items-center justify-center py-20">
               <LoadingSpinner size="lg" text="Generating content with AI..." />
