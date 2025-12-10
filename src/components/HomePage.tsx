@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useModules } from '../hooks/useModules';
 import { useProgress } from '../hooks/useProgress';
 import { useContent } from '../hooks/useContent';
@@ -6,8 +6,8 @@ import { useQuiz } from '../hooks/useQuiz';
 import { ModuleAccordion } from './ModuleAccordion';
 import { ContentModal } from './ContentModal';
 import { QuizModal } from './QuizModal';
-import { ProgressBar } from './ProgressBar';
 import { LoadingSpinner } from './LoadingSpinner';
+import { Confetti } from './Confetti';
 import { Topic, Content, Quiz } from '../types';
 
 interface HomePageProps {
@@ -38,6 +38,10 @@ export function HomePage({ username, onLogout }: HomePageProps) {
   const [quizData, setQuizData] = useState<Quiz | null>(null);
   const [isQuizLoading, setIsQuizLoading] = useState(false);
 
+  // Confetti celebration state
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [previousCompleted, setPreviousCompleted] = useState(0);
+
   // Calculate overall progress
   const totalTopics = modules.reduce((sum, m) => sum + m.topics.length, 0);
   const completedBasic = modules.reduce(
@@ -50,6 +54,15 @@ export function HomePage({ username, onLogout }: HomePageProps) {
   );
   const totalCompleted = completedBasic + completedAdvanced;
   const totalPossible = totalTopics * 2;
+  const progressPercent = totalPossible > 0 ? Math.round((totalCompleted / totalPossible) * 100) : 0;
+
+  // Trigger confetti when progress increases
+  useEffect(() => {
+    if (totalCompleted > previousCompleted && previousCompleted > 0) {
+      setShowConfetti(true);
+    }
+    setPreviousCompleted(totalCompleted);
+  }, [totalCompleted, previousCompleted]);
 
   const handleTopicClick = useCallback(async (topic: Topic, level: 'basic' | 'advanced') => {
     setSelectedTopic(topic);
@@ -103,26 +116,29 @@ export function HomePage({ username, onLogout }: HomePageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-primary-50/30">
+      {/* Confetti celebration */}
+      <Confetti trigger={showConfetti} onComplete={() => setShowConfetti(false)} />
+
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-40">
+      <header className="bg-gradient-to-r from-primary-600 via-primary-500 to-indigo-500 sticky top-0 z-40 shadow-lg">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-11 h-11 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-inner">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
               <div>
-                <h1 className="font-bold text-slate-800">Marketing Mastery</h1>
-                <p className="text-sm text-slate-500">Welcome back, {username}</p>
+                <h1 className="font-bold text-white text-lg">Marketing Mastery</h1>
+                <p className="text-sm text-primary-100">Welcome back, {username}</p>
               </div>
             </div>
 
             <button
               onClick={onLogout}
-              className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors"
+              className="px-4 py-2 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200"
             >
               Logout
             </button>
@@ -133,27 +149,72 @@ export function HomePage({ username, onLogout }: HomePageProps) {
       {/* Main Content */}
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         {/* Overall Progress Card */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h2 className="text-lg font-semibold text-slate-800">Your Progress</h2>
-              <p className="text-sm text-slate-500">
-                {totalCompleted} of {totalPossible} lessons completed
-              </p>
-            </div>
-            <div className="w-full sm:w-64">
-              <ProgressBar value={totalCompleted} max={totalPossible} />
+        <div className="bg-white rounded-2xl shadow-lg border border-slate-100 p-6 mb-8 overflow-hidden relative">
+          {/* Decorative gradient blob */}
+          <div className="absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-br from-primary-200/40 to-accent-200/40 rounded-full blur-3xl" />
+
+          <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+            <div className="flex items-center gap-4">
+              {/* Big progress ring */}
+              <div className="relative w-20 h-20 flex-shrink-0">
+                <svg className="w-20 h-20 transform -rotate-90">
+                  <circle
+                    cx="40"
+                    cy="40"
+                    r="34"
+                    stroke="currentColor"
+                    strokeWidth="6"
+                    fill="none"
+                    className="text-slate-100"
+                  />
+                  <circle
+                    cx="40"
+                    cy="40"
+                    r="34"
+                    stroke="url(#progressGradient)"
+                    strokeWidth="6"
+                    fill="none"
+                    strokeDasharray={`${progressPercent * 2.136} 214`}
+                    strokeLinecap="round"
+                    className="transition-all duration-500"
+                  />
+                  <defs>
+                    <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#6366f1" />
+                      <stop offset="100%" stopColor="#14b8a6" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-xl font-bold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
+                    {progressPercent}%
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <h2 className="text-xl font-bold text-slate-800">Your Progress</h2>
+                <p className="text-sm text-slate-500">
+                  {totalCompleted} of {totalPossible} lessons completed
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="mt-4 grid grid-cols-2 gap-4">
-            <div className="bg-blue-50 rounded-lg p-4">
-              <p className="text-sm text-blue-600 font-medium">Basic Completed</p>
-              <p className="text-2xl font-bold text-blue-700">{completedBasic} / {totalTopics}</p>
+          <div className="relative mt-6 grid grid-cols-2 gap-4">
+            <div className="bg-gradient-to-br from-primary-50 to-primary-100/50 rounded-xl p-4 border border-primary-100">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-2 h-2 rounded-full bg-primary-500" />
+                <p className="text-sm text-primary-600 font-medium">Basic</p>
+              </div>
+              <p className="text-2xl font-bold text-primary-700">{completedBasic}<span className="text-lg text-primary-400"> / {totalTopics}</span></p>
             </div>
-            <div className="bg-purple-50 rounded-lg p-4">
-              <p className="text-sm text-purple-600 font-medium">Advanced Completed</p>
-              <p className="text-2xl font-bold text-purple-700">{completedAdvanced} / {totalTopics}</p>
+            <div className="bg-gradient-to-br from-purple-50 to-indigo-100/50 rounded-xl p-4 border border-purple-100">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-2 h-2 rounded-full bg-purple-500" />
+                <p className="text-sm text-purple-600 font-medium">Advanced</p>
+              </div>
+              <p className="text-2xl font-bold text-purple-700">{completedAdvanced}<span className="text-lg text-purple-400"> / {totalTopics}</span></p>
             </div>
           </div>
         </div>
