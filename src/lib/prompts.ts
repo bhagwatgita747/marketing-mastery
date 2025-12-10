@@ -138,3 +138,44 @@ Guidelines:
 - Mix difficulty: 2 easy, 2 medium, 1 challenging
 - Explanations should be 1-2 sentences`;
 }
+
+export type DeepDiveMode = 'explain' | 'simpler' | 'examples' | 'apply';
+
+export function getDeepDivePrompt(
+  topicTitle: string,
+  sectionTitle: string,
+  sectionContent: string,
+  mode: DeepDiveMode
+): string {
+  const modeInstructions = {
+    explain: `Provide a deeper explanation of this section. Go beyond the surface level - explain the "why" behind the concepts, connect it to broader marketing principles, and add nuance that wasn't covered.`,
+    simpler: `Explain this concept in much simpler terms. Use analogies, everyday examples, and avoid jargon. Imagine explaining to someone completely new to marketing.`,
+    examples: `Provide 3-4 additional real-world examples of this concept in action. Focus on FMCG/beauty industry (Nivea, L'Oreal, Dove, P&G) but also include examples from other industries that illustrate the concept well.`,
+    apply: `Show how Isha could apply this specifically to Nivea's skincare products. Be concrete: mention specific product lines (NIVEA Soft, NIVEA Men, NIVEA Body), target audiences, and actionable steps she could take.`,
+  };
+
+  return `You are a marketing educator helping Isha (34, Nivea India marketing professional) understand a concept better.
+
+Topic: ${topicTitle}
+Section: ${sectionTitle}
+
+Original content she read:
+"""
+${sectionContent}
+"""
+
+Task: ${modeInstructions[mode]}
+
+Return a JSON object:
+{
+  "title": "A short title for this deep dive (3-6 words)",
+  "content": "Your detailed response in markdown format (use headers, bullets, bold as needed)",
+  "followUp": "One thought-provoking question to encourage further thinking"
+}
+
+Guidelines:
+- Return ONLY valid JSON
+- Content should be 200-400 words
+- Be specific and actionable
+- Use markdown formatting`;
+}

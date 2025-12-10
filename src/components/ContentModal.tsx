@@ -1,8 +1,9 @@
 import { useEffect, useState, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Topic, Content, SectionType } from '../types';
+import { Topic, Content, SectionType, DeepDiveMode, DeepDiveResponse } from '../types';
 import { LoadingSpinner } from './LoadingSpinner';
 import { SectionCard } from './SectionCard';
+import { useDeepDive } from '../hooks/useDeepDive';
 
 interface ContentModalProps {
   topic: Topic;
@@ -39,6 +40,11 @@ export function ContentModal({
   const [isMarkingComplete, setIsMarkingComplete] = useState(false);
   const [readProgress, setReadProgress] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  // Deep Dive state
+  const { generateDeepDive, isGenerating: isDeepDiveLoading, error: deepDiveError } = useDeepDive();
+  const [deepDiveData, setDeepDiveData] = useState<Record<number, DeepDiveResponse | null>>({});
+  const [activeDeepDiveSection, setActiveDeepDiveSection] = useState<number | null>(null);
 
   // Close on escape key
   useEffect(() => {
@@ -80,6 +86,15 @@ export function ContentModal({
       await onMarkComplete();
     } finally {
       setIsMarkingComplete(false);
+    }
+  };
+
+  // Deep Dive handler
+  const handleDeepDive = async (sectionIndex: number, sectionTitle: string, sectionContent: string, mode: DeepDiveMode) => {
+    setActiveDeepDiveSection(sectionIndex);
+    const result = await generateDeepDive(topic.title, sectionTitle, sectionContent, mode);
+    if (result) {
+      setDeepDiveData(prev => ({ ...prev, [sectionIndex]: result }));
     }
   };
 
@@ -166,6 +181,12 @@ export function ContentModal({
                     index={index}
                     isSaved={isNoteSaved ? isNoteSaved(section.type) : false}
                     onToggleNote={onToggleNote ? () => onToggleNote(section.type, section.title, section.content) : undefined}
+                    // Deep Dive props
+                    topicTitle={topic.title}
+                    deepDive={deepDiveData[index]}
+                    isDeepDiveLoading={isDeepDiveLoading && activeDeepDiveSection === index}
+                    deepDiveError={activeDeepDiveSection === index ? deepDiveError : null}
+                    onDeepDive={(mode) => handleDeepDive(index, section.title, section.content, mode)}
                   />
                 ))}
               </div>

@@ -98,3 +98,12 @@ export interface Note {
   content: string;
   savedAt: string;
 }
+
+// Deep Dive types
+export type DeepDiveMode = 'explain' | 'simpler' | 'examples' | 'apply';
+
+export interface DeepDiveResponse {
+  title: string;
+  content: string;
+  followUp: string;
+}

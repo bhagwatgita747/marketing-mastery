@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { ContentSection, SectionType } from '../types';
+import { ContentSection, SectionType, DeepDiveResponse, DeepDiveMode } from '../types';
+import { DeepDivePanel } from './DeepDivePanel';
 
 // Icon and color config for each section type
 const sectionConfig: Record<SectionType, { icon: string; bgColor: string; borderColor: string; iconBg: string }> = {
@@ -71,11 +72,29 @@ interface SectionCardProps {
   index: number;
   isSaved?: boolean;
   onToggleNote?: () => void;
+  // Deep Dive props
+  topicTitle?: string;
+  deepDive?: DeepDiveResponse | null;
+  isDeepDiveLoading?: boolean;
+  deepDiveError?: string | null;
+  onDeepDive?: (mode: DeepDiveMode) => void;
 }
 
-export function SectionCard({ section, index, isSaved = false, onToggleNote }: SectionCardProps) {
+export function SectionCard({
+  section,
+  index,
+  isSaved = false,
+  onToggleNote,
+  topicTitle,
+  deepDive,
+  isDeepDiveLoading = false,
+  deepDiveError,
+  onDeepDive,
+}: SectionCardProps) {
   const config = sectionConfig[section.type] || sectionConfig.concept;
   const [showSaveAnimation, setShowSaveAnimation] = useState(false);
+  const [showDeepDive, setShowDeepDive] = useState(false);
+  const [currentMode, setCurrentMode] = useState<DeepDiveMode>('explain');
 
   const handleToggleNote = () => {
     if (onToggleNote) {
@@ -83,6 +102,24 @@ export function SectionCard({ section, index, isSaved = false, onToggleNote }: S
       onToggleNote();
       setTimeout(() => setShowSaveAnimation(false), 500);
     }
+  };
+
+  const handleDeepDiveClick = () => {
+    setShowDeepDive(true);
+    if (onDeepDive) {
+      onDeepDive('explain');
+    }
+  };
+
+  const handleModeChange = (mode: DeepDiveMode) => {
+    setCurrentMode(mode);
+    if (onDeepDive) {
+      onDeepDive(mode);
+    }
+  };
+
+  const handleCloseDeepDive = () => {
+    setShowDeepDive(false);
   };
 
   return (
@@ -149,6 +186,35 @@ export function SectionCard({ section, index, isSaved = false, onToggleNote }: S
           {section.content}
         </ReactMarkdown>
       </div>
+
+      {/* Deep Dive Button */}
+      {onDeepDive && !showDeepDive && (
+        <div className="mt-4 pt-4 border-t border-slate-200/50">
+          <button
+            onClick={handleDeepDiveClick}
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+            </svg>
+            Deep Dive - Explore Further
+          </button>
+        </div>
+      )}
+
+      {/* Deep Dive Panel (inline expansion) */}
+      {showDeepDive && topicTitle && (
+        <DeepDivePanel
+          topicTitle={topicTitle}
+          sectionTitle={section.title}
+          deepDive={deepDive || null}
+          isLoading={isDeepDiveLoading}
+          error={deepDiveError || null}
+          currentMode={currentMode}
+          onModeChange={handleModeChange}
+          onClose={handleCloseDeepDive}
+        />
+      )}
     </div>
   );
 }

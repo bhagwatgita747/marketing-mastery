@@ -15,21 +15,14 @@
 | 3 | Quiz Feature | 2025-12-10 | 5 MCQ per topic, one question at a time, visual feedback, score tracking (~5.5s generation) |
 | 4 | UI/Theme Overhaul | 2025-12-10 | Vibrant gradients, progress rings, Confetti celebrations, micro-animations. Tested with Puppeteer locally - all UI elements verified working |
 | 5 | Notes/Cheatsheet Feature | 2025-12-10 | Save sections to notes, Notes modal with grouped topics, localStorage persistence, remove/clear notes. Tested with Puppeteer |
+| 6 | Deep Dive Feature | 2025-12-10 | Inline expansion with AI explanations, 4 modes (Go Deeper, Simplify, Examples, Apply to Nivea), follow-up questions. Tested with Puppeteer |
 
 ---
 
 ## Current Milestone
 
-### Milestone 6: Deep Dive Feature
-**Status**: PENDING
-
-| Task | Description |
-|------|-------------|
-| "Deep Dive" button | On any section or key concept |
-| Inline expansion | Opens below the concept (not new modal) |
-| Contextual questions | "Explain simpler", "More examples", "Apply to skincare" |
-| Breadcrumb trail | Show path: Topic → Section → Deep Dive |
-| "I don't understand" button | Regenerates explanation in simpler terms |
+### Milestone 7: TBD
+**Status**: PENDING - Ready for next feature
 
 ---
 
@@ -53,4 +46,4 @@
 4. You say "okay" when satisfied
 5. I move to next milestone
 
-**Current**: Milestone 6 - Deep Dive Feature
+**Current**: Milestone 7 - TBD (Ready for next feature)
