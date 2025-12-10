@@ -29,7 +29,7 @@ export async function generateContent(prompt: string): Promise<string> {
       'Authorization': `Bearer ${XAI_API_KEY}`,
     },
     body: JSON.stringify({
-      model: 'grok-3-fast',
+      model: 'grok-4-fast',
       messages,
       temperature: 0.7,
       max_tokens: 4000,
