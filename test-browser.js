@@ -80,17 +80,17 @@ async function testWebsite() {
       console.log("⚠️ Modules may not be visible yet");
     }
 
-    // Test 5: Click on Module 1 to test fresh content generation
-    console.log("\n📍 Test 5: Expanding Module 1 (Customer, Problem, Positioning)...");
+    // Test 5: Click on Module 4 (Social & Distribution) for fresh content
+    console.log("\n📍 Test 5: Expanding Module 4 (Social & Distribution)...");
 
-    // Find and click Module 1 accordion button for fresh content
+    // Find and click Module 4 accordion button for fresh content
     const buttons = await page.$$('button');
     for (const button of buttons) {
       const text = await button.evaluate(el => el.textContent);
-      if (text && text.includes('Customer, Problem')) {
+      if (text && text.includes('Social & Distribution')) {
         await button.click();
         await new Promise(resolve => setTimeout(resolve, 1500));
-        console.log("✅ Clicked on 'Customer, Problem, Positioning' module");
+        console.log("✅ Clicked on 'Social & Distribution' module");
         break;
       }
     }
@@ -106,35 +106,38 @@ async function testWebsite() {
 
     // Test 7: Click on Basic button and measure content generation time
     console.log("\n📍 Test 7: Testing content generation speed...");
+    console.log("   ========== TIMING BREAKDOWN ==========");
     const basicButtons = await page.$$('button');
     let clicked = false;
     for (const button of basicButtons) {
       const text = await button.evaluate(el => el.textContent);
       if (text && text.includes('Basic') && !text.includes('Completed')) {
-        const startTime = Date.now();
+        const clickTime = Date.now();
         await button.click();
-        console.log(`   [${new Date().toISOString()}] Clicked Basic button, waiting for content...`);
+        console.log(`   [T+0.00s] Button clicked`);
 
         // Wait for modal to appear first
         await page.waitForSelector('.fixed.inset-0', { timeout: 60000 });
         const modalTime = Date.now();
-        console.log(`   [${new Date().toISOString()}] Modal appeared in ${((modalTime - startTime) / 1000).toFixed(2)}s`);
+        console.log(`   [T+${((modalTime - clickTime) / 1000).toFixed(2)}s] Modal opened (UI rendering)`);
 
-        // Check for loading spinner
+        // Check for loading spinner - this means API call started
         const hasSpinner = await page.$('.animate-spin');
+        const spinnerTime = Date.now();
         if (hasSpinner) {
-          console.log(`   [${new Date().toISOString()}] Loading spinner visible - API call in progress`);
+          console.log(`   [T+${((spinnerTime - clickTime) / 1000).toFixed(2)}s] Loading spinner visible (API call in progress)`);
         }
 
         // Wait for actual content to load (markdown-content appears when content is ready)
         await page.waitForSelector('.markdown-content', { timeout: 120000 });
         const contentTime = Date.now();
-        const totalLoadTime = ((contentTime - startTime) / 1000).toFixed(2);
-        const apiTime = ((contentTime - modalTime) / 1000).toFixed(2);
 
-        console.log(`   [${new Date().toISOString()}] ✅ Content fully loaded!`);
-        console.log(`   ⏱️  TOTAL TIME: ${totalLoadTime} seconds`);
-        console.log(`   ⏱️  API response time: ${apiTime} seconds`);
+        console.log(`   [T+${((contentTime - clickTime) / 1000).toFixed(2)}s] Content rendered`);
+        console.log(`   =====================================`);
+        console.log(`   📊 BREAKDOWN:`);
+        console.log(`      • Modal open time: ${((modalTime - clickTime) / 1000).toFixed(2)}s (React state + render)`);
+        console.log(`      • API wait time:   ${((contentTime - modalTime) / 1000).toFixed(2)}s (xAI API call)`);
+        console.log(`      • TOTAL:           ${((contentTime - clickTime) / 1000).toFixed(2)}s`);
         clicked = true;
 
         // Take screenshot of content
