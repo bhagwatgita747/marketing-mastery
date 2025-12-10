@@ -13,29 +13,14 @@
 | 1 | Performance & UI Foundation | 2025-12-10 | Model: grok-2-latest (~8-9s), wider modal, better typography, removed Supabase caching |
 | 2 | Structured Content with Sections | 2025-12-10 | JSON responses, section cards with icons, reading progress bar |
 | 3 | Quiz Feature | 2025-12-10 | 5 MCQ per topic, one question at a time, visual feedback, score tracking (~5.5s generation) |
+| 4 | UI/Theme Overhaul | 2025-12-10 | Vibrant gradients, progress rings, Confetti celebrations, micro-animations |
 
 ---
 
 ## Current Milestone
 
-### Milestone 4: UI/Theme Overhaul
-**Status**: IN PROGRESS
-**Started**: 2025-12-10
-
-| Task | Status | Notes |
-|------|--------|-------|
-| Color scheme refresh | Pending | More vibrant, modern palette (Notion meets Duolingo) |
-| Micro-animations | Pending | Subtle transitions on hover, expand, complete |
-| Celebration moments | Pending | Confetti/animation when completing a module |
-| Better module cards | Pending | Gradient backgrounds, progress rings |
-| Dark mode (optional) | Pending | For comfortable reading |
-
----
-
-## Upcoming Milestones
-
 ### Milestone 5: Notes/Cheatsheet Feature
-**Status**: Pending
+**Status**: PENDING
 
 | Task | Description |
 |------|-------------|
@@ -45,6 +30,8 @@
 | Quick toggle | Easy add/remove from notes inline |
 
 ---
+
+## Upcoming Milestones
 
 ### Milestone 6: Deep Dive Feature
 **Status**: Pending
@@ -79,4 +66,4 @@
 4. You say "okay" when satisfied
 5. I move to next milestone
 
-**Current**: Milestone 4 - UI/Theme Overhaul
+**Current**: Milestone 5 - Notes/Cheatsheet Feature
