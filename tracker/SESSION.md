@@ -11,10 +11,12 @@
 **Status**: COMPLETE & DEPLOYED
 
 ### What's Working:
-- Animated rocket SVG with flames and sparkle effects during content loading
-- Tier system (Bronze/Silver/Gold/Diamond Marketer)
-- Progress bar showing completions toward next tier
-- Rotating motivational messages
+- **Isha hopping journey animation** during content loading
+  - Cute girl avatar that hops along a path
+  - 8 milestone dots (like a game level)
+  - Progress bar fills as she moves
+  - Pop sound on each hop (Web Audio API)
+  - Minimal design: just avatar, path, "Loading..."
 - Full BrowserBase test suite passing
 
 ### Test Results (Production):
@@ -25,23 +27,16 @@
 
 ### Files Created/Modified:
 
-1. **`src/lib/tiers.ts`** - Tier system logic:
-   - Bronze Marketer (0-35 completions)
-   - Silver Marketer (36-71 completions)
-   - Gold Marketer (72-107 completions)
-   - Diamond Marketer (108-144 completions)
-   - Helper functions: `getTierForScore`, `getNextTier`, `getTopicsToNextTier`, `calculateScore`
-   - Motivational loading messages
-2. **`src/types/index.ts`** - Added `MarketingTier` and `TierInfo` types
-3. **`src/components/ContentLoadingScreen.tsx`** - Enhanced loading component:
-   - CSS-animated rocket SVG (replaced broken Lottie)
-   - Rotating motivational messages
-   - Topic name being loaded
-   - Tier progress bar with emoji markers
-   - "X more completions to [Next Tier]" message
-4. **`src/components/ContentModal.tsx`** - Uses ContentLoadingScreen instead of LoadingSpinner
-5. **`src/components/HomePage.tsx`** - Added progressScore calculation and prop
-6. **`test-browser.js`** - Updated for more reliable testing
+1. **`src/components/ContentLoadingScreen.tsx`** - Isha hopping journey:
+   - GirlAvatar SVG component
+   - Horizontal path with milestone dots
+   - Hopping animation (every 1.2s)
+   - Pop sound using Web Audio API
+   - Minimal UI: avatar, path, "Loading..."
+2. **`src/lib/tiers.ts`** - Tier system logic (for future use)
+3. **`src/types/index.ts`** - Tier types
+4. **`src/components/ContentModal.tsx`** - Uses ContentLoadingScreen
+5. **`test-browser.js`** - Reliable production testing
 
 ---
 
