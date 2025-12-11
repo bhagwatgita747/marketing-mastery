@@ -23,11 +23,6 @@ export function ContentLoadingScreen({ topicTitle, score }: ContentLoadingScreen
     return () => clearInterval(interval);
   }, []);
 
-  // Calculate progress within current tier
-  const tierProgress = nextTier
-    ? ((score - currentTier.minTopics) / (nextTier.minTopics - currentTier.minTopics)) * 100
-    : 100;
-
   return (
     <div className="flex flex-col items-center justify-center py-8 px-4">
       {/* Lottie Rocket Animation */}
