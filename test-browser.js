@@ -107,58 +107,61 @@ async function testWebsite() {
     // Test 7: Click on Basic button and measure content generation time
     console.log("\n📍 Test 7: Testing content generation speed...");
     console.log("   ========== TIMING BREAKDOWN ==========");
-    const basicButtons = await page.$$('button');
-    let clicked = false;
-    for (const button of basicButtons) {
-      const text = await button.evaluate(el => el.textContent);
-      if (text && text.includes('Basic') && !text.includes('Completed')) {
-        const clickTime = Date.now();
-        await button.click();
-        console.log(`   [T+0.00s] Button clicked`);
 
-        // Wait for modal to appear first
-        await page.waitForSelector('.fixed.inset-0', { timeout: 60000 });
-        const modalTime = Date.now();
-        console.log(`   [T+${((modalTime - clickTime) / 1000).toFixed(2)}s] Modal opened (UI rendering)`);
-
-        // Check for loading spinner - this means API call started
-        const hasSpinner = await page.$('.animate-spin');
-        const spinnerTime = Date.now();
-        if (hasSpinner) {
-          console.log(`   [T+${((spinnerTime - clickTime) / 1000).toFixed(2)}s] Loading spinner visible (API call in progress)`);
+    // Click Basic button using page.evaluate for reliability
+    const clickTime = Date.now();
+    const clicked = await page.evaluate(() => {
+      const buttons = document.querySelectorAll('button');
+      for (const btn of buttons) {
+        if (btn.textContent?.trim() === 'Basic') {
+          btn.click();
+          return true;
         }
-
-        // Wait for actual content to load (section cards or markdown-content)
-        await page.waitForSelector('.bg-amber-50, .markdown-content', { timeout: 120000 });
-        const contentTime = Date.now();
-
-        console.log(`   [T+${((contentTime - clickTime) / 1000).toFixed(2)}s] Content rendered`);
-        console.log(`   =====================================`);
-        console.log(`   📊 BREAKDOWN:`);
-        console.log(`      • Modal open time: ${((modalTime - clickTime) / 1000).toFixed(2)}s (React state + render)`);
-        console.log(`      • API wait time:   ${((contentTime - modalTime) / 1000).toFixed(2)}s (xAI API call)`);
-        console.log(`      • TOTAL:           ${((contentTime - clickTime) / 1000).toFixed(2)}s`);
-        clicked = true;
-
-        // Take screenshot of content
-        await page.screenshot({ path: 'test-content-screenshot.png', fullPage: false });
-        console.log("   Screenshot saved as test-content-screenshot.png");
-
-        // Also grab a snippet of the content for verification
-        const contentSnippet = await page.evaluate(() => {
-          // Try section cards first, then markdown content
-          const sectionCard = document.querySelector('.bg-amber-50');
-          if (sectionCard) {
-            return 'Structured content: ' + (sectionCard.textContent?.substring(0, 150) || 'Found section cards');
-          }
-          const el = document.querySelector('.markdown-content');
-          return el ? 'Markdown: ' + el.textContent?.substring(0, 150) : 'No content found';
-        });
-        console.log(`   Content preview: ${contentSnippet}...`);
-        break;
       }
-    }
-    if (!clicked) {
+      return false;
+    });
+
+    if (clicked) {
+      console.log(`   [T+0.00s] Button clicked`);
+
+      // Wait for modal to appear first (with small delay for React state update)
+      await new Promise(resolve => setTimeout(resolve, 500));
+      await page.waitForSelector('.fixed.inset-0.z-50', { timeout: 60000 });
+      const modalTime = Date.now();
+      console.log(`   [T+${((modalTime - clickTime) / 1000).toFixed(2)}s] Modal opened (UI rendering)`);
+
+      // Check for loading spinner or rocket animation
+      const hasAnimation = await page.$('.animate-bounce, .animate-spin');
+      if (hasAnimation) {
+        console.log(`   [T+${((Date.now() - clickTime) / 1000).toFixed(2)}s] Loading animation visible`);
+      }
+
+      // Wait for actual content to load (section cards or markdown-content)
+      await page.waitForSelector('.bg-amber-50, .markdown-content', { timeout: 120000 });
+      const contentTime = Date.now();
+
+      console.log(`   [T+${((contentTime - clickTime) / 1000).toFixed(2)}s] Content rendered`);
+      console.log(`   =====================================`);
+      console.log(`   📊 BREAKDOWN:`);
+      console.log(`      • Modal open time: ${((modalTime - clickTime) / 1000).toFixed(2)}s (React state + render)`);
+      console.log(`      • API wait time:   ${((contentTime - modalTime) / 1000).toFixed(2)}s (xAI API call)`);
+      console.log(`      • TOTAL:           ${((contentTime - clickTime) / 1000).toFixed(2)}s`);
+
+      // Take screenshot of content
+      await page.screenshot({ path: 'test-content-screenshot.png', fullPage: false });
+      console.log("   Screenshot saved as test-content-screenshot.png");
+
+      // Also grab a snippet of the content for verification
+      const contentSnippet = await page.evaluate(() => {
+        const sectionCard = document.querySelector('.bg-amber-50');
+        if (sectionCard) {
+          return 'Structured content: ' + (sectionCard.textContent?.substring(0, 150) || 'Found section cards');
+        }
+        const el = document.querySelector('.markdown-content');
+        return el ? 'Markdown: ' + el.textContent?.substring(0, 150) : 'No content found';
+      });
+      console.log(`   Content preview: ${contentSnippet}...`);
+    } else {
       console.log("⚠️ No Basic button found to click");
     }
 
