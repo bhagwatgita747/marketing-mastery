@@ -11,12 +11,11 @@
 **Status**: COMPLETE & DEPLOYED
 
 ### What's Working:
-- **Isha hopping journey animation** during content loading
-  - Cute girl avatar that hops along a path
-  - 8 milestone dots (like a game level)
-  - Progress bar fills as she moves
-  - Pop sound on each hop (Web Audio API)
-  - Minimal design: just avatar, path, "Loading..."
+- **Paperplane Lottie animation** during content loading
+  - Official LottieFiles animation (17k+ downloads)
+  - Blue paper plane flying with trail effect
+  - Minimal design: animation + "Loading..."
+  - No console errors, properly implemented
 - Full BrowserBase test suite passing
 
 ### Test Results (Production):
@@ -27,15 +26,13 @@
 
 ### Files Created/Modified:
 
-1. **`src/components/ContentLoadingScreen.tsx`** - Isha hopping journey:
-   - GirlAvatar SVG component
-   - Horizontal path with milestone dots
-   - Hopping animation (every 1.2s)
-   - Pop sound using Web Audio API
-   - Minimal UI: avatar, path, "Loading..."
-2. **`src/lib/tiers.ts`** - Tier system logic (for future use)
-3. **`src/types/index.ts`** - Tier types
-4. **`src/components/ContentModal.tsx`** - Uses ContentLoadingScreen
+1. **`src/components/ContentLoadingScreen.tsx`** - Paperplane Lottie:
+   - Uses `lottie-react` package
+   - Imports animation from `paperplane.json`
+   - Simple: Lottie component + "Loading..." text
+2. **`src/assets/paperplane.json`** - LottieFiles animation (17k+ downloads)
+3. **`src/lib/tiers.ts`** - Tier system logic (for future use)
+4. **`src/types/index.ts`** - Tier types
 5. **`test-browser.js`** - Reliable production testing
 
 ---
