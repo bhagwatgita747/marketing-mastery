@@ -107,3 +107,16 @@ export interface DeepDiveResponse {
   content: string;
   followUp: string;
 }
+
+// Marketing Tier system
+export type MarketingTier = 'bronze' | 'silver' | 'gold' | 'diamond';
+
+export interface TierInfo {
+  tier: MarketingTier;
+  label: string;
+  emoji: string;
+  minTopics: number;
+  maxTopics: number;
+  color: string;
+  bgColor: string;
+}

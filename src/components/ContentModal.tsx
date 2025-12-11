@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Topic, Content, SectionType, DeepDiveMode, DeepDiveResponse } from '../types';
-import { LoadingSpinner } from './LoadingSpinner';
 import { SectionCard } from './SectionCard';
 import { useDeepDive } from '../hooks/useDeepDive';
+import { ContentLoadingScreen } from './ContentLoadingScreen';
 
 interface ContentModalProps {
   topic: Topic;
@@ -20,6 +20,8 @@ interface ContentModalProps {
   onToggleNote?: (sectionType: SectionType, sectionTitle: string, content: string) => void;
   totalSavedNotes?: number;
   onViewNotes?: () => void;
+  // Progress/tier score
+  progressScore?: number;
 }
 
 export function ContentModal({
@@ -36,6 +38,7 @@ export function ContentModal({
   onToggleNote,
   totalSavedNotes = 0,
   onViewNotes,
+  progressScore = 0,
 }: ContentModalProps) {
   const [isMarkingComplete, setIsMarkingComplete] = useState(false);
   const [readProgress, setReadProgress] = useState(0);
@@ -162,9 +165,7 @@ export function ContentModal({
         {/* Content */}
         <div ref={contentRef} className="flex-1 overflow-y-auto px-6 md:px-10 lg:px-14 py-8">
           {isLoading ? (
-            <div className="flex items-center justify-center py-20">
-              <LoadingSpinner size="lg" text="Generating content with AI..." />
-            </div>
+            <ContentLoadingScreen topicTitle={topic.title} score={progressScore} />
           ) : error ? (
             <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg">
               <p className="font-medium">Error loading content</p>

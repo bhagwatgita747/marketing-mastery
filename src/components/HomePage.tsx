@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { useModules } from '../hooks/useModules';
 import { useProgress } from '../hooks/useProgress';
 import { useContent } from '../hooks/useContent';
@@ -11,6 +11,7 @@ import { NotesModal } from './NotesModal';
 import { LoadingSpinner } from './LoadingSpinner';
 import { Confetti } from './Confetti';
 import { Topic, Content, Quiz, SectionType } from '../types';
+import { calculateScore } from '../lib/tiers';
 
 interface HomePageProps {
   username: string;
@@ -20,12 +21,16 @@ interface HomePageProps {
 export function HomePage({ username, onLogout }: HomePageProps) {
   const { modules, isLoading: modulesLoading } = useModules();
   const {
+    progress,
     isBasicComplete,
     isAdvancedComplete,
     isAdvancedUnlocked,
     markBasicComplete,
     markAdvancedComplete,
   } = useProgress();
+
+  // Calculate progress score for tier system
+  const progressScore = useMemo(() => calculateScore(progress), [progress]);
   const { fetchOrGenerateContent, isGenerating, error: contentError } = useContent();
   const { generateQuiz, isGenerating: isQuizGenerating, error: quizError } = useQuiz();
   const { notes, isNoteSaved, toggleNote, removeNote, clearAllNotes, totalNotes } = useNotes();
@@ -298,6 +303,7 @@ export function HomePage({ username, onLogout }: HomePageProps) {
           onToggleNote={handleToggleNote}
           totalSavedNotes={totalNotes}
           onViewNotes={handleViewNotes}
+          progressScore={progressScore}
         />
       )}
 
