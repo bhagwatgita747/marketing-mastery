@@ -1,12 +1,49 @@
 import { useState, useEffect } from 'react';
-import Lottie from 'lottie-react';
-import rocketAnimation from '../assets/rocket.json';
 import { TierInfo } from '../types';
 import { TIER_CONFIG, getTierForScore, getNextTier, getTopicsToNextTier, getRandomLoadingMessage } from '../lib/tiers';
 
 interface ContentLoadingScreenProps {
   topicTitle: string;
   score: number; // Total score (basic + advanced completions)
+}
+
+// Animated Rocket SVG Component
+function AnimatedRocket() {
+  return (
+    <div className="relative w-32 h-32">
+      {/* Rocket with bobbing animation */}
+      <div className="absolute inset-0 animate-bounce" style={{ animationDuration: '2s' }}>
+        <svg viewBox="0 0 64 64" className="w-full h-full drop-shadow-lg">
+          {/* Rocket body */}
+          <ellipse cx="32" cy="28" rx="10" ry="18" fill="#f8fafc" stroke="#e2e8f0" strokeWidth="1"/>
+          {/* Rocket tip */}
+          <path d="M32 8 L26 20 L38 20 Z" fill="#ef4444" />
+          {/* Window */}
+          <circle cx="32" cy="24" r="5" fill="#3b82f6" stroke="#1d4ed8" strokeWidth="1"/>
+          <circle cx="33" cy="23" r="2" fill="#93c5fd" opacity="0.6"/>
+          {/* Fins */}
+          <path d="M22 38 L18 48 L26 42 Z" fill="#ef4444" />
+          <path d="M42 38 L46 48 L38 42 Z" fill="#ef4444" />
+          {/* Center fin */}
+          <path d="M32 42 L29 52 L35 52 Z" fill="#dc2626" />
+        </svg>
+      </div>
+
+      {/* Flame effect */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8">
+        <div className="flex justify-center gap-0.5">
+          <div className="w-2 h-8 bg-gradient-to-t from-yellow-500 via-orange-500 to-transparent rounded-full animate-pulse" style={{ animationDuration: '0.3s' }}/>
+          <div className="w-3 h-10 bg-gradient-to-t from-yellow-400 via-orange-400 to-transparent rounded-full animate-pulse" style={{ animationDuration: '0.2s' }}/>
+          <div className="w-2 h-8 bg-gradient-to-t from-yellow-500 via-orange-500 to-transparent rounded-full animate-pulse" style={{ animationDuration: '0.4s' }}/>
+        </div>
+      </div>
+
+      {/* Sparkles/stars */}
+      <div className="absolute top-2 left-2 w-2 h-2 bg-yellow-300 rounded-full animate-ping" style={{ animationDuration: '1.5s' }}/>
+      <div className="absolute top-8 right-4 w-1.5 h-1.5 bg-blue-300 rounded-full animate-ping" style={{ animationDuration: '2s', animationDelay: '0.5s' }}/>
+      <div className="absolute bottom-12 left-4 w-1 h-1 bg-purple-300 rounded-full animate-ping" style={{ animationDuration: '1.8s', animationDelay: '0.3s' }}/>
+    </div>
+  );
 }
 
 export function ContentLoadingScreen({ topicTitle, score }: ContentLoadingScreenProps) {
@@ -25,13 +62,9 @@ export function ContentLoadingScreen({ topicTitle, score }: ContentLoadingScreen
 
   return (
     <div className="flex flex-col items-center justify-center py-8 px-4">
-      {/* Lottie Rocket Animation */}
-      <div className="w-40 h-40 mb-4">
-        <Lottie
-          animationData={rocketAnimation}
-          loop={true}
-          style={{ width: '100%', height: '100%' }}
-        />
+      {/* Animated Rocket */}
+      <div className="mb-6">
+        <AnimatedRocket />
       </div>
 
       {/* Loading Message */}
