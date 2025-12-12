@@ -1,11 +1,11 @@
 /**
- * OpenRouter API client for Gemini Flash 2.5 Lite
+ * OpenRouter API client for Gemini Flash Lite
  * Used for keyword extraction and transcript analysis in the Memorize feature
  */
 
-const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY || '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';
+const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-const MODEL = 'google/gemini-2.5-flash-preview-05-20';
+const MODEL = 'google/gemini-2.0-flash-lite-001';
 
 interface OpenRouterMessage {
   role: 'system' | 'user' | 'assistant';
@@ -21,9 +21,13 @@ interface OpenRouterResponse {
 }
 
 /**
- * Send a chat completion request to OpenRouter (Gemini)
+ * Send a chat completion request to OpenRouter (Gemini Flash Lite)
  */
-export async function generateWithGemini(prompt: string): Promise<string> {
+async function generateWithGemini(prompt: string): Promise<string> {
+  if (!OPENROUTER_API_KEY) {
+    throw new Error('OpenRouter API key is not configured');
+  }
+
   const messages: OpenRouterMessage[] = [
     {
       role: 'user',
