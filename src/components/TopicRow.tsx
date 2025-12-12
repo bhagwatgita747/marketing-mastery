@@ -7,6 +7,7 @@ interface TopicRowProps {
   isAdvancedUnlocked: boolean;
   onBasicClick: () => void;
   onAdvancedClick: () => void;
+  isDark?: boolean;
 }
 
 export function TopicRow({
@@ -16,11 +17,16 @@ export function TopicRow({
   isAdvancedUnlocked,
   onBasicClick,
   onAdvancedClick,
+  isDark = false,
 }: TopicRowProps) {
   const bothComplete = isBasicComplete && isAdvancedComplete;
 
   return (
-    <div className={`flex items-center justify-between py-4 px-5 hover:bg-white/80 transition-all duration-200 group ${bothComplete ? 'bg-success-50/30' : ''}`}>
+    <div className={`flex items-center justify-between py-4 px-5 transition-all duration-200 group ${
+      bothComplete
+        ? isDark ? 'bg-success-500/10' : 'bg-success-50/30'
+        : isDark ? 'hover:bg-white/[0.02]' : 'hover:bg-white/80'
+    }`}>
       <div className="flex-1 min-w-0 mr-4">
         <div className="flex items-center gap-2">
           {bothComplete && (
@@ -30,11 +36,21 @@ export function TopicRow({
               </svg>
             </span>
           )}
-          <h4 className={`text-sm font-medium truncate transition-colors ${bothComplete ? 'text-success-700' : 'text-slate-800 group-hover:text-primary-700'}`}>
+          <h4 className={`text-sm font-medium truncate transition-colors ${
+            bothComplete
+              ? isDark ? 'text-success-400' : 'text-success-700'
+              : isDark
+                ? 'text-white/90 group-hover:text-white'
+                : 'text-slate-800 group-hover:text-primary-700'
+          }`}>
             {topic.title}
           </h4>
         </div>
-        <p className="text-xs text-slate-500 truncate mt-0.5 ml-7">{topic.subtitle}</p>
+        <p className={`text-xs truncate mt-0.5 ml-7 ${
+          isDark ? 'text-white/40' : 'text-slate-500'
+        }`}>
+          {topic.subtitle}
+        </p>
       </div>
 
       <div className="flex items-center gap-2 flex-shrink-0">
@@ -44,7 +60,9 @@ export function TopicRow({
           className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95 ${
             isBasicComplete
               ? 'bg-gradient-to-r from-success-400 to-success-500 text-white shadow-sm hover:shadow-md'
-              : 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-sm hover:shadow-md hover:from-primary-600 hover:to-primary-700'
+              : isDark
+                ? 'bg-gradient-to-r from-primary-400 to-primary-500 text-white shadow-sm hover:shadow-md hover:from-primary-500 hover:to-primary-600'
+                : 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-sm hover:shadow-md hover:from-primary-600 hover:to-primary-700'
           }`}
         >
           {isBasicComplete ? (
@@ -68,7 +86,9 @@ export function TopicRow({
               ? 'bg-gradient-to-r from-success-400 to-success-500 text-white shadow-sm hover:shadow-md hover:scale-105 active:scale-95'
               : isAdvancedUnlocked
               ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-sm hover:shadow-md hover:scale-105 active:scale-95'
-              : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+              : isDark
+                ? 'bg-white/10 text-white/30 cursor-not-allowed border border-white/10'
+                : 'bg-slate-200 text-slate-400 cursor-not-allowed'
           }`}
           title={!isAdvancedUnlocked ? 'Complete Basic first' : undefined}
         >

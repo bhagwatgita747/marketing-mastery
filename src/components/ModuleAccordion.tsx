@@ -21,6 +21,7 @@ interface ModuleAccordionProps {
   isAdvancedComplete: (topicId: string) => boolean;
   isAdvancedUnlocked: (topicId: string) => boolean;
   onTopicClick: (topic: Topic, level: 'basic' | 'advanced') => void;
+  isDark?: boolean;
 }
 
 export function ModuleAccordion({
@@ -29,6 +30,7 @@ export function ModuleAccordion({
   isAdvancedComplete,
   isAdvancedUnlocked,
   onTopicClick,
+  isDark = false,
 }: ModuleAccordionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -44,11 +46,19 @@ export function ModuleAccordion({
   const gradientClass = MODULE_GRADIENTS[module.module_number % MODULE_GRADIENTS.length];
 
   return (
-    <div className="bg-white rounded-2xl shadow-acctual overflow-hidden transition-all duration-300 hover:shadow-acctual-md">
+    <div className={`rounded-2xl overflow-hidden transition-all duration-300 ${
+      isDark
+        ? 'glass hover:bg-white/[0.06]'
+        : 'bg-white shadow-acctual hover:shadow-acctual-md'
+    }`}>
       {/* Header - Clickable */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/50 transition-all duration-200"
+        className={`w-full px-5 py-4 flex items-center justify-between transition-all duration-200 ${
+          isDark
+            ? 'hover:bg-white/[0.02]'
+            : 'hover:bg-slate-50/50'
+        }`}
       >
         <div className="flex items-center gap-4">
           {/* Module Number Badge with gradient */}
@@ -57,8 +67,12 @@ export function ModuleAccordion({
           </div>
 
           <div className="text-left">
-            <h3 className="font-semibold text-black text-base">{module.title}</h3>
-            <p className="text-sm text-black/50 line-clamp-1">{module.description}</p>
+            <h3 className={`font-semibold text-base ${isDark ? 'text-white' : 'text-black'}`}>
+              {module.title}
+            </h3>
+            <p className={`text-sm line-clamp-1 ${isDark ? 'text-white/50' : 'text-black/50'}`}>
+              {module.description}
+            </p>
           </div>
         </div>
 
@@ -68,35 +82,57 @@ export function ModuleAccordion({
             {/* Mini progress bar */}
             <div className="w-20">
               <div className="flex justify-between text-xs mb-1">
-                <span className={`font-medium ${isModuleComplete ? 'text-accent-600' : 'text-black/50'}`}>
+                <span className={`font-medium ${
+                  isModuleComplete
+                    ? isDark ? 'text-accent-400' : 'text-accent-600'
+                    : isDark ? 'text-white/50' : 'text-black/50'
+                }`}>
                   {progressPercent}%
                 </span>
               </div>
-              <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+              <div className={`h-1.5 rounded-full overflow-hidden ${
+                isDark ? 'bg-white/10' : 'bg-slate-100'
+              }`}>
                 <div
-                  className={`h-full rounded-full transition-all duration-300 ${isModuleComplete ? 'bg-accent-500' : 'bg-primary-500'}`}
+                  className={`h-full rounded-full transition-all duration-300 ${
+                    isModuleComplete
+                      ? 'bg-accent-500'
+                      : isDark ? 'bg-primary-400' : 'bg-primary-500'
+                  }`}
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
             </div>
 
             {/* Topics count */}
-            <span className="text-sm text-black/40">
+            <span className={`text-sm ${isDark ? 'text-white/40' : 'text-black/40'}`}>
               {totalTopics} topics
             </span>
           </div>
 
           {/* Mobile progress */}
           <div className="sm:hidden flex items-center gap-2">
-            <span className={`text-sm font-medium ${isModuleComplete ? 'text-accent-600' : 'text-black/50'}`}>
+            <span className={`text-sm font-medium ${
+              isModuleComplete
+                ? isDark ? 'text-accent-400' : 'text-accent-600'
+                : isDark ? 'text-white/50' : 'text-black/50'
+            }`}>
               {progressPercent}%
             </span>
           </div>
 
           {/* Expand icon */}
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${isExpanded ? 'bg-accent-100 rotate-180' : 'bg-slate-100'}`}>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
+            isExpanded
+              ? isDark ? 'bg-accent-500/20 rotate-180' : 'bg-accent-100 rotate-180'
+              : isDark ? 'bg-white/10' : 'bg-slate-100'
+          }`}>
             <svg
-              className={`w-4 h-4 ${isExpanded ? 'text-accent-600' : 'text-black/40'}`}
+              className={`w-4 h-4 ${
+                isExpanded
+                  ? isDark ? 'text-accent-400' : 'text-accent-600'
+                  : isDark ? 'text-white/40' : 'text-black/40'
+              }`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -109,8 +145,12 @@ export function ModuleAccordion({
 
       {/* Topics List - Expandable with animation */}
       <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}>
-        <div className="border-t border-slate-100 bg-slate-50/50">
-          <div className="divide-y divide-slate-100">
+        <div className={`border-t ${
+          isDark
+            ? 'border-white/[0.06] bg-black/20'
+            : 'border-slate-100 bg-slate-50/50'
+        }`}>
+          <div className={`divide-y ${isDark ? 'divide-white/[0.04]' : 'divide-slate-100'}`}>
             {module.topics.map((topic, index) => (
               <div
                 key={topic.id}
@@ -128,6 +168,7 @@ export function ModuleAccordion({
                       onTopicClick(topic, 'advanced');
                     }
                   }}
+                  isDark={isDark}
                 />
               </div>
             ))}

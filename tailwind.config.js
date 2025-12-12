@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -11,6 +12,13 @@ export default {
         bg: {
           DEFAULT: '#f7fafc',
           white: '#ffffff',
+        },
+        // Dark theme background
+        dark: {
+          bg: '#0a0a12',
+          card: 'rgba(255, 255, 255, 0.03)',
+          'card-hover': 'rgba(255, 255, 255, 0.06)',
+          border: 'rgba(255, 255, 255, 0.08)',
         },
         // Primary - deep blue (Acctual style)
         primary: {
@@ -63,6 +71,10 @@ export default {
         'acctual-md': 'rgba(30, 45, 82, 0.06) 0px 0px 1px 1px, rgba(30, 45, 82, 0.2) 2px 2px 8px',
         'acctual-lg': 'rgba(0, 0, 0, 0.03) 0px 3px 10px',
         'float': '0 8px 30px rgba(0, 0, 0, 0.08)',
+        'glass': '0 25px 50px rgba(0, 0, 0, 0.3)',
+        'glow-green': '0 4px 20px rgba(16, 185, 129, 0.3)',
+        'glow-purple': '0 0 30px rgba(168, 85, 247, 0.2)',
+        'glow-blue': '0 0 30px rgba(99, 102, 241, 0.2)',
       },
       animation: {
         'fade-in': 'fadeIn 0.3s ease-out',
@@ -73,6 +85,8 @@ export default {
         'float': 'float 6s ease-in-out infinite',
         'float-delayed': 'float 6s ease-in-out infinite 2s',
         'float-slow': 'float 8s ease-in-out infinite',
+        'blob': 'blob 20s ease-in-out infinite',
+        'pulse-slow': 'pulse 2s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: {
@@ -101,6 +115,16 @@ export default {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-15px)' },
         },
+        blob: {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '25%': { transform: 'translate(30px, -30px) scale(1.05)' },
+          '50%': { transform: 'translate(-20px, 20px) scale(0.95)' },
+          '75%': { transform: 'translate(20px, 30px) scale(1.02)' },
+        },
+      },
+      backdropBlur: {
+        'glass': '20px',
+        'glass-strong': '30px',
       },
     },
   },
