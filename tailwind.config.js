@@ -7,7 +7,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Vibrant primary - electric indigo
+        // Clean light background
+        bg: {
+          DEFAULT: '#f7fafc',
+          white: '#ffffff',
+        },
+        // Primary - deep blue (Acctual style)
         primary: {
           50: '#eef2ff',
           100: '#e0e7ff',
@@ -20,18 +25,18 @@ export default {
           800: '#3730a3',
           900: '#312e81',
         },
-        // Accent - vibrant teal
+        // Accent - vibrant teal/success green
         accent: {
-          50: '#f0fdfa',
-          100: '#ccfbf1',
-          200: '#99f6e4',
-          300: '#5eead4',
-          400: '#2dd4bf',
-          500: '#14b8a6',
-          600: '#0d9488',
-          700: '#0f766e',
-          800: '#115e59',
-          900: '#134e4a',
+          50: '#ecfdf5',
+          100: '#d1fae5',
+          200: '#a7f3d0',
+          300: '#6ee7b7',
+          400: '#34d399',
+          500: '#10b981',
+          600: '#059669',
+          700: '#047857',
+          800: '#065f46',
+          900: '#064e3b',
         },
         // Success - fresh green
         success: {
@@ -53,12 +58,21 @@ export default {
           500: '#f59e0b',
         },
       },
+      boxShadow: {
+        'acctual-sm': 'rgba(30, 45, 82, 0.06) 0px 0px 1px 1px, rgba(30, 45, 82, 0.12) 1px 1px 2px',
+        'acctual-md': 'rgba(30, 45, 82, 0.06) 0px 0px 1px 1px, rgba(30, 45, 82, 0.2) 2px 2px 8px',
+        'acctual-lg': 'rgba(0, 0, 0, 0.03) 0px 3px 10px',
+        'float': '0 8px 30px rgba(0, 0, 0, 0.08)',
+      },
       animation: {
         'fade-in': 'fadeIn 0.3s ease-out',
         'slide-up': 'slideUp 0.3s ease-out',
         'scale-in': 'scaleIn 0.2s ease-out',
         'bounce-in': 'bounceIn 0.5s ease-out',
         'confetti': 'confetti 0.5s ease-out forwards',
+        'float': 'float 6s ease-in-out infinite',
+        'float-delayed': 'float 6s ease-in-out infinite 2s',
+        'float-slow': 'float 8s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: {
@@ -82,6 +96,10 @@ export default {
         confetti: {
           '0%': { transform: 'translateY(0) rotate(0deg)', opacity: '1' },
           '100%': { transform: 'translateY(-100px) rotate(720deg)', opacity: '0' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-15px)' },
         },
       },
     },

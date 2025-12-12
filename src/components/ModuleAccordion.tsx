@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Module, Topic } from '../types';
 import { TopicRow } from './TopicRow';
 
-// Gradient backgrounds for modules
+// Clean gradient backgrounds for modules
 const MODULE_GRADIENTS = [
   'from-violet-500 to-purple-600',
   'from-blue-500 to-indigo-600',
@@ -44,7 +44,7 @@ export function ModuleAccordion({
   const gradientClass = MODULE_GRADIENTS[module.module_number % MODULE_GRADIENTS.length];
 
   return (
-    <div className={`bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden transition-all duration-300 hover:shadow-md ${isExpanded ? 'ring-2 ring-primary-200' : ''}`}>
+    <div className="bg-white rounded-2xl shadow-acctual overflow-hidden transition-all duration-300 hover:shadow-acctual-md">
       {/* Header - Clickable */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
@@ -52,68 +52,51 @@ export function ModuleAccordion({
       >
         <div className="flex items-center gap-4">
           {/* Module Number Badge with gradient */}
-          <div className={`w-12 h-12 bg-gradient-to-br ${gradientClass} rounded-xl flex items-center justify-center font-bold text-lg text-white shadow-lg transform transition-transform duration-200 ${isExpanded ? 'scale-110' : 'hover:scale-105'}`}>
+          <div className={`w-11 h-11 bg-gradient-to-br ${gradientClass} rounded-xl flex items-center justify-center font-bold text-base text-white shadow-sm transform transition-transform duration-200 ${isExpanded ? 'scale-105' : ''}`}>
             {module.module_number}
           </div>
 
           <div className="text-left">
-            <h3 className="font-semibold text-slate-800 text-lg">{module.title}</h3>
-            <p className="text-sm text-slate-500 line-clamp-1">{module.description}</p>
+            <h3 className="font-semibold text-black text-base">{module.title}</h3>
+            <p className="text-sm text-black/50 line-clamp-1">{module.description}</p>
           </div>
         </div>
 
         <div className="flex items-center gap-4">
-          {/* Progress Ring */}
+          {/* Progress display */}
           <div className="hidden sm:flex items-center gap-3">
-            <div className="relative w-12 h-12">
-              {/* Background circle */}
-              <svg className="w-12 h-12 transform -rotate-90">
-                <circle
-                  cx="24"
-                  cy="24"
-                  r="20"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                  fill="none"
-                  className="text-slate-200"
-                />
-                <circle
-                  cx="24"
-                  cy="24"
-                  r="20"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                  fill="none"
-                  strokeDasharray={`${progressPercent * 1.256} 126`}
-                  className={isModuleComplete ? 'text-success-500' : 'text-primary-500'}
-                  strokeLinecap="round"
-                />
-              </svg>
-              {/* Percentage text */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className={`text-xs font-bold ${isModuleComplete ? 'text-success-600' : 'text-slate-600'}`}>
+            {/* Mini progress bar */}
+            <div className="w-20">
+              <div className="flex justify-between text-xs mb-1">
+                <span className={`font-medium ${isModuleComplete ? 'text-accent-600' : 'text-black/50'}`}>
                   {progressPercent}%
                 </span>
+              </div>
+              <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                <div
+                  className={`h-full rounded-full transition-all duration-300 ${isModuleComplete ? 'bg-accent-500' : 'bg-primary-500'}`}
+                  style={{ width: `${progressPercent}%` }}
+                />
               </div>
             </div>
 
             {/* Topics count */}
-            <span className="text-sm text-slate-500">
+            <span className="text-sm text-black/40">
               {totalTopics} topics
             </span>
           </div>
 
           {/* Mobile progress */}
           <div className="sm:hidden flex items-center gap-2">
-            <span className={`text-sm font-medium ${isModuleComplete ? 'text-success-600' : 'text-slate-600'}`}>
+            <span className={`text-sm font-medium ${isModuleComplete ? 'text-accent-600' : 'text-black/50'}`}>
               {progressPercent}%
             </span>
           </div>
 
           {/* Expand icon */}
-          <div className={`w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center transition-all duration-300 ${isExpanded ? 'bg-primary-100 rotate-180' : ''}`}>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${isExpanded ? 'bg-accent-100 rotate-180' : 'bg-slate-100'}`}>
             <svg
-              className={`w-5 h-5 ${isExpanded ? 'text-primary-600' : 'text-slate-400'}`}
+              className={`w-4 h-4 ${isExpanded ? 'text-accent-600' : 'text-black/40'}`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -126,7 +109,7 @@ export function ModuleAccordion({
 
       {/* Topics List - Expandable with animation */}
       <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}>
-        <div className="border-t border-slate-200 bg-gradient-to-b from-slate-50/80 to-white">
+        <div className="border-t border-slate-100 bg-slate-50/50">
           <div className="divide-y divide-slate-100">
             {module.topics.map((topic, index) => (
               <div

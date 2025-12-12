@@ -2,8 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg: #f7fafc;
+  --bg-white: #ffffff;
+  --text: #000000;
+  --text-muted: rgba(0, 0, 0, 0.6);
+  --text-subtle: rgba(0, 0, 0, 0.4);
+  --accent: #004370;
+  --accent-light: #0098fc;
+  --success: #10b981;
+}
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Custom scrollbar */
@@ -22,6 +35,46 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+/* Acctual-style shadows */
+.shadow-acctual {
+  box-shadow: rgba(30, 45, 82, 0.06) 0px 0px 1px 1px, rgba(30, 45, 82, 0.12) 1px 1px 2px;
+}
+
+.shadow-acctual-md {
+  box-shadow: rgba(30, 45, 82, 0.06) 0px 0px 1px 1px, rgba(30, 45, 82, 0.2) 2px 2px 8px;
+}
+
+/* Float card style */
+.float-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(6px);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: rgba(30, 45, 82, 0.06) 0px 0px 1px 1px, rgba(30, 45, 82, 0.2) 2px 2px 8px;
+}
+
+/* Radial fade effect */
+.radial-fade::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -192px;
+  right: -192px;
+  height: 400px;
+  background: radial-gradient(105% 50% at 50% 100%, rgba(247, 250, 252, 0) 36%, rgba(247, 250, 252, 0.74) 63%, rgb(247, 250, 252) 100%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Blur background elements */
+.blur-element {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.3;
+  pointer-events: none;
 }
 
 /* Markdown content styling - Enhanced typography for better reading */
@@ -62,7 +115,7 @@ body {
 }
 
 .markdown-content li::marker {
-  @apply text-primary-500;
+  @apply text-accent-500;
 }
 
 .markdown-content strong {
@@ -86,7 +139,7 @@ body {
 }
 
 .markdown-content blockquote {
-  @apply border-l-4 border-primary-500 pl-5 py-2 italic text-slate-600 my-6 bg-slate-50 rounded-r-lg;
+  @apply border-l-4 border-accent-500 pl-5 py-2 italic text-slate-600 my-6 bg-slate-50 rounded-r-lg;
 }
 
 .markdown-content hr {
@@ -94,7 +147,7 @@ body {
 }
 
 .markdown-content a {
-  @apply text-primary-600 underline hover:text-primary-700 transition-colors;
+  @apply text-accent-600 underline hover:text-accent-700 transition-colors;
 }
 
 /* Better spacing between sections */

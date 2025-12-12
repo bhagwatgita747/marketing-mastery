@@ -139,137 +139,190 @@ export function HomePage({ username, onLogout }: HomePageProps) {
 
   if (modulesLoading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#f7fafc] flex items-center justify-center">
         <LoadingSpinner size="lg" text="Loading curriculum..." />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-primary-50/30">
+    <div className="min-h-screen bg-[#f7fafc]">
       {/* Confetti celebration */}
       <Confetti trigger={showConfetti} onComplete={() => setShowConfetti(false)} />
 
-      {/* Header */}
-      <header className="bg-gradient-to-r from-primary-600 via-primary-500 to-indigo-500 sticky top-0 z-40 shadow-lg">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-11 h-11 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-inner">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <div>
-                <h1 className="font-bold text-white text-lg">Marketing Mastery</h1>
-                <p className="text-sm text-primary-100">Welcome back, {username}</p>
-              </div>
-            </div>
+      {/* Blur background elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="blur-element w-[400px] h-[400px] bg-[#0098fc] top-[10%] right-[-100px]" />
+        <div className="blur-element w-[300px] h-[300px] bg-accent-500 bottom-[20%] left-[-50px]" />
+      </div>
 
-            <div className="flex items-center gap-2">
-              {/* Notes button */}
-              <button
-                onClick={handleViewNotes}
-                className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200"
-              >
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
-                </svg>
-                Notes
-                {totalNotes > 0 && (
-                  <span className="ml-1 px-1.5 py-0.5 text-xs bg-white/20 rounded-full">
-                    {totalNotes}
-                  </span>
-                )}
-              </button>
-
-              <button
-                onClick={onLogout}
-                className="px-4 py-2 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200"
-              >
-                Logout
-              </button>
+      {/* Navigation - Acctual style */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#f7fafc] shadow-acctual-lg">
+        <div className="max-w-[1064px] mx-auto px-4 h-14 flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 bg-gradient-to-br from-accent-500 to-accent-600 rounded-lg flex items-center justify-center shadow-sm">
+              <svg className="w-[18px] h-[18px] text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
             </div>
+            <span className="font-bold text-lg text-black">Marketing Mastery</span>
+          </div>
+
+          {/* Right side */}
+          <div className="flex items-center gap-3">
+            {/* Notes button */}
+            <button
+              onClick={handleViewNotes}
+              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-black/60 hover:text-black transition-colors"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+              </svg>
+              Notes
+              {totalNotes > 0 && (
+                <span className="ml-1 px-1.5 py-0.5 text-xs bg-accent-100 text-accent-700 rounded-full font-medium">
+                  {totalNotes}
+                </span>
+              )}
+            </button>
+
+            {/* User greeting */}
+            <span className="text-sm text-black/60 hidden sm:block">
+              Welcome, <span className="font-medium text-black">{username}</span>
+            </span>
+
+            <button
+              onClick={onLogout}
+              className="px-4 py-2 text-sm font-medium bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+            >
+              Logout
+            </button>
           </div>
         </div>
-      </header>
+      </nav>
 
       {/* Main Content */}
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
-        {/* Overall Progress Card */}
-        <div className="bg-white rounded-2xl shadow-lg border border-slate-100 p-6 mb-8 overflow-hidden relative">
-          {/* Decorative gradient blob */}
-          <div className="absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-br from-primary-200/40 to-accent-200/40 rounded-full blur-3xl" />
-
-          <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-            <div className="flex items-center gap-4">
-              {/* Big progress ring */}
-              <div className="relative w-20 h-20 flex-shrink-0">
-                <svg className="w-20 h-20 transform -rotate-90">
-                  <circle
-                    cx="40"
-                    cy="40"
-                    r="34"
-                    stroke="currentColor"
-                    strokeWidth="6"
-                    fill="none"
-                    className="text-slate-100"
-                  />
-                  <circle
-                    cx="40"
-                    cy="40"
-                    r="34"
-                    stroke="url(#progressGradient)"
-                    strokeWidth="6"
-                    fill="none"
-                    strokeDasharray={`${progressPercent * 2.136} 214`}
-                    strokeLinecap="round"
-                    className="transition-all duration-500"
-                  />
-                  <defs>
-                    <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#6366f1" />
-                      <stop offset="100%" stopColor="#14b8a6" />
-                    </linearGradient>
-                  </defs>
+      <main className="max-w-[1064px] mx-auto px-4 pt-24 pb-12 relative z-10">
+        {/* Stats Cards Row - Floating style */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          {/* Overall Progress Card */}
+          <div className="float-card animate-float" style={{ animationDelay: '0s' }}>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-8 h-8 rounded-lg bg-accent-100 flex items-center justify-center">
+                <svg className="w-4 h-4 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                 </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xl font-bold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
-                    {progressPercent}%
-                  </span>
-                </div>
               </div>
+              <span className="text-xs font-medium text-black/40">Overall</span>
+            </div>
+            <div className="text-3xl font-bold text-accent-500">{progressPercent}%</div>
+            <div className="text-xs text-black/40 mt-1">Progress</div>
+          </div>
 
-              <div>
-                <h2 className="text-xl font-bold text-slate-800">Your Progress</h2>
-                <p className="text-sm text-slate-500">
-                  {totalCompleted} of {totalPossible} lessons completed
-                </p>
+          {/* Basic Completed Card */}
+          <div className="float-card animate-float" style={{ animationDelay: '-1s' }}>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center">
+                <div className="w-2 h-2 rounded-full bg-primary-500" />
               </div>
+              <span className="text-xs font-medium text-black/40">Basic</span>
+            </div>
+            <div className="text-3xl font-bold text-primary-600">{completedBasic}</div>
+            <div className="text-xs text-black/40 mt-1">of {totalTopics} completed</div>
+          </div>
+
+          {/* Advanced Completed Card */}
+          <div className="float-card animate-float" style={{ animationDelay: '-2s' }}>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                <div className="w-2 h-2 rounded-full bg-purple-500" />
+              </div>
+              <span className="text-xs font-medium text-black/40">Advanced</span>
+            </div>
+            <div className="text-3xl font-bold text-purple-600">{completedAdvanced}</div>
+            <div className="text-xs text-black/40 mt-1">of {totalTopics} completed</div>
+          </div>
+
+          {/* Modules Card */}
+          <div className="float-card animate-float" style={{ animationDelay: '-3s' }}>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center">
+                <svg className="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+              </div>
+              <span className="text-xs font-medium text-black/40">Modules</span>
+            </div>
+            <div className="text-3xl font-bold text-amber-600">{modules.length}</div>
+            <div className="text-xs text-black/40 mt-1">{totalTopics} topics total</div>
+          </div>
+        </div>
+
+        {/* Progress Bar Section */}
+        <div className="bg-white rounded-2xl shadow-acctual-md p-6 mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-xl font-semibold text-black">Your Learning Journey</h2>
+              <p className="text-sm text-black/50 mt-1">
+                {totalCompleted} of {totalPossible} lessons completed
+              </p>
+            </div>
+            <div className="text-right">
+              <div className="text-3xl font-bold text-accent-500">{progressPercent}%</div>
+              <div className="text-xs text-black/40">complete</div>
             </div>
           </div>
 
-          <div className="relative mt-6 grid grid-cols-2 gap-4">
-            <div className="bg-gradient-to-br from-primary-50 to-primary-100/50 rounded-xl p-4 border border-primary-100">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-2 h-2 rounded-full bg-primary-500" />
-                <p className="text-sm text-primary-600 font-medium">Basic</p>
+          {/* Progress bar */}
+          <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-accent-500 to-accent-400 rounded-full transition-all duration-500"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+
+          {/* Mini stats */}
+          <div className="grid grid-cols-2 gap-4 mt-6">
+            <div className="flex items-center gap-3 p-3 bg-primary-50 rounded-xl">
+              <div className="w-2 h-2 rounded-full bg-primary-500" />
+              <div>
+                <div className="text-sm font-medium text-primary-700">Basic Level</div>
+                <div className="text-xs text-primary-500">{completedBasic} / {totalTopics}</div>
               </div>
-              <p className="text-2xl font-bold text-primary-700">{completedBasic}<span className="text-lg text-primary-400"> / {totalTopics}</span></p>
+              <div className="ml-auto">
+                <div className="h-1.5 w-16 bg-primary-200 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-primary-500 rounded-full"
+                    style={{ width: `${totalTopics > 0 ? (completedBasic / totalTopics) * 100 : 0}%` }}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="bg-gradient-to-br from-purple-50 to-indigo-100/50 rounded-xl p-4 border border-purple-100">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-2 h-2 rounded-full bg-purple-500" />
-                <p className="text-sm text-purple-600 font-medium">Advanced</p>
+            <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-xl">
+              <div className="w-2 h-2 rounded-full bg-purple-500" />
+              <div>
+                <div className="text-sm font-medium text-purple-700">Advanced Level</div>
+                <div className="text-xs text-purple-500">{completedAdvanced} / {totalTopics}</div>
               </div>
-              <p className="text-2xl font-bold text-purple-700">{completedAdvanced}<span className="text-lg text-purple-400"> / {totalTopics}</span></p>
+              <div className="ml-auto">
+                <div className="h-1.5 w-16 bg-purple-200 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-purple-500 rounded-full"
+                    style={{ width: `${totalTopics > 0 ? (completedAdvanced / totalTopics) * 100 : 0}%` }}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Modules List */}
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-slate-800">Modules</h2>
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-lg font-semibold text-black">Modules</h2>
+            <span className="text-sm text-black/40">{modules.length} modules</span>
+          </div>
           {modules.map((module) => (
             <ModuleAccordion
               key={module.id}
