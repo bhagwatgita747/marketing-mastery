@@ -78,14 +78,22 @@ export function HomePage({ username, onLogout }: HomePageProps) {
   }, [totalCompleted, previousCompleted]);
 
   const handleTopicClick = useCallback(async (topic: Topic, level: 'basic' | 'advanced') => {
+    const clickStart = performance.now();
+    console.log('⏱️ [UI] ========== TOPIC CLICK START ==========');
+    console.log(`⏱️ [UI] Topic: ${topic.title}`);
+
     setSelectedTopic(topic);
     setSelectedLevel(level);
     setModalContent(null);
     setIsModalLoading(true);
+    console.log(`⏱️ [UI] State set, starting fetch at: ${((performance.now() - clickStart) / 1000).toFixed(3)}s`);
 
     const content = await fetchOrGenerateContent(topic, level);
+    console.log(`⏱️ [UI] Content received at: ${((performance.now() - clickStart) / 1000).toFixed(2)}s`);
+
     setModalContent(content);
     setIsModalLoading(false);
+    console.log(`⏱️ [UI] ========== TOTAL UI TIME: ${((performance.now() - clickStart) / 1000).toFixed(2)}s ==========`);
   }, [fetchOrGenerateContent]);
 
   const handleCloseModal = useCallback(() => {

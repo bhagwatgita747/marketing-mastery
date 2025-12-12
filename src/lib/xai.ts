@@ -15,6 +15,10 @@ interface XAIResponse {
 }
 
 export async function generateContent(prompt: string): Promise<string> {
+  const totalStart = performance.now();
+  console.log('⏱️ [XAI] Starting API call...');
+  console.log('⏱️ [XAI] Prompt length:', prompt.length, 'chars');
+
   const messages: XAIMessage[] = [
     {
       role: 'user',
@@ -22,6 +26,7 @@ export async function generateContent(prompt: string): Promise<string> {
     },
   ];
 
+  const fetchStart = performance.now();
   const response = await fetch(XAI_API_URL, {
     method: 'POST',
     headers: {
@@ -35,12 +40,22 @@ export async function generateContent(prompt: string): Promise<string> {
       max_tokens: 2500,  // Reduced for faster response
     }),
   });
+  const fetchEnd = performance.now();
+  console.log(`⏱️ [XAI] Fetch completed in ${((fetchEnd - fetchStart) / 1000).toFixed(2)}s`);
 
   if (!response.ok) {
     const error = await response.text();
     throw new Error(`xAI API error: ${error}`);
   }
 
+  const parseStart = performance.now();
   const data: XAIResponse = await response.json();
-  return data.choices[0].message.content;
+  const parseEnd = performance.now();
+  console.log(`⏱️ [XAI] JSON parse in ${((parseEnd - parseStart) / 1000).toFixed(3)}s`);
+
+  const content = data.choices[0].message.content;
+  console.log(`⏱️ [XAI] Response length: ${content.length} chars`);
+  console.log(`⏱️ [XAI] TOTAL API TIME: ${((performance.now() - totalStart) / 1000).toFixed(2)}s`);
+
+  return content;
 }
