@@ -33,7 +33,7 @@ export function HomePage({ username, onLogout }: HomePageProps) {
 
   // Calculate progress score for tier system
   const progressScore = useMemo(() => calculateScore(progress), [progress]);
-  const { fetchOrGenerateContent, isGenerating, error: contentError } = useContent();
+  const { fetchOrGenerateContent, isGenerating, error: contentError, streamingSections } = useContent();
   const { generateQuiz, isGenerating: isQuizGenerating, error: quizError } = useQuiz();
   const { notes, isNoteSaved, toggleNote, removeNote, clearAllNotes, totalNotes } = useNotes();
 
@@ -437,6 +437,7 @@ export function HomePage({ username, onLogout }: HomePageProps) {
           totalSavedNotes={totalNotes}
           onViewNotes={handleViewNotes}
           progressScore={progressScore}
+          streamingSections={streamingSections}
         />
       )}
 

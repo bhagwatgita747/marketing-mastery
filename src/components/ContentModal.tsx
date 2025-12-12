@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Topic, Content, SectionType, DeepDiveMode, DeepDiveResponse } from '../types';
+import { Topic, Content, SectionType, ContentSection, DeepDiveMode, DeepDiveResponse } from '../types';
 import { SectionCard } from './SectionCard';
 import { useDeepDive } from '../hooks/useDeepDive';
 import { useTheme } from '../hooks/useTheme';
@@ -23,6 +23,8 @@ interface ContentModalProps {
   onViewNotes?: () => void;
   // Progress/tier score
   progressScore?: number;
+  // Streaming sections (appear progressively while loading)
+  streamingSections?: ContentSection[];
 }
 
 export function ContentModal({
@@ -40,6 +42,7 @@ export function ContentModal({
   totalSavedNotes = 0,
   onViewNotes,
   progressScore = 0,
+  streamingSections = [],
 }: ContentModalProps) {
   const { isDark } = useTheme();
   const [isMarkingComplete, setIsMarkingComplete] = useState(false);
@@ -174,7 +177,8 @@ export function ContentModal({
         <div ref={contentRef} className={`flex-1 overflow-y-auto px-6 md:px-10 lg:px-14 py-8 ${
           isDark ? 'bg-[#0f0f1a]' : ''
         }`}>
-          {isLoading ? (
+          {/* Show loading screen only when loading AND no streaming sections yet */}
+          {isLoading && streamingSections.length === 0 ? (
             <ContentLoadingScreen topicTitle={topic.title} score={progressScore} isDark={isDark} />
           ) : error ? (
             <div className={`px-4 py-3 rounded-lg ${
@@ -182,6 +186,36 @@ export function ContentModal({
             }`}>
               <p className="font-medium">Error loading content</p>
               <p className="text-sm mt-1">{error}</p>
+            </div>
+          ) : isLoading && streamingSections.length > 0 ? (
+            // Streaming mode: show sections as they arrive
+            <div className="max-w-3xl mx-auto">
+              {streamingSections.map((section, index) => (
+                <SectionCard
+                  key={`streaming-${index}`}
+                  section={section}
+                  index={index}
+                  isSaved={isNoteSaved ? isNoteSaved(section.type) : false}
+                  onToggleNote={onToggleNote ? () => onToggleNote(section.type, section.title, section.content) : undefined}
+                  topicTitle={topic.title}
+                  deepDive={deepDiveData[index]}
+                  isDeepDiveLoading={isDeepDiveLoading && activeDeepDiveSection === index}
+                  deepDiveError={activeDeepDiveSection === index ? deepDiveError : null}
+                  onDeepDive={(mode) => handleDeepDive(index, section.title, section.content, mode)}
+                  isDark={isDark}
+                />
+              ))}
+              {/* Loading indicator for more sections */}
+              <div className={`flex items-center justify-center gap-3 py-8 ${
+                isDark ? 'text-white/50' : 'text-slate-400'
+              }`}>
+                <div className="flex gap-1">
+                  <div className={`w-2 h-2 rounded-full animate-bounce ${isDark ? 'bg-accent-400' : 'bg-accent-500'}`} style={{ animationDelay: '0ms' }} />
+                  <div className={`w-2 h-2 rounded-full animate-bounce ${isDark ? 'bg-accent-400' : 'bg-accent-500'}`} style={{ animationDelay: '150ms' }} />
+                  <div className={`w-2 h-2 rounded-full animate-bounce ${isDark ? 'bg-accent-400' : 'bg-accent-500'}`} style={{ animationDelay: '300ms' }} />
+                </div>
+                <span className="text-sm">Loading more sections...</span>
+              </div>
             </div>
           ) : content ? (
             hasStructuredContent ? (
