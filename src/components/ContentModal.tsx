@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import { Topic, Content, SectionType, DeepDiveMode, DeepDiveResponse } from '../types';
 import { SectionCard } from './SectionCard';
 import { useDeepDive } from '../hooks/useDeepDive';
+import { useTheme } from '../hooks/useTheme';
 import { ContentLoadingScreen } from './ContentLoadingScreen';
 
 interface ContentModalProps {
@@ -40,6 +41,7 @@ export function ContentModal({
   onViewNotes,
   progressScore = 0,
 }: ContentModalProps) {
+  const { isDark } = useTheme();
   const [isMarkingComplete, setIsMarkingComplete] = useState(false);
   const [readProgress, setReadProgress] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -108,15 +110,17 @@ export function ContentModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        className={`absolute inset-0 backdrop-blur-sm ${isDark ? 'bg-black/70' : 'bg-black/50'}`}
         onClick={onClose}
       />
 
       {/* Modal - Wide layout for better reading */}
-      <div className="relative w-full h-full md:h-[90vh] md:max-w-5xl lg:max-w-6xl md:mx-4 bg-white md:rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+      <div className={`relative w-full h-full md:h-[90vh] md:max-w-5xl lg:max-w-6xl md:mx-4 md:rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-colors duration-300 ${
+        isDark ? 'bg-[#0f0f1a]' : 'bg-white'
+      }`}>
         {/* Reading Progress Bar */}
         {!isLoading && content && (
-          <div className="absolute top-0 left-0 right-0 h-1 bg-slate-200 z-10">
+          <div className={`absolute top-0 left-0 right-0 h-1 z-10 ${isDark ? 'bg-white/10' : 'bg-slate-200'}`}>
             <div
               className="h-full bg-gradient-to-r from-blue-500 to-emerald-500 transition-all duration-150"
               style={{ width: `${readProgress}%` }}
@@ -125,18 +129,20 @@ export function ContentModal({
         )}
 
         {/* Header */}
-        <div className="flex-shrink-0 px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-white">
+        <div className={`flex-shrink-0 px-6 py-4 border-b flex items-center justify-between ${
+          isDark ? 'border-white/10 bg-white/5' : 'border-slate-200 bg-white'
+        }`}>
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
                 level === 'basic'
-                  ? 'bg-blue-100 text-blue-700'
-                  : 'bg-purple-100 text-purple-700'
+                  ? isDark ? 'bg-blue-500/20 text-blue-300' : 'bg-blue-100 text-blue-700'
+                  : isDark ? 'bg-purple-500/20 text-purple-300' : 'bg-purple-100 text-purple-700'
               }`}>
                 {level === 'basic' ? 'Basic' : 'Advanced'}
               </span>
               {isComplete && (
-                <span className="flex items-center gap-1 text-xs text-emerald-600">
+                <span className={`flex items-center gap-1 text-xs ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
@@ -144,30 +150,36 @@ export function ContentModal({
                 </span>
               )}
               {!isLoading && content && (
-                <span className="text-xs text-slate-400 ml-2">
+                <span className={`text-xs ml-2 ${isDark ? 'text-white/40' : 'text-slate-400'}`}>
                   {readProgress}% read
                 </span>
               )}
             </div>
-            <h2 className="text-lg font-semibold text-slate-800">{topic.title}</h2>
+            <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>{topic.title}</h2>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+            className={`p-2 rounded-lg transition-colors ${
+              isDark ? 'hover:bg-white/10 text-white/60 hover:text-white' : 'hover:bg-slate-100 text-slate-500'
+            }`}
           >
-            <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
         {/* Content */}
-        <div ref={contentRef} className="flex-1 overflow-y-auto px-6 md:px-10 lg:px-14 py-8">
+        <div ref={contentRef} className={`flex-1 overflow-y-auto px-6 md:px-10 lg:px-14 py-8 ${
+          isDark ? 'bg-[#0f0f1a]' : ''
+        }`}>
           {isLoading ? (
-            <ContentLoadingScreen topicTitle={topic.title} score={progressScore} />
+            <ContentLoadingScreen topicTitle={topic.title} score={progressScore} isDark={isDark} />
           ) : error ? (
-            <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg">
+            <div className={`px-4 py-3 rounded-lg ${
+              isDark ? 'bg-red-500/20 text-red-300' : 'bg-red-50 text-red-600'
+            }`}>
               <p className="font-medium">Error loading content</p>
               <p className="text-sm mt-1">{error}</p>
             </div>
@@ -188,6 +200,7 @@ export function ContentModal({
                     isDeepDiveLoading={isDeepDiveLoading && activeDeepDiveSection === index}
                     deepDiveError={activeDeepDiveSection === index ? deepDiveError : null}
                     onDeepDive={(mode) => handleDeepDive(index, section.title, section.content, mode)}
+                    isDark={isDark}
                   />
                 ))}
               </div>
@@ -202,9 +215,11 @@ export function ContentModal({
 
         {/* Footer */}
         {!isLoading && content && (
-          <div className="flex-shrink-0 px-6 py-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
+          <div className={`flex-shrink-0 px-6 py-4 border-t flex items-center justify-between ${
+            isDark ? 'border-white/10 bg-white/5' : 'border-slate-200 bg-slate-50'
+          }`}>
             <div className="flex items-center gap-4">
-              <span className="text-sm text-slate-500">
+              <span className={`text-sm ${isDark ? 'text-white/50' : 'text-slate-500'}`}>
                 {hasStructuredContent
                   ? `${content.structured!.sections.length} sections`
                   : level === 'basic' ? '~5 min read' : '~8-10 min read'
@@ -213,7 +228,11 @@ export function ContentModal({
               {totalSavedNotes > 0 && onViewNotes && (
                 <button
                   onClick={onViewNotes}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-colors"
+                  className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
+                    isDark
+                      ? 'text-primary-400 hover:text-primary-300 hover:bg-primary-500/10'
+                      : 'text-primary-600 hover:text-primary-700 hover:bg-primary-50'
+                  }`}
                 >
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
@@ -226,7 +245,9 @@ export function ContentModal({
             <div className="flex items-center gap-3">
               <button
                 onClick={onClose}
-                className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 transition-colors"
+                className={`px-4 py-2 text-sm font-medium transition-colors ${
+                  isDark ? 'text-white/60 hover:text-white' : 'text-slate-600 hover:text-slate-800'
+                }`}
               >
                 Close
               </button>

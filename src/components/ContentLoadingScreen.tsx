@@ -4,9 +4,10 @@ import paperplaneAnimation from '../assets/paperplane.json';
 interface ContentLoadingScreenProps {
   topicTitle: string;
   score: number;
+  isDark?: boolean;
 }
 
-export function ContentLoadingScreen(_props: ContentLoadingScreenProps) {
+export function ContentLoadingScreen({ isDark = false }: ContentLoadingScreenProps) {
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4">
       {/* Lottie Animation */}
@@ -20,7 +21,7 @@ export function ContentLoadingScreen(_props: ContentLoadingScreenProps) {
       </div>
 
       {/* Simple loading text */}
-      <p className="text-slate-500 text-sm">Loading...</p>
+      <p className={`text-sm ${isDark ? 'text-white/50' : 'text-slate-500'}`}>Loading...</p>
     </div>
   );
 }

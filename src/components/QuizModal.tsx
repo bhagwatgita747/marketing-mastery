@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Topic, Quiz, QuizQuestion } from '../types';
+import { useTheme } from '../hooks/useTheme';
 import { LoadingSpinner } from './LoadingSpinner';
 
 interface QuizModalProps {
@@ -19,6 +20,7 @@ export function QuizModal({
   error,
   onClose,
 }: QuizModalProps) {
+  const { isDark } = useTheme();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
@@ -77,19 +79,19 @@ export function QuizModal({
 
     if (!isAnswered) {
       if (selectedAnswer === index) {
-        return `${base} border-blue-500 bg-blue-50 ring-2 ring-blue-200`;
+        return `${base} ${isDark ? 'border-blue-400 bg-blue-500/20 ring-2 ring-blue-400/30' : 'border-blue-500 bg-blue-50 ring-2 ring-blue-200'}`;
       }
-      return `${base} border-slate-200 hover:border-slate-300 hover:bg-slate-50 cursor-pointer`;
+      return `${base} ${isDark ? 'border-white/10 hover:border-white/20 hover:bg-white/5 cursor-pointer' : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50 cursor-pointer'}`;
     }
 
     // After answering
     if (index === currentQuestion?.correctIndex) {
-      return `${base} border-emerald-500 bg-emerald-50`;
+      return `${base} ${isDark ? 'border-emerald-400 bg-emerald-500/20' : 'border-emerald-500 bg-emerald-50'}`;
     }
     if (selectedAnswer === index && index !== currentQuestion?.correctIndex) {
-      return `${base} border-red-500 bg-red-50`;
+      return `${base} ${isDark ? 'border-red-400 bg-red-500/20' : 'border-red-500 bg-red-50'}`;
     }
-    return `${base} border-slate-200 bg-slate-50 opacity-50`;
+    return `${base} ${isDark ? 'border-white/10 bg-white/5 opacity-50' : 'border-slate-200 bg-slate-50 opacity-50'}`;
   };
 
   const getScoreMessage = () => {
@@ -104,15 +106,17 @@ export function QuizModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        className={`absolute inset-0 backdrop-blur-sm ${isDark ? 'bg-black/70' : 'bg-black/50'}`}
         onClick={onClose}
       />
 
       {/* Modal */}
-      <div className="relative w-full max-w-2xl mx-4 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh]">
+      <div className={`relative w-full max-w-2xl mx-4 rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh] transition-colors duration-300 ${
+        isDark ? 'bg-[#0f0f1a]' : 'bg-white'
+      }`}>
         {/* Progress bar */}
         {!isLoading && quiz && !showResults && (
-          <div className="h-1 bg-slate-200">
+          <div className={`h-1 ${isDark ? 'bg-white/10' : 'bg-slate-200'}`}>
             <div
               className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300"
               style={{ width: `${progress}%` }}
@@ -121,31 +125,39 @@ export function QuizModal({
         )}
 
         {/* Header */}
-        <div className="flex-shrink-0 px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+        <div className={`flex-shrink-0 px-6 py-4 border-b flex items-center justify-between ${
+          isDark ? 'border-white/10' : 'border-slate-200'
+        }`}>
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-700">
+              <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
+                isDark ? 'bg-purple-500/20 text-purple-300' : 'bg-purple-100 text-purple-700'
+              }`}>
                 Quiz
               </span>
               <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
-                level === 'basic' ? 'bg-blue-100 text-blue-700' : 'bg-indigo-100 text-indigo-700'
+                level === 'basic'
+                  ? isDark ? 'bg-blue-500/20 text-blue-300' : 'bg-blue-100 text-blue-700'
+                  : isDark ? 'bg-indigo-500/20 text-indigo-300' : 'bg-indigo-100 text-indigo-700'
               }`}>
                 {level === 'basic' ? 'Basic' : 'Advanced'}
               </span>
               {quiz && !showResults && (
-                <span className="text-xs text-slate-500">
+                <span className={`text-xs ${isDark ? 'text-white/50' : 'text-slate-500'}`}>
                   Question {currentIndex + 1} of {totalQuestions}
                 </span>
               )}
             </div>
-            <h2 className="text-lg font-semibold text-slate-800">{topic.title}</h2>
+            <h2 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>{topic.title}</h2>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+            className={`p-2 rounded-lg transition-colors ${
+              isDark ? 'hover:bg-white/10 text-white/60' : 'hover:bg-slate-100 text-slate-500'
+            }`}
           >
-            <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -155,10 +167,12 @@ export function QuizModal({
         <div className="flex-1 overflow-y-auto p-6">
           {isLoading ? (
             <div className="flex items-center justify-center py-16">
-              <LoadingSpinner size="lg" text="Generating quiz questions..." />
+              <LoadingSpinner size="lg" text="Generating quiz questions..." isDark={isDark} />
             </div>
           ) : error ? (
-            <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg">
+            <div className={`px-4 py-3 rounded-lg ${
+              isDark ? 'bg-red-500/20 text-red-300' : 'bg-red-50 text-red-600'
+            }`}>
               <p className="font-medium">Error loading quiz</p>
               <p className="text-sm mt-1">{error}</p>
             </div>
@@ -166,15 +180,19 @@ export function QuizModal({
             // Results screen
             <div className="text-center py-8">
               <div className="text-6xl mb-4">{getScoreMessage().emoji}</div>
-              <h3 className="text-2xl font-bold text-slate-800 mb-2">
+              <h3 className={`text-2xl font-bold mb-2 ${isDark ? 'text-white' : 'text-slate-800'}`}>
                 You scored {score} out of {totalQuestions}
               </h3>
-              <p className="text-slate-600 mb-6">{getScoreMessage().message}</p>
+              <p className={`mb-6 ${isDark ? 'text-white/60' : 'text-slate-600'}`}>{getScoreMessage().message}</p>
 
               <div className="flex justify-center gap-3">
                 <button
                   onClick={onClose}
-                  className="px-6 py-3 bg-slate-100 text-slate-700 font-medium rounded-xl hover:bg-slate-200 transition-colors"
+                  className={`px-6 py-3 font-medium rounded-xl transition-colors ${
+                    isDark
+                      ? 'bg-white/10 text-white hover:bg-white/20'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  }`}
                 >
                   Close
                 </button>
@@ -183,7 +201,7 @@ export function QuizModal({
           ) : currentQuestion ? (
             // Question
             <div>
-              <h3 className="text-xl font-medium text-slate-800 mb-6">
+              <h3 className={`text-xl font-medium mb-6 ${isDark ? 'text-white' : 'text-slate-800'}`}>
                 {currentQuestion.question}
               </h3>
 
@@ -203,11 +221,11 @@ export function QuizModal({
                           ? 'bg-red-500 text-white'
                           : selectedAnswer === index
                           ? 'bg-blue-500 text-white'
-                          : 'bg-slate-200 text-slate-600'
+                          : isDark ? 'bg-white/20 text-white/70' : 'bg-slate-200 text-slate-600'
                       }`}>
                         {String.fromCharCode(65 + index)}
                       </span>
-                      <span className="text-slate-700">{option}</span>
+                      <span className={isDark ? 'text-white/90' : 'text-slate-700'}>{option}</span>
                     </div>
                   </button>
                 ))}
@@ -217,18 +235,18 @@ export function QuizModal({
               {isAnswered && (
                 <div className={`mt-6 p-4 rounded-xl ${
                   selectedAnswer === currentQuestion.correctIndex
-                    ? 'bg-emerald-50 border border-emerald-200'
-                    : 'bg-amber-50 border border-amber-200'
+                    ? isDark ? 'bg-emerald-500/20 border border-emerald-500/30' : 'bg-emerald-50 border border-emerald-200'
+                    : isDark ? 'bg-amber-500/20 border border-amber-500/30' : 'bg-amber-50 border border-amber-200'
                 }`}>
                   <div className="flex items-start gap-2">
                     <span className="text-lg">
                       {selectedAnswer === currentQuestion.correctIndex ? '✅' : '💡'}
                     </span>
                     <div>
-                      <p className="font-medium text-slate-800">
+                      <p className={`font-medium ${isDark ? 'text-white' : 'text-slate-800'}`}>
                         {selectedAnswer === currentQuestion.correctIndex ? 'Correct!' : 'Not quite right'}
                       </p>
-                      <p className="text-sm text-slate-600 mt-1">
+                      <p className={`text-sm mt-1 ${isDark ? 'text-white/60' : 'text-slate-600'}`}>
                         {currentQuestion.explanation}
                       </p>
                     </div>
@@ -241,8 +259,10 @@ export function QuizModal({
 
         {/* Footer */}
         {!isLoading && quiz && !showResults && (
-          <div className="flex-shrink-0 px-6 py-4 border-t border-slate-200 bg-slate-50 flex justify-between items-center">
-            <div className="text-sm text-slate-500">
+          <div className={`flex-shrink-0 px-6 py-4 border-t flex justify-between items-center ${
+            isDark ? 'border-white/10 bg-white/5' : 'border-slate-200 bg-slate-50'
+          }`}>
+            <div className={`text-sm ${isDark ? 'text-white/50' : 'text-slate-500'}`}>
               Score: {score}/{currentIndex + (isAnswered ? 1 : 0)}
             </div>
 
