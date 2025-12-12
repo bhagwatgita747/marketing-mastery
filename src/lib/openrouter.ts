@@ -1,6 +1,7 @@
 /**
  * OpenRouter API client for Gemini Flash Lite
  * Used for keyword extraction and transcript analysis in the Memorize feature
+ * API key must be set via VITE_OPENROUTER_API_KEY environment variable
  */
 
 const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
