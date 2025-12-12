@@ -711,3 +711,15 @@ body {
     transform: scale(1.2, 1);
   }
 }
+
+/* ==================== MEMORIZE FEATURE ANIMATIONS ==================== */
+
+/* Sound wave bars for recording indicator */
+@keyframes soundWave {
+  0%, 100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}

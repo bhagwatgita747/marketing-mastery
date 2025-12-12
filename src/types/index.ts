@@ -120,3 +120,17 @@ export interface TierInfo {
   color: string;
   bgColor: string;
 }
+
+// Memorize feature types
+export interface KeywordResult {
+  word: string;
+  covered: boolean;
+  feedback: string;
+}
+
+export interface MemorizeResult {
+  score: number;
+  total: number;
+  keywords: KeywordResult[];
+  encouragement: string;
+}

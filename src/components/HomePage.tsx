@@ -9,6 +9,7 @@ import { ModuleAccordion } from './ModuleAccordion';
 import { ContentModal } from './ContentModal';
 import { QuizModal } from './QuizModal';
 import { NotesModal } from './NotesModal';
+import { MemorizeModal } from './MemorizeModal';
 import { LoadingSpinner } from './LoadingSpinner';
 import { Confetti } from './Confetti';
 import { Topic, Content, Quiz, SectionType } from '../types';
@@ -54,6 +55,9 @@ export function HomePage({ username, onLogout }: HomePageProps) {
 
   // Notes modal state
   const [showNotesModal, setShowNotesModal] = useState(false);
+
+  // Memorize modal state
+  const [showMemorize, setShowMemorize] = useState(false);
 
   // Calculate overall progress
   const totalTopics = modules.reduce((sum, m) => sum + m.topics.length, 0);
@@ -145,6 +149,15 @@ export function HomePage({ username, onLogout }: HomePageProps) {
 
   const handleCloseNotesModal = useCallback(() => {
     setShowNotesModal(false);
+  }, []);
+
+  // Memorize handlers
+  const handleOpenMemorize = useCallback(() => {
+    setShowMemorize(true);
+  }, []);
+
+  const handleCloseMemorize = useCallback(() => {
+    setShowMemorize(false);
   }, []);
 
   if (modulesLoading) {
@@ -417,7 +430,7 @@ export function HomePage({ username, onLogout }: HomePageProps) {
       </main>
 
       {/* Content Modal */}
-      {selectedTopic && !showQuiz && (
+      {selectedTopic && !showQuiz && !showMemorize && (
         <ContentModal
           topic={selectedTopic}
           level={selectedLevel}
@@ -432,6 +445,7 @@ export function HomePage({ username, onLogout }: HomePageProps) {
           onClose={handleCloseModal}
           onMarkComplete={handleMarkComplete}
           onTakeQuiz={handleTakeQuiz}
+          onMemorize={handleOpenMemorize}
           isNoteSaved={handleIsNoteSaved}
           onToggleNote={handleToggleNote}
           totalSavedNotes={totalNotes}
@@ -460,6 +474,16 @@ export function HomePage({ username, onLogout }: HomePageProps) {
           onClose={handleCloseNotesModal}
           onRemoveNote={removeNote}
           onClearAll={clearAllNotes}
+        />
+      )}
+
+      {/* Memorize Modal */}
+      {selectedTopic && modalContent && showMemorize && (
+        <MemorizeModal
+          topic={selectedTopic}
+          level={selectedLevel}
+          content={modalContent}
+          onClose={handleCloseMemorize}
         />
       )}
     </div>
