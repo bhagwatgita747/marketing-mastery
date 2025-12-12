@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketing Mastery - Design 5 (AuthKit Style)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    @property --angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+
+    @property --cta-angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #05060f;
+      --bg-card: rgba(186, 207, 247, 0.02);
+      --border: rgba(186, 207, 247, 0.1);
+      --border-glow: rgba(186, 207, 247, 0.24);
+      --text: #d8ecf8;
+      --text-muted: rgba(186, 207, 247, 0.6);
+      --accent-blue: rgb(186, 207, 247);
+      --accent-green: rgb(200, 253, 215);
+      --accent-purple: rgb(238, 186, 247);
+      --easing: cubic-bezier(0.6, 0.6, 0, 1);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Grid background */
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(186, 207, 247, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(186, 207, 247, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+    }
+
+    /* Spotlight effects */
+    .spotlights {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .spotlight {
+      position: absolute;
+      top: -100px;
+      width: 200px;
+      height: 800px;
+      background-image: conic-gradient(at 50% -5%, transparent 45%, rgba(124, 145, 182, 0.2) 49%, rgba(124, 145, 182, 0.4) 50%, rgba(124, 145, 182, 0.2) 51%, transparent 55%);
+      border-radius: 9999px;
+      filter: blur(20px);
+      transform-origin: 50% 0%;
+      opacity: 0.6;
+    }
+
+    .spotlight:nth-child(1) {
+      left: 20%;
+      animation: spotlight-sway 8s var(--easing) infinite alternate;
+    }
+
+    .spotlight:nth-child(2) {
+      left: 50%;
+      transform: translateX(-50%);
+      animation: spotlight-sway 10s var(--easing) infinite alternate-reverse;
+    }
+
+    .spotlight:nth-child(3) {
+      right: 20%;
+      animation: spotlight-sway 9s var(--easing) infinite alternate;
+      animation-delay: -2s;
+    }
+
+    @keyframes spotlight-sway {
+      0% { transform: rotate(-8deg); opacity: 0.4; }
+      100% { transform: rotate(8deg); opacity: 0.7; }
+    }
+
+    /* Main container */
+    .container {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navigation */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+      position: relative;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent-green), rgb(142, 253, 180));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(200, 253, 215, 0.3);
+    }
+
+    .logo-mark svg {
+      width: 18px;
+      height: 18px;
+      color: var(--bg);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.3s var(--easing);
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Glowing button */
+    .btn-glow {
+      --line-width: 1px;
+      --line-color: rgba(186, 207, 247, 0.6);
+      position: relative;
+      padding: 10px 20px;
+      background: rgba(186, 207, 247, 0.08);
+      border: none;
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      overflow: hidden;
+      transition: background 0.3s var(--easing);
+    }
+
+    .btn-glow::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: var(--line-width);
+      background: conic-gradient(from var(--angle), transparent 0%, var(--line-color) 10%, transparent 20%);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      animation: rotate-border 4s linear infinite;
+    }
+
+    @keyframes rotate-border {
+      to { --angle: 360deg; }
+    }
+
+    .btn-glow:hover {
+      background: rgba(186, 207, 247, 0.12);
+    }
+
+    .btn-solid {
+      padding: 10px 20px;
+      background: var(--text);
+      border: none;
+      border-radius: 8px;
+      color: var(--bg);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s var(--easing);
+    }
+
+    .btn-solid:hover {
+      box-shadow: 0 0 30px rgba(216, 236, 248, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 100px 0 60px;
+      position: relative;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(186, 207, 247, 0.06);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      animation: fade-in-up 1s var(--easing) 0.2s backwards;
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent-green);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent-green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.9); }
+    }
+
+    .hero-title {
+      font-size: 80px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 24px;
+      animation: fade-in-up 1s var(--easing) 0.4s backwards;
+    }
+
+    .hero-title span {
+      display: block;
+      background: linear-gradient(180deg, var(--text) 0%, rgba(186, 207, 247, 0.6) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 80px rgba(186, 207, 247, 0.5);
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 500px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+      animation: fade-in-up 1s var(--easing) 0.6s backwards;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      animation: fade-in-up 1s var(--easing) 0.8s backwards;
+    }
+
+    .btn-primary-glow {
+      --line-color: rgba(200, 253, 215, 0.8);
+      position: relative;
+      padding: 14px 28px;
+      background: linear-gradient(135deg, rgb(16, 185, 129), rgb(5, 150, 105));
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 0 40px rgba(16, 185, 129, 0.3);
+      transition: all 0.3s var(--easing);
+    }
+
+    .btn-primary-glow::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 12px;
+      padding: 2px;
+      background: conic-gradient(from var(--angle), transparent 0%, var(--line-color) 10%, transparent 20%);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      animation: rotate-border 3s linear infinite;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .btn-primary-glow:hover::before {
+      opacity: 1;
+    }
+
+    .btn-primary-glow:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 60px rgba(16, 185, 129, 0.5);
+    }
+
+    @keyframes fade-in-up {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Dashboard Mockups */
+    .mockups {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 24px;
+      padding: 60px 0 100px;
+      perspective: 1000px;
+      animation: fade-in-up 1.2s var(--easing) 1s backwards;
+    }
+
+    .mockup-card {
+      --start-angle: 0deg;
+      position: relative;
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 24px;
+      backdrop-filter: blur(8px);
+      box-shadow:
+        rgba(216, 236, 248, 0.1) 0px 1px 1px 0px inset,
+        rgba(0, 0, 0, 0.4) 0px 20px 60px;
+      transition: all 0.45s var(--easing);
+    }
+
+    /* Animated border effect */
+    .mockup-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: conic-gradient(from var(--angle), transparent 0%, var(--border-glow) 10%, transparent 20%);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      opacity: 0.5;
+      animation: rotate-border 8s linear infinite;
+    }
+
+    .mockup-card.left {
+      width: 220px;
+      transform: perspective(1000px) rotateY(15deg) translateY(20px);
+    }
+
+    .mockup-card.center {
+      width: 300px;
+      z-index: 2;
+    }
+
+    .mockup-card.center::before {
+      animation-duration: 6s;
+      opacity: 0.8;
+    }
+
+    .mockup-card.right {
+      width: 220px;
+      transform: perspective(1000px) rotateY(-15deg) translateY(20px);
+    }
+
+    .mockup-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow:
+        rgba(216, 236, 248, 0.15) 0px 1px 1px 0px inset,
+        rgba(186, 207, 247, 0.1) 0px 0px 40px,
+        rgba(0, 0, 0, 0.5) 0px 30px 80px;
+    }
+
+    .mockup-card.left:hover {
+      transform: perspective(1000px) rotateY(15deg) translateY(10px) scale(1.02);
+    }
+
+    .mockup-card.right:hover {
+      transform: perspective(1000px) rotateY(-15deg) translateY(10px) scale(1.02);
+    }
+
+    .mockup-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .mockup-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, rgba(186, 207, 247, 0.2), rgba(186, 207, 247, 0.1));
+      border-radius: 10px;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mockup-logo svg {
+      width: 20px;
+      height: 20px;
+      color: var(--accent-blue);
+    }
+
+    .mockup-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .mockup-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Input fields in mockup */
+    .mockup-input {
+      background: rgba(5, 6, 15, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mockup-input-dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .mockup-input-dot {
+      width: 4px;
+      height: 4px;
+      background: var(--text-muted);
+      border-radius: 50%;
+      animation: dot-typing 1.5s ease-in-out infinite;
+    }
+
+    .mockup-input-dot:nth-child(2) { animation-delay: 0.2s; }
+    .mockup-input-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes dot-typing {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    .mockup-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, rgb(179, 187, 255), rgb(152, 192, 239));
+      border: none;
+      border-radius: 8px;
+      color: var(--bg);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s var(--easing);
+      box-shadow: 0 0 20px rgba(179, 187, 255, 0.2);
+    }
+
+    .mockup-btn:hover {
+      box-shadow: 0 0 30px rgba(179, 187, 255, 0.4);
+    }
+
+    .mockup-btn.green {
+      background: linear-gradient(135deg, var(--accent-green), rgb(142, 253, 180));
+    }
+
+    .mockup-btn.green:hover {
+      box-shadow: 0 0 30px rgba(200, 253, 215, 0.4);
+    }
+
+    .mockup-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    .mockup-divider::before,
+    .mockup-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .social-btns {
+      display: flex;
+      gap: 8px;
+    }
+
+    .social-btn {
+      flex: 1;
+      padding: 10px;
+      background: rgba(186, 207, 247, 0.06);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s var(--easing);
+    }
+
+    .social-btn:hover {
+      background: rgba(186, 207, 247, 0.1);
+      border-color: var(--border-glow);
+    }
+
+    .social-btn svg {
+      width: 16px;
+      height: 16px;
+      color: var(--text-muted);
+    }
+
+    /* Features Section */
+    .features {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .features::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 100px;
+      background: linear-gradient(180deg, transparent, var(--border-glow), transparent);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .section-header h2 {
+      font-size: 40px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      background: linear-gradient(180deg, var(--text) 0%, rgba(186, 207, 247, 0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 17px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .feature-card {
+      --start-angle: 0deg;
+      position: relative;
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 28px;
+      backdrop-filter: blur(4px);
+      box-shadow: rgba(216, 236, 248, 0.05) 0px 1px 1px 0px inset;
+      transition: all 0.45s var(--easing);
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: conic-gradient(from var(--angle), transparent 0%, var(--border-glow) 5%, transparent 15%);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      opacity: 0;
+      animation: rotate-border 12s linear infinite;
+      transition: opacity 0.45s var(--easing);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow:
+        rgba(216, 236, 248, 0.1) 0px 1px 1px 0px inset,
+        rgba(186, 207, 247, 0.08) 0px 0px 40px;
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .feature-icon::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: 0 0 20px currentColor;
+      opacity: 0.3;
+    }
+
+    .feature-icon.blue {
+      background: rgba(186, 207, 247, 0.15);
+      color: var(--accent-blue);
+    }
+
+    .feature-icon.green {
+      background: rgba(200, 253, 215, 0.15);
+      color: var(--accent-green);
+    }
+
+    .feature-icon.purple {
+      background: rgba(238, 186, 247, 0.15);
+      color: var(--accent-purple);
+    }
+
+    .feature-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .feature-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* CTA Section */
+    .cta {
+      padding: 100px 0;
+      text-align: center;
+    }
+
+    .cta-box {
+      --cta-angle: 0deg;
+      position: relative;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 60px 40px;
+      background: var(--bg-card);
+      border-radius: 24px;
+      backdrop-filter: blur(8px);
+      box-shadow:
+        rgba(216, 236, 248, 0.1) 0px 1px 1px 0px inset,
+        rgba(168, 216, 245, 0.04) 0px 24px 48px 0px inset;
+      transition: all 0.45s var(--easing);
+    }
+
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: conic-gradient(from var(--cta-angle), transparent 0%, rgba(194, 204, 255, 0.5) 20%, transparent 40%);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      animation: cta-rotate 6s linear infinite;
+      opacity: 0.6;
+    }
+
+    @keyframes cta-rotate {
+      to { --cta-angle: 360deg; }
+    }
+
+    .cta-box:hover {
+      box-shadow:
+        rgba(216, 236, 248, 0.15) 0px 1px 1px 0px inset,
+        rgba(186, 207, 247, 0.08) 0px 0px 60px,
+        rgba(168, 216, 245, 0.06) 0px 24px 48px 0px inset;
+    }
+
+    .cta-box h2 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      background: linear-gradient(180deg, var(--text) 0%, rgba(186, 207, 247, 0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cta-box p {
+      color: var(--text-muted);
+      font-size: 16px;
+      margin-bottom: 32px;
+    }
+
+    /* Footer */
+    footer {
+      padding: 40px 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    footer p {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    /* Progress bars in mockups */
+    .progress-item {
+      margin-bottom: 12px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: rgba(186, 207, 247, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 2px;
+      box-shadow: 0 0 8px currentColor;
+    }
+
+    .progress-fill.blue {
+      background: linear-gradient(90deg, rgb(152, 192, 239), var(--accent-blue));
+      color: var(--accent-blue);
+    }
+
+    .progress-fill.green {
+      background: linear-gradient(90deg, rgb(142, 253, 180), var(--accent-green));
+      color: var(--accent-green);
+    }
+
+    .progress-fill.purple {
+      background: linear-gradient(90deg, rgb(200, 170, 255), var(--accent-purple));
+      color: var(--accent-purple);
+    }
+
+    /* Stats in center mockup */
+    .stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat-item {
+      background: rgba(5, 6, 15, 0.4);
+      border-radius: 10px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .stat-value.green { color: var(--accent-green); text-shadow: 0 0 20px var(--accent-green); }
+    .stat-value.purple { color: var(--accent-purple); text-shadow: 0 0 20px var(--accent-purple); }
+
+    .stat-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+  <!-- Grid Background -->
+  <div class="grid-bg"></div>
+
+  <!-- Spotlight Effects -->
+  <div class="spotlights">
+    <div class="spotlight"></div>
+    <div class="spotlight"></div>
+    <div class="spotlight"></div>
+  </div>
+
+  <div class="container">
+    <!-- Navigation -->
+    <nav>
+      <a href="#" class="logo">
+        <div class="logo-mark">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        Marketing Mastery
+      </a>
+
+      <div class="nav-links">
+        <a href="#">Curriculum</a>
+        <a href="#">Features</a>
+        <a href="#">Pricing</a>
+        <a href="#">Docs</a>
+      </div>
+
+      <div class="nav-right">
+        <button class="btn-glow">Log in</button>
+        <button class="btn-solid">Get Started</button>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Powered by Grok AI
+      </div>
+
+      <h1 class="hero-title">
+        <span>Marketing</span>
+        <span>Mastery</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        The world's best learning experience, powered by AI-generated content and personalized curriculum.
+      </p>
+
+      <div class="hero-buttons">
+        <button class="btn-primary-glow">Start Learning Free</button>
+        <button class="btn-glow">View Curriculum</button>
+      </div>
+    </section>
+
+    <!-- Dashboard Mockups -->
+    <section class="mockups">
+      <!-- Left Card - Progress -->
+      <div class="mockup-card left">
+        <div class="mockup-header">
+          <div class="mockup-logo">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <div class="mockup-title">Your Progress</div>
+          <div class="mockup-subtitle">4 modules active</div>
+        </div>
+
+        <div class="progress-item">
+          <div class="progress-label"><span>Module 0</span><span>87%</span></div>
+          <div class="progress-bar"><div class="progress-fill blue" style="width: 87%"></div></div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-label"><span>Module 1</span><span>62%</span></div>
+          <div class="progress-bar"><div class="progress-fill purple" style="width: 62%"></div></div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-label"><span>Module 2</span><span>45%</span></div>
+          <div class="progress-bar"><div class="progress-fill green" style="width: 45%"></div></div>
+        </div>
+        <div class="progress-item">
+          <div class="progress-label"><span>Module 3</span><span>28%</span></div>
+          <div class="progress-bar"><div class="progress-fill blue" style="width: 28%"></div></div>
+        </div>
+      </div>
+
+      <!-- Center Card - Main Dashboard -->
+      <div class="mockup-card center">
+        <div class="mockup-header">
+          <div class="mockup-logo" style="background: linear-gradient(135deg, rgba(200, 253, 215, 0.2), rgba(142, 253, 180, 0.1));">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--accent-green)">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <div class="mockup-title">Learning Dashboard</div>
+          <div class="mockup-subtitle">Welcome back, Isha</div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value green">47%</div>
+            <div class="stat-label">Progress</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value purple">32</div>
+            <div class="stat-label">Topics</div>
+          </div>
+        </div>
+
+        <button class="mockup-btn green">Continue Learning</button>
+
+        <div class="mockup-divider">or explore</div>
+
+        <div class="social-btns">
+          <button class="social-btn">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+            </svg>
+          </button>
+          <button class="social-btn">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </button>
+          <button class="social-btn">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Card - AI Content -->
+      <div class="mockup-card right">
+        <div class="mockup-header">
+          <div class="mockup-logo" style="background: linear-gradient(135deg, rgba(238, 186, 247, 0.2), rgba(200, 170, 255, 0.1));">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--accent-purple)">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <div class="mockup-title">AI Content</div>
+          <div class="mockup-subtitle">Generating...</div>
+        </div>
+
+        <div class="mockup-input">
+          <span style="font-size: 11px; color: var(--text-muted);">Value Equation</span>
+        </div>
+
+        <div class="mockup-input">
+          <div class="mockup-input-dots">
+            <div class="mockup-input-dot"></div>
+            <div class="mockup-input-dot"></div>
+            <div class="mockup-input-dot"></div>
+          </div>
+        </div>
+
+        <button class="mockup-btn">View Content</button>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+      <div class="section-header">
+        <h2>Everything you need to master marketing</h2>
+        <p>AI-powered learning designed for modern marketers</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon green">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <h3>AI Content</h3>
+          <p>Fresh, personalized lessons generated by Grok. Never stale, always relevant.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon blue">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <h3>Progress Tracking</h3>
+          <p>Basic to Advanced levels. Visual progress rings show your growth.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon purple">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3>Quizzes & Deep Dives</h3>
+          <p>Test knowledge with smart quizzes. Explore concepts in 4 different ways.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+      <div class="cta-box">
+        <h2>Ready to master marketing?</h2>
+        <p>Join thousands of marketers learning the smart way.</p>
+        <button class="btn-primary-glow">Start Learning Free</button>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>Built for modern marketers — Marketing Mastery</p>
+    </footer>
+  </div>
+</body>
+</html>

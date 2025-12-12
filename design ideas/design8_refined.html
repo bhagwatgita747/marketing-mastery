@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Mastery | AuthKit Replica</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Inter"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        ak: {
+                            bg: '#05060f', // --dark-background
+                            text: '#c8d4ea', // --body-normal
+                            textLoud: '#d8ecf8', // lighter text
+                            border: 'rgba(186, 214, 247, 0.12)', // --blue-12
+                            card: 'rgba(255, 255, 255, 0.02)',
+                            accent: '#98c0ef', // light blue accent
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-text': 'linear-gradient(0deg, #98c0ef, #d8ecf8)', // --gradient-loud-100
+                        'gradient-glow': 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 180deg, #e92a67 360deg)',
+                    },
+                    boxShadow: {
+                        'glow': '0 0 80px -20px rgba(152, 192, 239, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #05060f;
+            color: #c8d4ea;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* The signature multi-color blur behind the card */
+        .ambient-blur {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .ambient-blur::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(42, 138, 246, 0.15) 0%, rgba(168, 83, 186, 0.05) 40%, transparent 70%);
+            filter: blur(80px);
+        }
+
+        /* Glass Card */
+        .glass-panel {
+            background: linear-gradient(180deg, rgba(20, 20, 28, 0.6) 0%, rgba(10, 10, 16, 0.4) 100%);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(186, 214, 247, 0.12);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+        }
+
+        /* Text Gradient */
+        .text-gradient {
+            background: linear-gradient(0deg, #98c0ef, #d8ecf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Interactive List Item */
+        .list-item {
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        .list-item:hover {
+            background: rgba(186, 214, 247, 0.04);
+            border-color: rgba(186, 214, 247, 0.12);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #1c1c21; border-radius: 3px; }
+        
+        /* Grid */
+        .grid-bg {
+            background-image: linear-gradient(rgba(186, 214, 247, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(186, 214, 247, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative overflow-hidden">
+
+    <!-- Background Grid -->
+    <div class="absolute inset-0 grid-bg pointer-events-none z-0"></div>
+    <div class="ambient-blur"></div>
+
+    <!-- Navigation -->
+    <header class="h-16 flex items-center justify-between px-6 md:px-12 border-b border-ak-border bg-ak-bg/50 backdrop-blur-md sticky top-0 z-20">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded bg-white flex items-center justify-center">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" fill="black" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <span class="font-medium text-ak-textLoud tracking-tight">Marketing Mastery</span>
+        </div>
+        
+        <div class="hidden md:flex items-center gap-6 text-sm font-medium text-ak-text">
+            <a href="#" class="hover:text-ak-textLoud transition-colors">Curriculum</a>
+            <a href="#" class="hover:text-ak-textLoud transition-colors">Resources</a>
+            <a href="#" class="hover:text-ak-textLoud transition-colors">Community</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+             <div class="hidden md:block text-right">
+                <div class="text-xs font-mono text-ak-textLoud">isha@nivea.com</div>
+                <div class="text-[10px] text-ak-text opacity-60">PRO MEMBER</div>
+            </div>
+            <button class="w-8 h-8 rounded-full bg-gradient-text p-[1px]">
+                <div class="w-full h-full rounded-full bg-ak-bg flex items-center justify-center text-xs font-bold text-white">I</div>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 flex flex-col items-center p-6 md:p-12 relative z-10">
+        
+        <!-- Hero Section -->
+        <div class="text-center max-w-2xl mx-auto mb-16 animate-fade-in-up">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-ak-border bg-ak-card text-xs font-mono text-ak-accent mb-6">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-ak-accent opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-ak-accent"></span>
+                </span>
+                MODULE 2.3 ACTIVE
+            </div>
+            
+            <h1 class="text-4xl md:text-6xl font-medium text-ak-textLoud mb-6 tracking-tight leading-tight">
+                The world's best <br>
+                <span class="text-gradient">marketing curriculum.</span>
+            </h1>
+            
+            <p class="text-lg text-ak-text leading-relaxed max-w-xl mx-auto mb-8">
+                Master the art of growth with verifable strategies. Powered by AI content and real-world case studies.
+            </p>
+
+            <div class="flex items-center justify-center gap-4">
+                <button class="bg-white text-black px-6 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors shadow-glow">
+                    Resume Learning
+                </button>
+                <button class="px-6 py-3 rounded-lg font-medium border border-ak-border hover:bg-ak-border transition-colors text-ak-textLoud">
+                    View Progress
+                </button>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-6">
+            
+            <!-- Left Column: Curriculum Stack -->
+            <div class="md:col-span-7 space-y-4">
+                <div class="flex items-center justify-between mb-2 px-1">
+                    <h3 class="text-sm font-medium text-ak-textLoud">Current Module</h3>
+                    <span class="text-xs font-mono text-ak-text">35% COMPLETE</span>
+                </div>
+
+                <!-- Active Card -->
+                <div class="glass-panel rounded-xl p-6 md:p-8 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-ak-accent opacity-[0.03] blur-3xl group-hover:opacity-[0.06] transition-opacity"></div>
+                    
+                    <div class="flex justify-between items-start mb-6 relative z-10">
+                        <div class="w-12 h-12 rounded-lg bg-ak-card border border-ak-border flex items-center justify-center text-ak-accent">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </div>
+                        <div class="px-3 py-1 rounded bg-ak-accent/10 border border-ak-accent/20 text-xs font-mono text-ak-accent">
+                            IN_PROGRESS
+                        </div>
+                    </div>
+
+                    <h2 class="text-2xl font-medium text-ak-textLoud mb-2">Offers & Copywriting</h2>
+                    <p class="text-ak-text text-sm leading-relaxed mb-8 max-w-sm">
+                        Deep dive into landing page anatomy. Learn how to structure hero sections for maximum conversion.
+                    </p>
+
+                    <div class="h-1 w-full bg-ak-border rounded-full overflow-hidden mb-6">
+                        <div class="h-full bg-ak-accent w-[35%] rounded-full shadow-[0_0_10px_rgba(152,192,239,0.5)]"></div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-6 border-t border-ak-border">
+                         <div class="flex -space-x-2">
+                            <div class="w-8 h-8 rounded-full border-2 border-[#16161a] bg-gray-700"></div>
+                            <div class="w-8 h-8 rounded-full border-2 border-[#16161a] bg-gray-600"></div>
+                            <div class="w-8 h-8 rounded-full border-2 border-[#16161a] bg-gray-500 flex items-center justify-center text-[10px] text-white font-bold">+12</div>
+                        </div>
+                        <button class="text-sm font-medium text-white flex items-center gap-2 group-hover:translate-x-1 transition-transform">
+                            Continue <span class="text-ak-accent">→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Upcoming List -->
+                <div class="space-y-3 pt-4">
+                    <h3 class="text-sm font-medium text-ak-textLoud px-1">Up Next</h3>
+                    
+                    <div class="list-item rounded-lg p-4 flex items-center gap-4 cursor-not-allowed opacity-60">
+                        <div class="w-10 h-10 rounded bg-ak-card border border-ak-border flex items-center justify-center text-gray-500">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        </div>
+                        <div>
+                            <div class="text-sm font-medium text-ak-textLoud">Organic Foundations</div>
+                            <div class="text-xs text-ak-text">Module 03 • Locked</div>
+                        </div>
+                    </div>
+
+                     <div class="list-item rounded-lg p-4 flex items-center gap-4 cursor-not-allowed opacity-60">
+                        <div class="w-10 h-10 rounded bg-ak-card border border-ak-border flex items-center justify-center text-gray-500">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        </div>
+                        <div>
+                            <div class="text-sm font-medium text-ak-textLoud">Social Distribution</div>
+                            <div class="text-xs text-ak-text">Module 04 • Locked</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Stats & Profile -->
+            <div class="md:col-span-5 space-y-6">
+                
+                <!-- XP Card -->
+                <div class="glass-panel rounded-xl p-6">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-xs font-mono text-ak-text uppercase tracking-wider">Your Stats</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 rounded-lg bg-ak-card border border-ak-border text-center">
+                            <div class="text-2xl font-medium text-white mb-1">18%</div>
+                            <div class="text-xs text-ak-text">Total Progress</div>
+                        </div>
+                        <div class="p-4 rounded-lg bg-ak-card border border-ak-border text-center">
+                            <div class="text-2xl font-medium text-white mb-1">12h</div>
+                            <div class="text-xs text-ak-text">Time Spent</div>
+                        </div>
+                        <div class="p-4 rounded-lg bg-ak-card border border-ak-border text-center col-span-2">
+                            <div class="flex items-center justify-center gap-2 text-ak-accent mb-1">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path></svg>
+                                <span class="text-2xl font-medium text-white">840 XP</span>
+                            </div>
+                            <div class="text-xs text-ak-text">Top 10% of Learners</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="glass-panel rounded-xl p-1">
+                    <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-ak-border transition-colors flex items-center justify-between text-sm text-ak-textLoud group">
+                        <span>Take a Quiz</span>
+                        <span class="text-ak-text opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                    </button>
+                    <div class="h-px bg-ak-border mx-2"></div>
+                    <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-ak-border transition-colors flex items-center justify-between text-sm text-ak-textLoud group">
+                        <span>Review Notes</span>
+                        <span class="text-ak-text opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                    </button>
+                    <div class="h-px bg-ak-border mx-2"></div>
+                    <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-ak-border transition-colors flex items-center justify-between text-sm text-ak-textLoud group">
+                        <span>Community Hub</span>
+                        <span class="text-ak-text opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                    </button>
+                </div>
+
+                <!-- Footer Links -->
+                <div class="flex gap-4 text-xs text-ak-text opacity-50 justify-center pt-4">
+                    <a href="#" class="hover:text-white">Privacy</a>
+                    <span>•</span>
+                    <a href="#" class="hover:text-white">Terms</a>
+                    <span>•</span>
+                    <a href="#" class="hover:text-white">Support</a>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+</body>
+</html>

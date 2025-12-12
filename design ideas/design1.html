@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Mastery | Pro Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Fraunces"', 'serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                    },
+                    colors: {
+                        offwhite: '#fbfbfd',
+                        black: '#1d1d1f',
+                        accent: '#2c3e50', // Sophisticated dark blue/slate
+                        highlight: '#34c759', // Apple green for success
+                    },
+                    boxShadow: {
+                        'soft': '0 20px 40px -10px rgba(0,0,0,0.05)',
+                        'float': '0 30px 60px -12px rgba(0,0,0,0.1)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #fbfbfd;
+            color: #1d1d1f;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .editorial-text {
+            letter-spacing: -0.03em;
+            line-height: 0.95;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .apple-button {
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .apple-button:active {
+            transform: scale(0.96);
+        }
+
+        /* Smooth reveal animation */
+        @keyframes reveal {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-reveal {
+            animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+
+        .thin-line {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #000, transparent);
+            opacity: 0.1;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col md:flex-row overflow-hidden">
+
+    <!-- Left: Editorial Hero (Fixed) -->
+    <aside class="w-full md:w-[45%] lg:w-[40%] bg-[#f2f2f7] relative h-48 md:h-screen overflow-hidden flex flex-col justify-between p-8 md:p-12 border-r border-gray-200">
+        <!-- Abstract Art Background -->
+        <div class="absolute inset-0 opacity-10">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="w-full h-full">
+                <path d="M0 0 C 50 100 80 100 100 0 Z" fill="#000"/>
+            </svg>
+        </div>
+
+        <nav class="relative z-10 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 bg-black rounded-full flex items-center justify-center text-white text-xs font-serif italic">M</div>
+                <span class="font-sans text-xs font-semibold tracking-widest uppercase opacity-60">Marketing Mastery</span>
+            </div>
+        </nav>
+
+        <div class="relative z-10 mt-auto mb-auto animate-reveal">
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl editorial-text text-black mb-6">
+                Design<br>
+                <span class="italic font-light">Your</span><br>
+                Growth<span class="text-3xl align-top">*</span>
+            </h1>
+            <p class="font-sans text-sm md:text-base text-gray-500 max-w-xs leading-relaxed">
+                Welcome back, Isha. Your journey to mastery continues.
+                You are currently exploring the anatomy of conversion.
+            </p>
+        </div>
+
+        <!-- Floating Action Widget (Inspired by your image) -->
+        <div class="absolute bottom-12 right-[-20px] md:right-[-40px] z-20 w-72 glass-card rounded-2xl p-4 shadow-float animate-reveal delay-300 transform md:hover:-translate-x-4 transition-transform duration-500">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-full bg-black overflow-hidden relative">
+                     <!-- Placeholder Avatar -->
+                     <div class="absolute inset-0 bg-gradient-to-tr from-gray-800 to-gray-600"></div>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-gray-900">Current Session</p>
+                    <p class="text-[10px] text-gray-500">Resume where you left off</p>
+                </div>
+                <div class="ml-auto w-2 h-2 rounded-full bg-highlight animate-pulse"></div>
+            </div>
+            <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden mb-3">
+                <div class="h-full bg-black w-[37%] rounded-full"></div>
+            </div>
+            <button class="w-full bg-black text-white text-xs font-medium py-3 rounded-xl apple-button">
+                Continue Module 2.3
+            </button>
+        </div>
+    </aside>
+
+    <!-- Right: Minimal List (Scrollable) -->
+    <main class="flex-1 h-screen overflow-y-auto bg-offwhite relative">
+        <header class="sticky top-0 bg-offwhite/80 backdrop-blur-md z-30 px-8 py-6 border-b border-gray-100 flex justify-between items-center">
+            <h2 class="font-sans text-sm font-medium text-gray-400 uppercase tracking-widest">Curriculum Index</h2>
+            <div class="flex gap-4">
+                <button class="text-sm font-medium hover:text-gray-600 transition-colors">Notes</button>
+                <button class="text-sm font-medium hover:text-gray-600 transition-colors">Logout</button>
+            </div>
+        </header>
+
+        <div class="p-8 md:p-16 max-w-3xl mx-auto space-y-12 pb-32">
+            
+            <!-- Module 0 (Done) -->
+            <div class="group opacity-40 hover:opacity-100 transition-opacity duration-500">
+                <div class="flex items-baseline justify-between mb-2 border-b border-gray-200 pb-2">
+                    <span class="font-serif text-2xl text-gray-400 italic">00</span>
+                    <span class="font-sans text-xs font-semibold text-highlight">COMPLETED</span>
+                </div>
+                <h3 class="font-serif text-3xl md:text-4xl text-gray-800 group-hover:pl-4 transition-all duration-300">Grounding & Principles</h3>
+            </div>
+
+            <!-- Module 1 (Done) -->
+            <div class="group opacity-40 hover:opacity-100 transition-opacity duration-500">
+                <div class="flex items-baseline justify-between mb-2 border-b border-gray-200 pb-2">
+                    <span class="font-serif text-2xl text-gray-400 italic">01</span>
+                    <span class="font-sans text-xs font-semibold text-highlight">COMPLETED</span>
+                </div>
+                <h3 class="font-serif text-3xl md:text-4xl text-gray-800 group-hover:pl-4 transition-all duration-300">Customer & Positioning</h3>
+            </div>
+
+            <!-- Module 2 (Active) -->
+            <div class="relative">
+                <!-- Decorative Asterisk -->
+                <div class="absolute -left-8 top-0 text-4xl font-serif text-black animate-spin-slow">*</div>
+                
+                <div class="flex items-baseline justify-between mb-4 border-b border-black pb-2">
+                    <span class="font-serif text-2xl text-black italic">02</span>
+                    <span class="font-sans text-xs font-bold bg-black text-white px-3 py-1 rounded-full">IN PROGRESS</span>
+                </div>
+                <h3 class="font-serif text-5xl md:text-6xl text-black mb-8 leading-tight">Offers, Copy & <br>Landing Pages</h3>
+                
+                <!-- Expanded Content -->
+                <div class="pl-4 md:pl-8 border-l border-gray-200 space-y-6">
+                    <p class="font-sans text-gray-500 leading-relaxed max-w-lg">
+                        The art of the offer is not what you sell, but how you frame it. 
+                        Dive deep into the psychology of value and the architecture of persuasion.
+                    </p>
+
+                    <div class="grid gap-4">
+                        <!-- Topic Item -->
+                        <div class="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border border-gray-100">
+                            <div class="flex items-center gap-4">
+                                <div class="w-6 h-6 rounded-full border border-gray-200 flex items-center justify-center">
+                                    <svg class="w-3 h-3 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                </div>
+                                <span class="font-serif text-lg text-gray-400 line-through">The Grand Offer</span>
+                            </div>
+                        </div>
+
+                        <!-- Active Topic -->
+                        <div class="flex items-center justify-between p-6 bg-black text-white rounded-2xl shadow-soft transform scale-105 transition-transform">
+                            <div>
+                                <span class="text-[10px] uppercase tracking-widest text-gray-400 mb-1 block">Chapter 2.3</span>
+                                <h4 class="font-serif text-2xl">Landing Page Anatomy</h4>
+                            </div>
+                            <button class="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:bg-gray-200 transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </button>
+                        </div>
+
+                         <!-- Locked Topic -->
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-transparent">
+                            <div class="flex items-center gap-4 opacity-50">
+                                <div class="w-6 h-6 rounded-full border border-gray-300"></div>
+                                <span class="font-serif text-lg text-gray-600">Headlines & Hooks</span>
+                            </div>
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 3 -->
+            <div class="group opacity-40 hover:opacity-60 transition-opacity duration-500">
+                <div class="flex items-baseline justify-between mb-2 border-b border-gray-200 pb-2">
+                    <span class="font-serif text-2xl text-gray-400 italic">03</span>
+                    <span class="font-sans text-xs font-semibold text-gray-400">LOCKED</span>
+                </div>
+                <h3 class="font-serif text-3xl md:text-4xl text-gray-800">Organic Foundations</h3>
+            </div>
+            
+             <!-- Module 4 -->
+            <div class="group opacity-40 hover:opacity-60 transition-opacity duration-500">
+                <div class="flex items-baseline justify-between mb-2 border-b border-gray-200 pb-2">
+                    <span class="font-serif text-2xl text-gray-400 italic">04</span>
+                    <span class="font-sans text-xs font-semibold text-gray-400">LOCKED</span>
+                </div>
+                <h3 class="font-serif text-3xl md:text-4xl text-gray-800">Social & Distribution</h3>
+            </div>
+
+        </div>
+    </main>
+</body>
+</html>

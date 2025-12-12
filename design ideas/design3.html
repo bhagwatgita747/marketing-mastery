@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketing Mastery - Design 3</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0d0d14;
+      min-height: 100vh;
+      color: #fff;
+    }
+
+    /* Main container with gradient border */
+    .main-container {
+      max-width: 1400px;
+      margin: 40px auto;
+      padding: 2px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(20, 184, 166, 0.3), rgba(168, 85, 247, 0.3));
+      border-radius: 24px;
+    }
+
+    .inner-container {
+      background: linear-gradient(180deg, #12121a 0%, #0d0d14 100%);
+      border-radius: 22px;
+      min-height: calc(100vh - 80px);
+      overflow: hidden;
+    }
+
+    /* Navigation */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 48px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #10b981, #14b8a6);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .nav-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+    }
+
+    .login-btn {
+      padding: 12px 24px;
+      background: transparent;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .login-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: #475569;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 80px 48px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 56px;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 18px;
+      line-height: 1.7;
+      color: #94a3b8;
+      max-width: 700px;
+      margin: 0 auto 40px;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 32px;
+      background: #10b981;
+      border: none;
+      border-radius: 12px;
+      color: #0d0d14;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .cta-btn:hover {
+      background: #0d9488;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Dashboard Preview */
+    .dashboard-preview {
+      padding: 0 48px 60px;
+      position: relative;
+    }
+
+    .preview-container {
+      position: relative;
+      max-width: 1100px;
+      margin: 0 auto;
+      perspective: 1000px;
+    }
+
+    /* Glow effect behind cards */
+    .glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 300px;
+      background: radial-gradient(ellipse, rgba(99, 102, 241, 0.3), transparent 70%);
+      filter: blur(60px);
+      pointer-events: none;
+    }
+
+    /* 3D Cards Layout */
+    .cards-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 20px;
+      padding-top: 40px;
+    }
+
+    .preview-card {
+      background: linear-gradient(180deg, #1e1e2e 0%, #151520 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 20px;
+      transition: transform 0.3s;
+    }
+
+    .preview-card.left {
+      width: 200px;
+      height: 280px;
+      transform: perspective(1000px) rotateY(15deg) rotateX(5deg);
+    }
+
+    .preview-card.center {
+      width: 320px;
+      height: 340px;
+      z-index: 2;
+      transform: translateY(-20px);
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+    }
+
+    .preview-card.right {
+      width: 200px;
+      height: 280px;
+      transform: perspective(1000px) rotateY(-15deg) rotateX(5deg);
+    }
+
+    .preview-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .preview-card.left:hover {
+      transform: perspective(1000px) rotateY(15deg) rotateX(5deg) translateY(-10px);
+    }
+
+    .preview-card.right:hover {
+      transform: perspective(1000px) rotateY(-15deg) rotateX(5deg) translateY(-10px);
+    }
+
+    /* Card Content */
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .card-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .card-dot.green { background: #10b981; }
+    .card-dot.purple { background: #a855f7; }
+    .card-dot.blue { background: #6366f1; }
+
+    .card-title {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    /* Progress bars in cards */
+    .progress-item {
+      margin-bottom: 12px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #64748b;
+      margin-bottom: 6px;
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.8s ease;
+    }
+
+    .progress-fill.green { background: linear-gradient(90deg, #10b981, #14b8a6); }
+    .progress-fill.purple { background: linear-gradient(90deg, #8b5cf6, #a855f7); }
+    .progress-fill.blue { background: linear-gradient(90deg, #6366f1, #818cf8); }
+
+    /* Stats in center card */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .stat-box {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .stat-value.green { color: #10b981; }
+    .stat-value.purple { color: #a855f7; }
+
+    .stat-label {
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    /* Module list preview */
+    .module-list {
+      margin-top: 16px;
+    }
+
+    .module-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    .module-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .module-num.m0 { background: linear-gradient(135deg, #8b5cf6, #a855f7); }
+    .module-num.m1 { background: linear-gradient(135deg, #6366f1, #818cf8); }
+    .module-num.m2 { background: linear-gradient(135deg, #06b6d4, #22d3ee); }
+    .module-num.m3 { background: linear-gradient(135deg, #10b981, #34d399); }
+
+    .module-info {
+      flex: 1;
+    }
+
+    .module-name {
+      font-size: 11px;
+      color: #e2e8f0;
+      font-weight: 500;
+    }
+
+    .module-topics {
+      font-size: 10px;
+      color: #64748b;
+    }
+
+    /* Features Section */
+    .features {
+      padding: 60px 48px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .features-header h2 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .features-header p {
+      color: #64748b;
+      font-size: 16px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: linear-gradient(180deg, rgba(30, 30, 46, 0.5) 0%, rgba(21, 21, 32, 0.5) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 28px;
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(99, 102, 241, 0.3);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .feature-icon.green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+    .feature-icon.purple { background: rgba(168, 85, 247, 0.15); color: #a855f7; }
+    .feature-icon.blue { background: rgba(99, 102, 241, 0.15); color: #6366f1; }
+
+    .feature-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .feature-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 32px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    footer p {
+      color: #475569;
+      font-size: 14px;
+    }
+
+    /* Animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .preview-card.center {
+      animation: float 6s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <div class="inner-container">
+      <!-- Navigation -->
+      <nav>
+        <div class="logo">
+          <div class="logo-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #0d0d14">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <span>Marketing Mastery</span>
+        </div>
+
+        <div class="nav-links">
+          <a href="#">Home</a>
+          <a href="#">Curriculum</a>
+          <a href="#">Features</a>
+          <a href="#">About</a>
+        </div>
+
+        <button class="login-btn">Log in</button>
+      </nav>
+
+      <!-- Hero Section -->
+      <section class="hero">
+        <h1><span>Master marketing with<br>AI-powered learning</span></h1>
+        <p>Learn real marketing skills through personalized, AI-generated content. From first principles to advanced growth loops — track your progress and level up your marketing game.</p>
+        <button class="cta-btn">
+          Start Learning Free
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </button>
+      </section>
+
+      <!-- Dashboard Preview -->
+      <section class="dashboard-preview">
+        <div class="preview-container">
+          <div class="glow"></div>
+
+          <div class="cards-wrapper">
+            <!-- Left Card - Progress -->
+            <div class="preview-card left">
+              <div class="card-header">
+                <div class="card-dot green"></div>
+                <span class="card-title">Your Progress</span>
+              </div>
+              <div class="progress-item">
+                <div class="progress-label">
+                  <span>Module 0</span>
+                  <span>87%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill green" style="width: 87%"></div>
+                </div>
+              </div>
+              <div class="progress-item">
+                <div class="progress-label">
+                  <span>Module 1</span>
+                  <span>62%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill purple" style="width: 62%"></div>
+                </div>
+              </div>
+              <div class="progress-item">
+                <div class="progress-label">
+                  <span>Module 2</span>
+                  <span>45%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill blue" style="width: 45%"></div>
+                </div>
+              </div>
+              <div class="progress-item">
+                <div class="progress-label">
+                  <span>Module 3</span>
+                  <span>28%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill green" style="width: 28%"></div>
+                </div>
+              </div>
+              <div class="progress-item">
+                <div class="progress-label">
+                  <span>Module 4</span>
+                  <span>12%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill purple" style="width: 12%"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Center Card - Stats -->
+            <div class="preview-card center">
+              <div class="card-header">
+                <div class="card-dot purple"></div>
+                <span class="card-title">Learning Dashboard</span>
+              </div>
+              <div class="stats-grid">
+                <div class="stat-box">
+                  <div class="stat-value green">47%</div>
+                  <div class="stat-label">Overall Progress</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-value purple">32</div>
+                  <div class="stat-label">Topics Completed</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-value">18</div>
+                  <div class="stat-label">Notes Saved</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-value">85%</div>
+                  <div class="stat-label">Quiz Average</div>
+                </div>
+              </div>
+              <div class="module-list">
+                <div class="module-item">
+                  <div class="module-num m0">0</div>
+                  <div class="module-info">
+                    <div class="module-name">Grounding & First Principles</div>
+                    <div class="module-topics">8 topics • 7 completed</div>
+                  </div>
+                </div>
+                <div class="module-item">
+                  <div class="module-num m1">1</div>
+                  <div class="module-info">
+                    <div class="module-name">Customer, Problem, Positioning</div>
+                    <div class="module-topics">8 topics • 5 completed</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Card - API/Content -->
+            <div class="preview-card right">
+              <div class="card-header">
+                <div class="card-dot blue"></div>
+                <span class="card-title">AI Content</span>
+              </div>
+              <div style="font-size: 10px; color: #64748b; font-family: monospace; line-height: 1.6;">
+                <div style="color: #6366f1;">// Generating content...</div>
+                <div style="margin-top: 8px;">
+                  <span style="color: #a855f7;">topic:</span> "Value Equation"
+                </div>
+                <div>
+                  <span style="color: #a855f7;">level:</span> "basic"
+                </div>
+                <div style="margin-top: 12px; color: #10b981;">
+                  ✓ Content ready
+                </div>
+                <div style="margin-top: 12px; padding: 8px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; color: #94a3b8; font-family: Inter, sans-serif;">
+                  The Value Equation breaks down what makes an offer irresistible...
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="features">
+        <div class="features-header">
+          <h2>Learn smarter, not harder</h2>
+          <p>Everything you need to become a marketing expert</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon green">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
+            </div>
+            <h3>AI-Powered Content</h3>
+            <p>Fresh, personalized lessons generated by Grok AI. No stale content — always up-to-date with real examples.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon purple">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <h3>Progress Tracking</h3>
+            <p>Basic to Advanced levels for each topic. Watch your marketing expertise grow with visual progress rings.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon blue">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3>Quizzes & Deep Dives</h3>
+            <p>Test your knowledge with 5-question quizzes. Use Deep Dive to explore any concept in 4 different ways.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer>
+        <p>Built for Isha — a smarter way to learn marketing</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

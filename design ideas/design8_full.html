@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Mastery | AuthKit Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons for that clean, technical look -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Inter"', 'sans-serif'],
+                    },
+                    colors: {
+                        background: '#0e0e11', 
+                        surface: '#16161a',
+                        surfaceHover: '#1c1c21',
+                        border: '#27272a',
+                        primary: '#6366f1', 
+                        success: '#10b981',
+                    },
+                    backgroundImage: {
+                        'subtle-grid': 'linear-gradient(to right, #27272a 1px, transparent 1px), linear-gradient(to bottom, #27272a 1px, transparent 1px)',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(10px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0e0e11;
+            color: #ffffff;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Signature Glow */
+        .hero-glow {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 600px;
+            background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Card Styles */
+        .auth-card {
+            background: #16161a;
+            border: 1px solid #27272a;
+            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .auth-card:hover {
+            border-color: #3f3f46;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
+
+        /* Badge/Tag Styles */
+        .badge {
+            font-size: 11px;
+            font-weight: 500;
+            padding: 2px 8px;
+            border-radius: 6px;
+            letter-spacing: 0.02em;
+        }
+        .badge-primary { background: rgba(99, 102, 241, 0.1); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.2); }
+        .badge-success { background: rgba(16, 185, 129, 0.1); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); }
+        .badge-neutral { background: rgba(255, 255, 255, 0.05); color: #a1a1aa; border: 1px solid rgba(255, 255, 255, 0.1); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+
+        /* Navigation Item */
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            color: #a1a1aa;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .nav-item:hover, .nav-item.active {
+            background: #1c1c21;
+            color: #fff;
+        }
+        .nav-item.active {
+            border: 1px solid #27272a;
+        }
+
+        /* Grid Background Pattern */
+        .bg-grid {
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden text-sm">
+
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 bg-[size:50px_50px] bg-subtle-grid opacity-[0.04] pointer-events-none bg-grid"></div>
+    <div class="hero-glow"></div>
+
+    <!-- Sidebar -->
+    <aside class="w-64 flex-shrink-0 border-r border-[#27272a] bg-[#0e0e11]/80 backdrop-blur-xl flex flex-col z-20">
+        <!-- Logo -->
+        <div class="h-16 flex items-center px-6 border-b border-[#27272a]">
+            <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center mr-3 shadow-lg shadow-white/10">
+                <i class="ph-bold ph-lightning text-black text-lg"></i>
+            </div>
+            <span class="font-semibold text-white tracking-tight">Mastery OS</span>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="flex-1 px-3 py-6 space-y-1">
+            <div class="px-3 mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Platform</div>
+            <a href="#" class="nav-item active">
+                <i class="ph ph-squares-four text-lg"></i>
+                Dashboard
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-books text-lg"></i>
+                Curriculum
+                <span class="ml-auto text-[10px] bg-[#27272a] px-1.5 py-0.5 rounded text-gray-400">64</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-chart-line-up text-lg"></i>
+                Analytics
+            </a>
+
+            <div class="px-3 mt-8 mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Learning</div>
+            <a href="#" class="nav-item">
+                <i class="ph ph-notebook text-lg"></i>
+                Notes
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-trophy text-lg"></i>
+                Achievements
+            </a>
+        </nav>
+
+        <!-- User Profile -->
+        <div class="p-4 border-t border-[#27272a]">
+            <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-[#1c1c21] cursor-pointer transition-colors border border-transparent hover:border-[#27272a]">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-xs font-bold text-white">I</div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-white font-medium truncate">Isha</div>
+                    <div class="text-xs text-gray-500 truncate">Pro Plan</div>
+                </div>
+                <i class="ph ph-caret-up text-gray-500"></i>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col relative overflow-hidden z-10">
+        
+        <!-- Header -->
+        <header class="h-16 flex items-center justify-between px-8 border-b border-[#27272a] bg-[#0e0e11]/50 backdrop-blur-sm sticky top-0 z-10">
+            <div class="flex items-center text-gray-500 gap-2">
+                <span class="hover:text-white cursor-pointer transition-colors">Home</span>
+                <i class="ph ph-caret-right text-xs"></i>
+                <span class="text-white">Dashboard</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#27272a] hover:bg-[#1c1c21] transition-colors text-xs font-medium text-gray-400 hover:text-white">
+                    <i class="ph ph-magnifying-glass"></i>
+                    <span class="hidden sm:inline">Search...</span>
+                    <span class="ml-2 text-[10px] border border-[#3f3f46] px-1 rounded text-gray-500">⌘K</span>
+                </button>
+                <div class="w-px h-6 bg-[#27272a]"></div>
+                <button class="relative text-gray-400 hover:text-white transition-colors">
+                    <i class="ph ph-bell text-lg"></i>
+                    <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border-2 border-[#0e0e11]"></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Scrollable Body -->
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-6xl mx-auto space-y-8 animate-fade-in">
+                
+                <!-- Welcome Section -->
+                <div class="flex items-end justify-between">
+                    <div>
+                        <h1 class="text-2xl font-semibold text-white mb-2">Ready to level up, Isha?</h1>
+                        <p class="text-gray-400">You're on a 3-day streak. Keep the momentum going.</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button class="px-4 py-2 bg-white text-black font-medium rounded-lg hover:bg-gray-100 transition-colors shadow-lg shadow-white/5 flex items-center gap-2">
+                            <i class="ph-fill ph-play"></i> Resume Learning
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Metrics Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Card 1 -->
+                    <div class="auth-card p-5 rounded-xl">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-2 bg-[#27272a]/50 rounded-lg text-gray-400">
+                                <i class="ph ph-check-circle text-xl"></i>
+                            </div>
+                            <span class="badge badge-success">+2.4%</span>
+                        </div>
+                        <div class="text-2xl font-semibold text-white mb-1">18%</div>
+                        <div class="text-xs text-gray-500">Total Completion</div>
+                        <div class="mt-4 h-1 w-full bg-[#27272a] rounded-full overflow-hidden">
+                            <div class="h-full bg-emerald-500 w-[18%] rounded-full"></div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="auth-card p-5 rounded-xl">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-2 bg-[#27272a]/50 rounded-lg text-gray-400">
+                                <i class="ph ph-clock text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="text-2xl font-semibold text-white mb-1">12.5h</div>
+                        <div class="text-xs text-gray-500">Time Spent Learning</div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="auth-card p-5 rounded-xl">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-2 bg-[#27272a]/50 rounded-lg text-gray-400">
+                                <i class="ph ph-lightning text-xl"></i>
+                            </div>
+                            <span class="badge badge-primary">Top 10%</span>
+                        </div>
+                        <div class="text-2xl font-semibold text-white mb-1">840</div>
+                        <div class="text-xs text-gray-500">XP Points Earned</div>
+                    </div>
+                </div>
+
+                <!-- Main Content Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Left: Active Module (Larger) -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Current Module</h2>
+                            <button class="text-xs text-indigo-400 hover:text-indigo-300">View Details →</button>
+                        </div>
+                        
+                        <div class="auth-card rounded-xl overflow-hidden group cursor-pointer relative">
+                            <!-- Progress Bar Top -->
+                            <div class="h-1 w-full bg-[#27272a]">
+                                <div class="h-full bg-indigo-500 w-[35%]"></div>
+                            </div>
+                            
+                            <div class="p-6 md:p-8">
+                                <div class="flex justify-between items-start mb-6">
+                                    <div class="badge badge-primary">MODULE 02</div>
+                                    <div class="w-8 h-8 rounded-full border border-[#27272a] flex items-center justify-center text-gray-400 group-hover:bg-white group-hover:text-black transition-colors">
+                                        <i class="ph-fill ph-arrow-right"></i>
+                                    </div>
+                                </div>
+                                
+                                <h3 class="text-2xl font-semibold text-white mb-2 group-hover:text-indigo-400 transition-colors">Offers, Copy & Landing Pages</h3>
+                                <p class="text-gray-400 leading-relaxed max-w-lg mb-6">
+                                    Learn how to structure high-converting landing pages. We'll breakdown the anatomy of a hero section, social proof, and CTA placement.
+                                </p>
+
+                                <div class="flex items-center gap-4 text-xs text-gray-500 border-t border-[#27272a] pt-6">
+                                    <div class="flex items-center gap-2">
+                                        <i class="ph-fill ph-book-open text-indigo-500"></i>
+                                        3/8 Topics
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <i class="ph-fill ph-clock text-indigo-500"></i>
+                                        45m Remaining
+                                    </div>
+                                    <div class="ml-auto flex -space-x-2">
+                                        <div class="w-6 h-6 rounded-full bg-gray-700 border-2 border-[#16161a]"></div>
+                                        <div class="w-6 h-6 rounded-full bg-gray-600 border-2 border-[#16161a]"></div>
+                                        <div class="w-6 h-6 rounded-full bg-gray-500 border-2 border-[#16161a] flex items-center justify-center text-[8px] text-white font-bold">+24</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Next Up List -->
+                        <div class="space-y-4">
+                            <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Up Next</h2>
+                            
+                            <!-- Locked Item -->
+                            <div class="auth-card p-4 rounded-xl flex items-center gap-4 opacity-60 hover:opacity-100 transition-opacity">
+                                <div class="w-10 h-10 rounded-lg bg-[#27272a] flex items-center justify-center text-gray-500">
+                                    <i class="ph-fill ph-lock-key"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-sm font-medium text-white">Organic Foundations</h4>
+                                    <p class="text-xs text-gray-500">SEO & Content Strategy</p>
+                                </div>
+                                <i class="ph ph-dots-three text-gray-500"></i>
+                            </div>
+
+                            <!-- Locked Item -->
+                            <div class="auth-card p-4 rounded-xl flex items-center gap-4 opacity-60 hover:opacity-100 transition-opacity">
+                                <div class="w-10 h-10 rounded-lg bg-[#27272a] flex items-center justify-center text-gray-500">
+                                    <i class="ph-fill ph-lock-key"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-sm font-medium text-white">Social Distribution</h4>
+                                    <p class="text-xs text-gray-500">Viral loops & community</p>
+                                </div>
+                                <i class="ph ph-dots-three text-gray-500"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Activity Feed / Sidebar Extras -->
+                    <div class="space-y-6">
+                        <div class="auth-card rounded-xl p-5">
+                            <h3 class="text-sm font-medium text-white mb-4">Recent Activity</h3>
+                            <div class="relative pl-4 border-l border-[#27272a] space-y-6">
+                                <!-- Item -->
+                                <div class="relative">
+                                    <div class="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-[#16161a]"></div>
+                                    <p class="text-xs text-gray-400 mb-1">2 hours ago</p>
+                                    <p class="text-sm text-gray-200">Completed <span class="text-emerald-400">Copywriting Fundamentals</span></p>
+                                </div>
+                                <!-- Item -->
+                                <div class="relative">
+                                    <div class="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-indigo-500 border-2 border-[#16161a]"></div>
+                                    <p class="text-xs text-gray-400 mb-1">Yesterday</p>
+                                    <p class="text-sm text-gray-200">Started <span class="text-indigo-400">Offers Module</span></p>
+                                </div>
+                                <!-- Item -->
+                                <div class="relative">
+                                    <div class="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-gray-600 border-2 border-[#16161a]"></div>
+                                    <p class="text-xs text-gray-400 mb-1">Dec 10</p>
+                                    <p class="text-sm text-gray-200">Earned "First Steps" Badge</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mini Promo Card -->
+                        <div class="auth-card rounded-xl p-5 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500 blur-[60px] opacity-20"></div>
+                            <h3 class="text-sm font-medium text-white mb-2 relative z-10">Join the Community</h3>
+                            <p class="text-xs text-gray-400 mb-4 relative z-10">Connect with 4,000+ marketers and share your progress.</p>
+                            <button class="w-full py-2 bg-[#27272a] hover:bg-[#3f3f46] text-white text-xs font-medium rounded-lg transition-colors border border-white/5">
+                                Open Discord
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

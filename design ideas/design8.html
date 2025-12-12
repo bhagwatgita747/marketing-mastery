@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Mastery | AuthKit Style</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Inter"', 'sans-serif'],
+                    },
+                    colors: {
+                        background: '#0e0e11', // Dark, warm charcoal
+                        surface: '#16161a',
+                        border: '#27272a',
+                        primary: '#6366f1', // Indigo
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'subtle-grid': 'linear-gradient(to right, #27272a 1px, transparent 1px), linear-gradient(to bottom, #27272a 1px, transparent 1px)',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0e0e11;
+            color: #ffffff;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* The AuthKit/WorkOS signature glow */
+        .hero-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140%;
+            height: 140%;
+            background: conic-gradient(from 0deg at 50% 50%, #FF2E5B 0deg, #FF9950 120deg, #A855F7 240deg, #FF2E5B 360deg);
+            filter: blur(80px);
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* The "Login Box" container style */
+        .auth-card {
+            background: #16161a;
+            border: 1px solid #27272a;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        /* Subtle noise texture often used in these designs */
+        .noise {
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Clean list items */
+        .module-item {
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        .module-item:hover {
+            background: #1c1c21;
+            border-color: #27272a;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
+
+    <!-- Background Grid -->
+    <div class="absolute inset-0 bg-[size:40px_40px] bg-subtle-grid opacity-[0.03] pointer-events-none"></div>
+    
+    <!-- Central Glow -->
+    <div class="hero-glow animate-pulse-slow"></div>
+
+    <!-- Main Container (The "Box") -->
+    <div class="w-full max-w-md auth-card rounded-2xl shadow-2xl animate-fade-in-up">
+        <div class="noise"></div>
+        
+        <!-- Header inside the card -->
+        <div class="p-8 pb-6 text-center relative z-10 border-b border-[#27272a]">
+            <div class="w-12 h-12 bg-white rounded-xl mx-auto mb-4 flex items-center justify-center shadow-lg">
+                <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </div>
+            <h1 class="text-xl font-semibold text-white tracking-tight">Marketing Mastery</h1>
+            <p class="text-sm text-gray-400 mt-1">Welcome back, Isha</p>
+        </div>
+
+        <!-- Content Area -->
+        <div class="p-6 relative z-10">
+            
+            <!-- Progress Pill -->
+            <div class="flex justify-center mb-8">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1c1c21] border border-[#27272a] text-xs font-medium text-gray-300">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    18% Completed
+                </div>
+            </div>
+
+            <!-- Active Module "Input Field" style -->
+            <div class="mb-6">
+                <label class="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Current Focus</label>
+                <div class="group relative bg-[#0e0e11] border border-[#27272a] rounded-lg p-4 hover:border-gray-600 transition-colors cursor-pointer">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-mono text-indigo-400">MODULE_02</span>
+                        <span class="text-[10px] bg-indigo-500/10 text-indigo-400 px-2 py-0.5 rounded border border-indigo-500/20">Active</span>
+                    </div>
+                    <h3 class="text-lg font-medium text-white mb-1">Offers & Copy</h3>
+                    <p class="text-sm text-gray-500">2.3 Landing Page Anatomy</p>
+                    
+                    <!-- Action Button inside -->
+                    <div class="mt-4 pt-4 border-t border-[#27272a] flex justify-between items-center">
+                        <span class="text-xs text-gray-500">Resume learning</span>
+                        <svg class="w-4 h-4 text-white group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List of other modules -->
+            <div class="space-y-1">
+                <label class="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-2 mt-8">Curriculum</label>
+                
+                <!-- Completed -->
+                <div class="module-item flex items-center justify-between p-3 rounded-md cursor-pointer group">
+                    <div class="flex items-center gap-3">
+                        <div class="w-4 h-4 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30">
+                            <svg class="w-2.5 h-2.5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <span class="text-sm text-gray-400 group-hover:text-white transition-colors">Customer & Positioning</span>
+                    </div>
+                    <span class="text-xs text-gray-600">01</span>
+                </div>
+
+                <!-- Locked -->
+                <div class="module-item flex items-center justify-between p-3 rounded-md cursor-pointer group opacity-50">
+                    <div class="flex items-center gap-3">
+                        <div class="w-4 h-4 rounded-full border border-[#27272a] bg-[#1c1c21] flex items-center justify-center">
+                            <div class="w-1 h-1 rounded-full bg-gray-600"></div>
+                        </div>
+                        <span class="text-sm text-gray-500">Organic Foundations</span>
+                    </div>
+                    <svg class="w-3 h-3 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                </div>
+
+                <!-- Locked -->
+                <div class="module-item flex items-center justify-between p-3 rounded-md cursor-pointer group opacity-50">
+                    <div class="flex items-center gap-3">
+                        <div class="w-4 h-4 rounded-full border border-[#27272a] bg-[#1c1c21] flex items-center justify-center">
+                            <div class="w-1 h-1 rounded-full bg-gray-600"></div>
+                        </div>
+                        <span class="text-sm text-gray-500">Social & Distribution</span>
+                    </div>
+                    <svg class="w-3 h-3 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="mt-8 pt-6 border-t border-[#27272a] text-center">
+                <button class="w-full bg-white hover:bg-gray-100 text-black font-medium py-2.5 rounded-lg transition-colors text-sm shadow-sm">
+                    Open Full Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
