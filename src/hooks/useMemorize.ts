@@ -94,9 +94,10 @@ export function useMemorize(): UseMemorizeReturn {
 
       const memorizeResult: MemorizeResult = {
         score: analysis.score,
-        total: analysis.total,
+        maxScore: analysis.maxScore,
         keywords: analysis.keywords,
         encouragement: analysis.encouragement,
+        overallRating: analysis.overallRating,
       };
 
       setResult(memorizeResult);

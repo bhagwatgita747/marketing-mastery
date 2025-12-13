@@ -124,13 +124,15 @@ export interface TierInfo {
 // Memorize feature types
 export interface KeywordResult {
   word: string;
-  covered: boolean;
+  rating: number; // 1-5 star rating
   feedback: string;
+  suggestion?: string; // What to review if rating is low
 }
 
 export interface MemorizeResult {
-  score: number;
-  total: number;
+  score: number; // Total stars earned
+  maxScore: number; // Maximum possible stars (keywords * 5)
   keywords: KeywordResult[];
   encouragement: string;
+  overallRating: number; // 1-5 overall performance
 }

@@ -286,8 +286,27 @@ export function MemorizeModal({ topic, level, content, onClose }: MemorizeModalP
           {/* Recording state */}
           {modalState === 'recording' && (
             <div className="text-center">
+              {/* Keywords reminder - shown during recording */}
+              <p className={`text-sm mb-3 ${isDark ? 'text-white/60' : 'text-slate-500'}`}>
+                Explain these concepts:
+              </p>
+              <div className="flex flex-wrap justify-center gap-2 mb-6">
+                {keywords.map((keyword) => (
+                  <div
+                    key={keyword}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium ${
+                      isDark
+                        ? 'bg-white/10 text-white/80 border border-white/20'
+                        : 'bg-slate-100 text-slate-600 border border-slate-200'
+                    }`}
+                  >
+                    {keyword}
+                  </div>
+                ))}
+              </div>
+
               {/* Recording indicator */}
-              <div className="relative w-24 h-24 mx-auto mb-6">
+              <div className="relative w-20 h-20 mx-auto mb-4">
                 <div className={`absolute inset-0 rounded-full animate-ping ${
                   isDark ? 'bg-red-400/30' : 'bg-red-500/30'
                 }`} />
@@ -297,23 +316,23 @@ export function MemorizeModal({ topic, level, content, onClose }: MemorizeModalP
                 <div className={`relative w-full h-full rounded-full flex items-center justify-center ${
                   isDark ? 'bg-red-500' : 'bg-red-500'
                 }`}>
-                  <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clipRule="evenodd" />
                   </svg>
                 </div>
               </div>
 
               {/* Timer */}
-              <div className={`text-3xl font-mono font-bold mb-2 ${isDark ? 'text-white' : 'text-slate-800'}`}>
+              <div className={`text-2xl font-mono font-bold mb-1 ${isDark ? 'text-white' : 'text-slate-800'}`}>
                 {formatTime(elapsedTime)}
               </div>
-              <p className={`text-sm mb-6 ${isDark ? 'text-white/60' : 'text-slate-500'}`}>
-                Recording... Speak about the concepts above
+              <p className={`text-xs mb-4 ${isDark ? 'text-red-400' : 'text-red-500'}`}>
+                🔴 Recording...
               </p>
 
               {/* Live transcript preview */}
               {(transcript || interimTranscript) && (
-                <div className={`max-h-32 overflow-y-auto p-4 rounded-xl text-left text-sm mb-6 ${
+                <div className={`max-h-24 overflow-y-auto p-3 rounded-xl text-left text-sm mb-4 ${
                   isDark ? 'bg-white/5 text-white/80' : 'bg-slate-50 text-slate-600'
                 }`}>
                   {transcript}
@@ -362,6 +381,28 @@ export function MemorizeModal({ topic, level, content, onClose }: MemorizeModalP
   );
 }
 
+// Star rating component
+function StarRating({ rating, isDark }: { rating: number; isDark: boolean }) {
+  return (
+    <div className="flex gap-0.5">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <svg
+          key={star}
+          className={`w-4 h-4 ${
+            star <= rating
+              ? 'text-yellow-400'
+              : isDark ? 'text-white/20' : 'text-slate-300'
+          }`}
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+      ))}
+    </div>
+  );
+}
+
 // Results view component
 interface ResultsViewProps {
   result: MemorizeResult;
@@ -371,88 +412,137 @@ interface ResultsViewProps {
 }
 
 function ResultsView({ result, isDark, onTryAgain, onClose }: ResultsViewProps) {
-  const percentage = Math.round((result.score / result.total) * 100);
+  const percentage = Math.round((result.score / result.maxScore) * 100);
+  const averageRating = result.overallRating;
 
-  // Get emoji and color based on score
+  // Get emoji and label based on overall rating
   const getScoreInfo = () => {
-    if (percentage === 100) return { emoji: '🏆', color: 'text-yellow-500', label: 'Perfect!' };
-    if (percentage >= 80) return { emoji: '🎉', color: 'text-green-500', label: 'Excellent!' };
-    if (percentage >= 60) return { emoji: '👍', color: 'text-blue-500', label: 'Good job!' };
-    return { emoji: '📚', color: 'text-orange-500', label: 'Keep practicing!' };
+    if (averageRating >= 5) return { emoji: '🏆', label: 'Outstanding!', color: 'text-yellow-500' };
+    if (averageRating >= 4) return { emoji: '🎉', label: 'Excellent!', color: 'text-green-500' };
+    if (averageRating >= 3) return { emoji: '👍', label: 'Good effort!', color: 'text-blue-500' };
+    if (averageRating >= 2) return { emoji: '💪', label: 'Keep going!', color: 'text-orange-500' };
+    return { emoji: '📚', label: 'Time to review!', color: 'text-red-500' };
   };
 
   const scoreInfo = getScoreInfo();
 
+  // Check if there are concepts that need review
+  const conceptsToReview = result.keywords.filter(kw => kw.rating <= 3);
+
   return (
     <div className="text-center">
       {/* Score display */}
-      <div className={`text-6xl mb-2 ${scoreInfo.color}`}>{scoreInfo.emoji}</div>
-      <h3 className={`text-2xl font-bold mb-1 ${isDark ? 'text-white' : 'text-slate-800'}`}>
+      <div className={`text-5xl mb-2 ${scoreInfo.color}`}>{scoreInfo.emoji}</div>
+      <h3 className={`text-2xl font-bold mb-2 ${isDark ? 'text-white' : 'text-slate-800'}`}>
         {scoreInfo.label}
       </h3>
-      <p className={`text-lg mb-6 ${isDark ? 'text-white/60' : 'text-slate-500'}`}>
-        You covered <span className="font-semibold">{result.score}</span> of <span className="font-semibold">{result.total}</span> concepts
+
+      {/* Overall star rating */}
+      <div className="flex justify-center mb-4">
+        <div className="flex gap-1">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <svg
+              key={star}
+              className={`w-8 h-8 ${
+                star <= averageRating
+                  ? 'text-yellow-400'
+                  : isDark ? 'text-white/20' : 'text-slate-300'
+              }`}
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+          ))}
+        </div>
+      </div>
+
+      <p className={`text-sm mb-6 ${isDark ? 'text-white/60' : 'text-slate-500'}`}>
+        {result.score} / {result.maxScore} stars earned
       </p>
 
       {/* Progress bar */}
-      <div className={`h-3 rounded-full mb-8 ${isDark ? 'bg-white/10' : 'bg-slate-200'}`}>
+      <div className={`h-2 rounded-full mb-8 ${isDark ? 'bg-white/10' : 'bg-slate-200'}`}>
         <div
-          className="h-full rounded-full bg-gradient-to-r from-accent-500 to-emerald-500 transition-all duration-500"
+          className="h-full rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 transition-all duration-500"
           style={{ width: `${percentage}%` }}
         />
       </div>
 
-      {/* Keyword breakdown */}
-      <div className="space-y-3 mb-8 text-left">
-        {result.keywords.map((kw, index) => (
-          <div
-            key={kw.word}
-            className={`p-4 rounded-xl ${
-              kw.covered
-                ? isDark ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-emerald-50 border border-emerald-200'
-                : isDark ? 'bg-orange-500/10 border border-orange-500/20' : 'bg-orange-50 border border-orange-200'
-            }`}
-            style={{ animationDelay: `${index * 100}ms` }}
-          >
-            <div className="flex items-start gap-3">
-              <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
-                kw.covered
-                  ? isDark ? 'bg-emerald-500/20 text-emerald-400' : 'bg-emerald-100 text-emerald-600'
-                  : isDark ? 'bg-orange-500/20 text-orange-400' : 'bg-orange-100 text-orange-600'
-              }`}>
-                {kw.covered ? (
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                ) : (
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                  </svg>
-                )}
-              </div>
-              <div className="flex-1">
-                <p className={`font-medium ${
-                  kw.covered
+      {/* Keyword breakdown with star ratings */}
+      <div className="space-y-3 mb-6 text-left">
+        {result.keywords.map((kw, index) => {
+          const isGood = kw.rating >= 4;
+          const needsWork = kw.rating <= 3;
+
+          return (
+            <div
+              key={kw.word}
+              className={`p-4 rounded-xl ${
+                isGood
+                  ? isDark ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-emerald-50 border border-emerald-200'
+                  : isDark ? 'bg-orange-500/10 border border-orange-500/20' : 'bg-orange-50 border border-orange-200'
+              }`}
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <div className="flex items-start justify-between gap-3 mb-2">
+                <p className={`font-semibold ${
+                  isGood
                     ? isDark ? 'text-emerald-300' : 'text-emerald-700'
                     : isDark ? 'text-orange-300' : 'text-orange-700'
                 }`}>
                   {kw.word}
                 </p>
-                <p className={`text-sm mt-1 ${
-                  kw.covered
-                    ? isDark ? 'text-emerald-400/80' : 'text-emerald-600'
-                    : isDark ? 'text-orange-400/80' : 'text-orange-600'
-                }`}>
-                  {kw.feedback}
-                </p>
+                <StarRating rating={kw.rating} isDark={isDark} />
               </div>
+
+              <p className={`text-sm ${
+                isGood
+                  ? isDark ? 'text-emerald-400/80' : 'text-emerald-600'
+                  : isDark ? 'text-orange-400/80' : 'text-orange-600'
+              }`}>
+                {kw.feedback}
+              </p>
+
+              {/* Review suggestion for low ratings */}
+              {needsWork && kw.suggestion && (
+                <div className={`mt-3 pt-3 border-t ${
+                  isDark ? 'border-orange-500/20' : 'border-orange-200'
+                }`}>
+                  <button
+                    onClick={onClose}
+                    className={`flex items-center gap-2 text-xs font-medium ${
+                      isDark ? 'text-orange-300 hover:text-orange-200' : 'text-orange-600 hover:text-orange-700'
+                    }`}
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    📖 {kw.suggestion}
+                  </button>
+                </div>
+              )}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
+      {/* Concepts to review summary */}
+      {conceptsToReview.length > 0 && (
+        <div className={`p-4 rounded-xl mb-6 ${
+          isDark ? 'bg-blue-500/10 border border-blue-500/20' : 'bg-blue-50 border border-blue-200'
+        }`}>
+          <p className={`text-sm font-medium mb-1 ${isDark ? 'text-blue-300' : 'text-blue-700'}`}>
+            💡 Focus on these concepts:
+          </p>
+          <p className={`text-xs ${isDark ? 'text-blue-400/80' : 'text-blue-600'}`}>
+            {conceptsToReview.map(c => c.word).join(', ')}
+          </p>
+        </div>
+      )}
+
       {/* Encouragement */}
-      <p className={`text-sm mb-8 italic ${isDark ? 'text-white/60' : 'text-slate-500'}`}>
+      <p className={`text-sm mb-6 italic ${isDark ? 'text-white/60' : 'text-slate-500'}`}>
         "{result.encouragement}"
       </p>
 
@@ -460,22 +550,28 @@ function ResultsView({ result, isDark, onTryAgain, onClose }: ResultsViewProps) 
       <div className="flex gap-3 justify-center">
         <button
           onClick={onTryAgain}
-          className={`px-6 py-3 rounded-xl font-medium transition-colors ${
+          className={`px-6 py-3 rounded-xl font-medium transition-colors flex items-center gap-2 ${
             isDark
               ? 'bg-white/10 text-white hover:bg-white/20'
               : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
           }`}
         >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
           Try Again
         </button>
         <button
           onClick={onClose}
-          className={`px-6 py-3 rounded-xl font-semibold text-white transition-all ${
+          className={`px-6 py-3 rounded-xl font-semibold text-white transition-all flex items-center gap-2 ${
             isDark
               ? 'bg-gradient-to-r from-accent-500 to-emerald-500 hover:from-accent-400 hover:to-emerald-400'
               : 'bg-gradient-to-r from-accent-500 to-emerald-500 hover:from-accent-600 hover:to-emerald-600'
           }`}
         >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
           Done
         </button>
       </div>

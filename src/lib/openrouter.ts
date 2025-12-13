@@ -98,18 +98,21 @@ Return ONLY a JSON object in this exact format, nothing else:
 
 /**
  * Analyze user's verbal explanation against the content and keywords
+ * Returns star ratings (1-5) for each concept
  */
 export interface KeywordAnalysis {
   word: string;
-  covered: boolean;
+  rating: number; // 1-5 stars
   feedback: string;
+  suggestion?: string; // What to review if rating < 4
 }
 
 export interface TranscriptAnalysis {
-  score: number;
-  total: number;
+  score: number; // Total stars earned
+  maxScore: number; // Maximum possible stars
   keywords: KeywordAnalysis[];
   encouragement: string;
+  overallRating: number; // 1-5 overall
 }
 
 export async function analyzeTranscript(
@@ -128,22 +131,25 @@ ${keywords.join(', ')}
 USER'S VERBAL EXPLANATION (transcribed):
 "${transcript}"
 
-Analyze how well the user explained each keyword concept. Be encouraging but honest.
+Rate how well the user explained EACH keyword concept on a scale of 1-5 stars:
+⭐ (1): Not mentioned at all
+⭐⭐ (2): Briefly mentioned but not explained
+⭐⭐⭐ (3): Partial understanding shown
+⭐⭐⭐⭐ (4): Good explanation with minor gaps
+⭐⭐⭐⭐⭐ (5): Excellent, complete understanding demonstrated
 
-Consider:
-- Did they mention the concept or related ideas?
-- Did they show understanding of what it means?
-- Did they explain it accurately?
+Be encouraging but honest. For concepts rated 3 or below, provide a specific suggestion of what to review.
 
 Return ONLY a JSON object in this exact format:
 {
-  "score": <number of keywords covered>,
-  "total": ${keywords.length},
+  "score": <total stars earned across all keywords>,
+  "maxScore": ${keywords.length * 5},
+  "overallRating": <1-5 overall performance>,
   "keywords": [
-    {"word": "Keyword1", "covered": true, "feedback": "Great explanation of..."},
-    {"word": "Keyword2", "covered": false, "feedback": "Try mentioning..."}
+    {"word": "Keyword1", "rating": 5, "feedback": "Excellent explanation of..."},
+    {"word": "Keyword2", "rating": 2, "feedback": "You mentioned it briefly...", "suggestion": "Review the section about X to understand Y better"}
   ],
-  "encouragement": "Overall encouraging message about their recall"
+  "encouragement": "Encouraging message based on overall performance"
 }`;
 
   const response = await generateWithGemini(prompt);
@@ -159,7 +165,8 @@ Return ONLY a JSON object in this exact format:
   // Validate response structure
   if (
     typeof parsed.score !== 'number' ||
-    typeof parsed.total !== 'number' ||
+    typeof parsed.maxScore !== 'number' ||
+    typeof parsed.overallRating !== 'number' ||
     !Array.isArray(parsed.keywords) ||
     typeof parsed.encouragement !== 'string'
   ) {
